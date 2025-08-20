@@ -75,8 +75,8 @@ class UserCard(db.Model):
     card_id: Mapped[str] = mapped_column(ForeignKey("card.id"))
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
-    user: Mapped["User"] = relationship(back_populates="collection")
-    card: Mapped["Card"] = relationship()
+    user: Mapped["User"] = relationship("User", back_populates="collection")
+    card: Mapped["Card"] = relationship("Card")
 
     def serialize(self):
         return {
@@ -96,10 +96,8 @@ class Deck(db.Model):
     name: Mapped[str] = mapped_column(
         String(120), nullable=False, default="My Deck")
 
-    user: Mapped["User"] = relationship(back_populates="decks")
-    cards: Mapped[List["DeckCard"]] = relationship(
-        back_populates="deck", cascade="all, delete-orphan"
-    )
+    user: Mapped["User"] = relationship("User", back_populates="decks")
+    cards: Mapped[List["DeckCard"]] = relationship("DeckCard", back_populates="deck", cascade="all, delete-orphan")
 
     def serialize(self):
         return {
@@ -118,8 +116,8 @@ class DeckCard(db.Model):
     deck_id: Mapped[int] = mapped_column(ForeignKey("deck.id"))
     card_id: Mapped[str] = mapped_column(ForeignKey("card.id"))
 
-    deck: Mapped["Deck"] = relationship(back_populates="cards")
-    card: Mapped["Card"] = relationship()
+    deck: Mapped["Deck"] = relationship("Deck", back_populates="cards")
+    card: Mapped["Card"] = relationship("Card")
 
     def serialize(self):
         return {
@@ -137,7 +135,7 @@ class PackPurchase(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
-    user: Mapped["User"] = relationship(back_populates="purchases")
+    user: Mapped["User"] = relationship("User", back_populates="purchases")
 
     def serialize(self):
         return {
@@ -154,7 +152,7 @@ class PackOpen(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
 
-    user: Mapped["User"] = relationship(back_populates="opens")
+    user: Mapped["User"] = relationship("User", back_populates="opens")
 
     def serialize(self):
         return {
