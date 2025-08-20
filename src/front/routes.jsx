@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
-import Packs from "./pages/Packs"
+import Shop from "./pages/Shop"
 import Decks from "./pages/Decks";
 import Ranking from "./pages/Ranking";
 import Signup from "./pages/Signup";
@@ -28,7 +28,7 @@ export const router = createBrowserRouter(
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Home />} />
-        <Route path="/packs" element={<Packs />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/decks" element={<Decks />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/signup" element={<Signup />} />
