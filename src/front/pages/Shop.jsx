@@ -1,7 +1,7 @@
 import React from "react";
 import PackCard from "../components/PackCard";
 
-const Packs = () => {
+const Shop = () => {
     return (
         <div className="row justify-content-center g-4 mt-5 mb-5">
             <div className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
@@ -28,4 +28,4 @@ const Packs = () => {
         </div>
     );
 }
-export default Packs
+export default Shop
