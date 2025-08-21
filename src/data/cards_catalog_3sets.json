@@ -1,0 +1,1516 @@
+{
+  "cards": [
+    {
+      "id": "base1-1",
+      "local_id": "1",
+      "name": "Alakazam",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/1/high.webp",
+      "game_rarity": "rare",
+      "points": 750
+    },
+    {
+      "id": "base1-2",
+      "local_id": "2",
+      "name": "Blastoise",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/2/high.webp",
+      "game_rarity": "legendary",
+      "points": 950
+    },
+    {
+      "id": "base1-3",
+      "local_id": "3",
+      "name": "Chansey",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/3/high.webp",
+      "game_rarity": "rare",
+      "points": 751
+    },
+    {
+      "id": "base1-4",
+      "local_id": "4",
+      "name": "Charizard",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/4/high.webp",
+      "game_rarity": "legendary",
+      "points": 951
+    },
+    {
+      "id": "base1-5",
+      "local_id": "5",
+      "name": "Clefairy",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/5/high.webp",
+      "game_rarity": "rare",
+      "points": 752
+    },
+    {
+      "id": "base1-6",
+      "local_id": "6",
+      "name": "Gyarados",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/6/high.webp",
+      "game_rarity": "rare",
+      "points": 753
+    },
+    {
+      "id": "base1-7",
+      "local_id": "7",
+      "name": "Hitmonchan",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/7/high.webp",
+      "game_rarity": "rare",
+      "points": 754
+    },
+    {
+      "id": "base1-8",
+      "local_id": "8",
+      "name": "Machamp",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/8/high.webp",
+      "game_rarity": "rare",
+      "points": 755
+    },
+    {
+      "id": "base1-9",
+      "local_id": "9",
+      "name": "Magneton",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/9/high.webp",
+      "game_rarity": "rare",
+      "points": 756
+    },
+    {
+      "id": "base1-10",
+      "local_id": "10",
+      "name": "Mewtwo",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/10/high.webp",
+      "game_rarity": "legendary",
+      "points": 952
+    },
+    {
+      "id": "base1-11",
+      "local_id": "11",
+      "name": "Nidoking",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/11/high.webp",
+      "game_rarity": "rare",
+      "points": 757
+    },
+    {
+      "id": "base1-12",
+      "local_id": "12",
+      "name": "Ninetales",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/12/high.webp",
+      "game_rarity": "rare",
+      "points": 758
+    },
+    {
+      "id": "base1-13",
+      "local_id": "13",
+      "name": "Poliwrath",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/13/high.webp",
+      "game_rarity": "rare",
+      "points": 759
+    },
+    {
+      "id": "base1-14",
+      "local_id": "14",
+      "name": "Raichu",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/14/high.webp",
+      "game_rarity": "rare",
+      "points": 760
+    },
+    {
+      "id": "base1-15",
+      "local_id": "15",
+      "name": "Venusaur",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/15/high.webp",
+      "game_rarity": "legendary",
+      "points": 953
+    },
+    {
+      "id": "base1-16",
+      "local_id": "16",
+      "name": "Zapdos",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/16/high.webp",
+      "game_rarity": "rare",
+      "points": 761
+    },
+    {
+      "id": "base1-17",
+      "local_id": "17",
+      "name": "Beedrill",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/17/high.webp",
+      "game_rarity": "rare",
+      "points": 600
+    },
+    {
+      "id": "base1-18",
+      "local_id": "18",
+      "name": "Dragonair",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/18/high.webp",
+      "game_rarity": "rare",
+      "points": 601
+    },
+    {
+      "id": "base1-19",
+      "local_id": "19",
+      "name": "Dugtrio",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/19/high.webp",
+      "game_rarity": "rare",
+      "points": 602
+    },
+    {
+      "id": "base1-20",
+      "local_id": "20",
+      "name": "Electabuzz",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/20/high.webp",
+      "game_rarity": "rare",
+      "points": 603
+    },
+    {
+      "id": "base1-21",
+      "local_id": "21",
+      "name": "Electrode",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/21/high.webp",
+      "game_rarity": "rare",
+      "points": 604
+    },
+    {
+      "id": "base1-22",
+      "local_id": "22",
+      "name": "Pidgeotto",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/22/high.webp",
+      "game_rarity": "rare",
+      "points": 605
+    },
+    {
+      "id": "base1-23",
+      "local_id": "23",
+      "name": "Arcanine",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/23/high.webp",
+      "game_rarity": "rare",
+      "points": 606
+    },
+    {
+      "id": "base1-24",
+      "local_id": "24",
+      "name": "Charmeleon",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/24/high.webp",
+      "game_rarity": "rare",
+      "points": 607
+    },
+    {
+      "id": "base1-25",
+      "local_id": "25",
+      "name": "Dewgong",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/25/high.webp",
+      "game_rarity": "rare",
+      "points": 608
+    },
+    {
+      "id": "base1-26",
+      "local_id": "26",
+      "name": "Dratini",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/26/high.webp",
+      "game_rarity": "rare",
+      "points": 609
+    },
+    {
+      "id": "base1-27",
+      "local_id": "27",
+      "name": "Farfetch'd",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/27/high.webp",
+      "game_rarity": "rare",
+      "points": 610
+    },
+    {
+      "id": "base1-28",
+      "local_id": "28",
+      "name": "Growlithe",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/28/high.webp",
+      "game_rarity": "rare",
+      "points": 611
+    },
+    {
+      "id": "base1-29",
+      "local_id": "29",
+      "name": "Haunter",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/29/high.webp",
+      "game_rarity": "rare",
+      "points": 612
+    },
+    {
+      "id": "base1-30",
+      "local_id": "30",
+      "name": "Ivysaur",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/30/high.webp",
+      "game_rarity": "rare",
+      "points": 613
+    },
+    {
+      "id": "base1-31",
+      "local_id": "31",
+      "name": "Jynx",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/31/high.webp",
+      "game_rarity": "rare",
+      "points": 614
+    },
+    {
+      "id": "base1-32",
+      "local_id": "32",
+      "name": "Kadabra",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/32/high.webp",
+      "game_rarity": "rare",
+      "points": 615
+    },
+    {
+      "id": "base1-33",
+      "local_id": "33",
+      "name": "Kakuna",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/33/high.webp",
+      "game_rarity": "common",
+      "points": 300
+    },
+    {
+      "id": "base1-34",
+      "local_id": "34",
+      "name": "Machoke",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/34/high.webp",
+      "game_rarity": "common",
+      "points": 301
+    },
+    {
+      "id": "base1-35",
+      "local_id": "35",
+      "name": "Magikarp",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/35/high.webp",
+      "game_rarity": "common",
+      "points": 302
+    },
+    {
+      "id": "base1-36",
+      "local_id": "36",
+      "name": "Magmar",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/36/high.webp",
+      "game_rarity": "common",
+      "points": 303
+    },
+    {
+      "id": "base1-37",
+      "local_id": "37",
+      "name": "Nidorino",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/37/high.webp",
+      "game_rarity": "common",
+      "points": 304
+    },
+    {
+      "id": "base1-38",
+      "local_id": "38",
+      "name": "Poliwhirl",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/38/high.webp",
+      "game_rarity": "common",
+      "points": 305
+    },
+    {
+      "id": "base1-39",
+      "local_id": "39",
+      "name": "Porygon",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/39/high.webp",
+      "game_rarity": "common",
+      "points": 306
+    },
+    {
+      "id": "base1-40",
+      "local_id": "40",
+      "name": "Raticate",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/40/high.webp",
+      "game_rarity": "common",
+      "points": 307
+    },
+    {
+      "id": "base1-41",
+      "local_id": "41",
+      "name": "Seel",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/41/high.webp",
+      "game_rarity": "common",
+      "points": 308
+    },
+    {
+      "id": "base1-42",
+      "local_id": "42",
+      "name": "Wartortle",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/42/high.webp",
+      "game_rarity": "common",
+      "points": 309
+    },
+    {
+      "id": "base1-43",
+      "local_id": "43",
+      "name": "Abra",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/43/high.webp",
+      "game_rarity": "common",
+      "points": 310
+    },
+    {
+      "id": "base1-44",
+      "local_id": "44",
+      "name": "Bulbasaur",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/44/high.webp",
+      "game_rarity": "common",
+      "points": 311
+    },
+    {
+      "id": "base1-45",
+      "local_id": "45",
+      "name": "Caterpie",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/45/high.webp",
+      "game_rarity": "common",
+      "points": 312
+    },
+    {
+      "id": "base1-46",
+      "local_id": "46",
+      "name": "Charmander",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/46/high.webp",
+      "game_rarity": "common",
+      "points": 313
+    },
+    {
+      "id": "base1-47",
+      "local_id": "47",
+      "name": "Diglett",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/47/high.webp",
+      "game_rarity": "common",
+      "points": 314
+    },
+    {
+      "id": "base1-48",
+      "local_id": "48",
+      "name": "Doduo",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/48/high.webp",
+      "game_rarity": "common",
+      "points": 315
+    },
+    {
+      "id": "base1-49",
+      "local_id": "49",
+      "name": "Drowzee",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/49/high.webp",
+      "game_rarity": "common",
+      "points": 316
+    },
+    {
+      "id": "base1-50",
+      "local_id": "50",
+      "name": "Gastly",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/50/high.webp",
+      "game_rarity": "common",
+      "points": 317
+    },
+    {
+      "id": "base1-51",
+      "local_id": "51",
+      "name": "Koffing",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/51/high.webp",
+      "game_rarity": "common",
+      "points": 318
+    },
+    {
+      "id": "base1-52",
+      "local_id": "52",
+      "name": "Machop",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/52/high.webp",
+      "game_rarity": "common",
+      "points": 319
+    },
+    {
+      "id": "base1-53",
+      "local_id": "53",
+      "name": "Magnemite",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/53/high.webp",
+      "game_rarity": "common",
+      "points": 320
+    },
+    {
+      "id": "base1-54",
+      "local_id": "54",
+      "name": "Metapod",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/54/high.webp",
+      "game_rarity": "common",
+      "points": 321
+    },
+    {
+      "id": "base1-55",
+      "local_id": "55",
+      "name": "Nidoran♂",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/55/high.webp",
+      "game_rarity": "common",
+      "points": 322
+    },
+    {
+      "id": "base1-56",
+      "local_id": "56",
+      "name": "Onix",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/56/high.webp",
+      "game_rarity": "common",
+      "points": 323
+    },
+    {
+      "id": "base1-57",
+      "local_id": "57",
+      "name": "Pidgey",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/57/high.webp",
+      "game_rarity": "common",
+      "points": 324
+    },
+    {
+      "id": "base1-58",
+      "local_id": "58",
+      "name": "Pikachu",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/58/high.webp",
+      "game_rarity": "common",
+      "points": 325
+    },
+    {
+      "id": "base1-59",
+      "local_id": "59",
+      "name": "Poliwag",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/59/high.webp",
+      "game_rarity": "common",
+      "points": 326
+    },
+    {
+      "id": "base1-60",
+      "local_id": "60",
+      "name": "Ponyta",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/60/high.webp",
+      "game_rarity": "common",
+      "points": 327
+    },
+    {
+      "id": "base1-61",
+      "local_id": "61",
+      "name": "Rattata",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/61/high.webp",
+      "game_rarity": "common",
+      "points": 328
+    },
+    {
+      "id": "base1-62",
+      "local_id": "62",
+      "name": "Sandshrew",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/62/high.webp",
+      "game_rarity": "common",
+      "points": 329
+    },
+    {
+      "id": "base1-63",
+      "local_id": "63",
+      "name": "Squirtle",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/63/high.webp",
+      "game_rarity": "common",
+      "points": 100
+    },
+    {
+      "id": "base1-64",
+      "local_id": "64",
+      "name": "Starmie",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/64/high.webp",
+      "game_rarity": "common",
+      "points": 101
+    },
+    {
+      "id": "base1-65",
+      "local_id": "65",
+      "name": "Staryu",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/65/high.webp",
+      "game_rarity": "common",
+      "points": 102
+    },
+    {
+      "id": "base1-66",
+      "local_id": "66",
+      "name": "Tangela",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/66/high.webp",
+      "game_rarity": "common",
+      "points": 103
+    },
+    {
+      "id": "base1-67",
+      "local_id": "67",
+      "name": "Voltorb",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/67/high.webp",
+      "game_rarity": "common",
+      "points": 104
+    },
+    {
+      "id": "base1-68",
+      "local_id": "68",
+      "name": "Vulpix",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/68/high.webp",
+      "game_rarity": "common",
+      "points": 105
+    },
+    {
+      "id": "base1-69",
+      "local_id": "69",
+      "name": "Weedle",
+      "image_url": "https://assets.tcgdex.net/en/base/base1/69/high.webp",
+      "game_rarity": "common",
+      "points": 106
+    },
+    {
+      "id": "base2-1",
+      "local_id": "70",
+      "name": "Clefable",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/1/high.webp",
+      "game_rarity": "rare",
+      "points": 762
+    },
+    {
+      "id": "base2-2",
+      "local_id": "71",
+      "name": "Electrode",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/2/high.webp",
+      "game_rarity": "rare",
+      "points": 763
+    },
+    {
+      "id": "base2-3",
+      "local_id": "72",
+      "name": "Flareon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/3/high.webp",
+      "game_rarity": "rare",
+      "points": 764
+    },
+    {
+      "id": "base2-4",
+      "local_id": "73",
+      "name": "Jolteon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/4/high.webp",
+      "game_rarity": "rare",
+      "points": 765
+    },
+    {
+      "id": "base2-5",
+      "local_id": "74",
+      "name": "Kangaskhan",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/5/high.webp",
+      "game_rarity": "rare",
+      "points": 766
+    },
+    {
+      "id": "base2-6",
+      "local_id": "75",
+      "name": "Mr. Mime",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/6/high.webp",
+      "game_rarity": "rare",
+      "points": 767
+    },
+    {
+      "id": "base2-7",
+      "local_id": "76",
+      "name": "Nidoqueen",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/7/high.webp",
+      "game_rarity": "rare",
+      "points": 768
+    },
+    {
+      "id": "base2-8",
+      "local_id": "77",
+      "name": "Pidgeot",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/8/high.webp",
+      "game_rarity": "rare",
+      "points": 769
+    },
+    {
+      "id": "base2-9",
+      "local_id": "78",
+      "name": "Pinsir",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/9/high.webp",
+      "game_rarity": "rare",
+      "points": 770
+    },
+    {
+      "id": "base2-10",
+      "local_id": "79",
+      "name": "Scyther",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/10/high.webp",
+      "game_rarity": "rare",
+      "points": 771
+    },
+    {
+      "id": "base2-11",
+      "local_id": "80",
+      "name": "Snorlax",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/11/high.webp",
+      "game_rarity": "rare",
+      "points": 772
+    },
+    {
+      "id": "base2-12",
+      "local_id": "81",
+      "name": "Vaporeon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/12/high.webp",
+      "game_rarity": "rare",
+      "points": 773
+    },
+    {
+      "id": "base2-13",
+      "local_id": "82",
+      "name": "Venomoth",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/13/high.webp",
+      "game_rarity": "rare",
+      "points": 774
+    },
+    {
+      "id": "base2-14",
+      "local_id": "83",
+      "name": "Victreebel",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/14/high.webp",
+      "game_rarity": "rare",
+      "points": 775
+    },
+    {
+      "id": "base2-15",
+      "local_id": "84",
+      "name": "Vileplume",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/15/high.webp",
+      "game_rarity": "rare",
+      "points": 776
+    },
+    {
+      "id": "base2-16",
+      "local_id": "85",
+      "name": "Wigglytuff",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/16/high.webp",
+      "game_rarity": "rare",
+      "points": 777
+    },
+    {
+      "id": "base2-17",
+      "local_id": "86",
+      "name": "Clefable",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/17/high.webp",
+      "game_rarity": "rare",
+      "points": 616
+    },
+    {
+      "id": "base2-18",
+      "local_id": "87",
+      "name": "Electrode",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/18/high.webp",
+      "game_rarity": "common",
+      "points": 330
+    },
+    {
+      "id": "base2-19",
+      "local_id": "88",
+      "name": "Flareon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/19/high.webp",
+      "game_rarity": "common",
+      "points": 331
+    },
+    {
+      "id": "base2-20",
+      "local_id": "89",
+      "name": "Jolteon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/20/high.webp",
+      "game_rarity": "common",
+      "points": 332
+    },
+    {
+      "id": "base2-21",
+      "local_id": "90",
+      "name": "Kangaskhan",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/21/high.webp",
+      "game_rarity": "common",
+      "points": 333
+    },
+    {
+      "id": "base2-22",
+      "local_id": "91",
+      "name": "Mr. Mime",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/22/high.webp",
+      "game_rarity": "common",
+      "points": 334
+    },
+    {
+      "id": "base2-23",
+      "local_id": "92",
+      "name": "Nidoqueen",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/23/high.webp",
+      "game_rarity": "common",
+      "points": 335
+    },
+    {
+      "id": "base2-24",
+      "local_id": "93",
+      "name": "Pidgeot",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/24/high.webp",
+      "game_rarity": "common",
+      "points": 336
+    },
+    {
+      "id": "base2-25",
+      "local_id": "94",
+      "name": "Pinsir",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/25/high.webp",
+      "game_rarity": "common",
+      "points": 337
+    },
+    {
+      "id": "base2-26",
+      "local_id": "95",
+      "name": "Scyther",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/26/high.webp",
+      "game_rarity": "common",
+      "points": 338
+    },
+    {
+      "id": "base2-27",
+      "local_id": "96",
+      "name": "Snorlax",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/27/high.webp",
+      "game_rarity": "common",
+      "points": 339
+    },
+    {
+      "id": "base2-28",
+      "local_id": "97",
+      "name": "Vaporeon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/28/high.webp",
+      "game_rarity": "common",
+      "points": 340
+    },
+    {
+      "id": "base2-29",
+      "local_id": "98",
+      "name": "Venomoth",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/29/high.webp",
+      "game_rarity": "common",
+      "points": 341
+    },
+    {
+      "id": "base2-30",
+      "local_id": "99",
+      "name": "Victreebel",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/30/high.webp",
+      "game_rarity": "common",
+      "points": 342
+    },
+    {
+      "id": "base2-31",
+      "local_id": "100",
+      "name": "Vileplume",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/31/high.webp",
+      "game_rarity": "common",
+      "points": 343
+    },
+    {
+      "id": "base2-32",
+      "local_id": "101",
+      "name": "Wigglytuff",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/32/high.webp",
+      "game_rarity": "common",
+      "points": 344
+    },
+    {
+      "id": "base2-33",
+      "local_id": "102",
+      "name": "Butterfree",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/33/high.webp",
+      "game_rarity": "common",
+      "points": 345
+    },
+    {
+      "id": "base2-34",
+      "local_id": "103",
+      "name": "Dodrio",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/34/high.webp",
+      "game_rarity": "common",
+      "points": 346
+    },
+    {
+      "id": "base2-35",
+      "local_id": "104",
+      "name": "Exeggutor",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/35/high.webp",
+      "game_rarity": "common",
+      "points": 347
+    },
+    {
+      "id": "base2-36",
+      "local_id": "105",
+      "name": "Fearow",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/36/high.webp",
+      "game_rarity": "common",
+      "points": 348
+    },
+    {
+      "id": "base2-37",
+      "local_id": "106",
+      "name": "Gloom",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/37/high.webp",
+      "game_rarity": "common",
+      "points": 349
+    },
+    {
+      "id": "base2-38",
+      "local_id": "107",
+      "name": "Lickitung",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/38/high.webp",
+      "game_rarity": "common",
+      "points": 350
+    },
+    {
+      "id": "base2-39",
+      "local_id": "108",
+      "name": "Marowak",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/39/high.webp",
+      "game_rarity": "common",
+      "points": 351
+    },
+    {
+      "id": "base2-40",
+      "local_id": "109",
+      "name": "Nidorina",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/40/high.webp",
+      "game_rarity": "common",
+      "points": 352
+    },
+    {
+      "id": "base2-41",
+      "local_id": "110",
+      "name": "Parasect",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/41/high.webp",
+      "game_rarity": "common",
+      "points": 353
+    },
+    {
+      "id": "base2-42",
+      "local_id": "111",
+      "name": "Persian",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/42/high.webp",
+      "game_rarity": "common",
+      "points": 354
+    },
+    {
+      "id": "base2-43",
+      "local_id": "112",
+      "name": "Primeape",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/43/high.webp",
+      "game_rarity": "common",
+      "points": 355
+    },
+    {
+      "id": "base2-44",
+      "local_id": "113",
+      "name": "Rapidash",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/44/high.webp",
+      "game_rarity": "common",
+      "points": 356
+    },
+    {
+      "id": "base2-45",
+      "local_id": "114",
+      "name": "Rhydon",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/45/high.webp",
+      "game_rarity": "common",
+      "points": 357
+    },
+    {
+      "id": "base2-46",
+      "local_id": "115",
+      "name": "Seaking",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/46/high.webp",
+      "game_rarity": "common",
+      "points": 358
+    },
+    {
+      "id": "base2-47",
+      "local_id": "116",
+      "name": "Tauros",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/47/high.webp",
+      "game_rarity": "common",
+      "points": 359
+    },
+    {
+      "id": "base2-48",
+      "local_id": "117",
+      "name": "Weepinbell",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/48/high.webp",
+      "game_rarity": "common",
+      "points": 107
+    },
+    {
+      "id": "base2-49",
+      "local_id": "118",
+      "name": "Bellsprout",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/49/high.webp",
+      "game_rarity": "common",
+      "points": 108
+    },
+    {
+      "id": "base2-50",
+      "local_id": "119",
+      "name": "Cubone",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/50/high.webp",
+      "game_rarity": "common",
+      "points": 109
+    },
+    {
+      "id": "base2-51",
+      "local_id": "120",
+      "name": "Eevee",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/51/high.webp",
+      "game_rarity": "common",
+      "points": 110
+    },
+    {
+      "id": "base2-52",
+      "local_id": "121",
+      "name": "Exeggcute",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/52/high.webp",
+      "game_rarity": "common",
+      "points": 111
+    },
+    {
+      "id": "base2-53",
+      "local_id": "122",
+      "name": "Goldeen",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/53/high.webp",
+      "game_rarity": "common",
+      "points": 112
+    },
+    {
+      "id": "base2-54",
+      "local_id": "123",
+      "name": "Jigglypuff",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/54/high.webp",
+      "game_rarity": "common",
+      "points": 113
+    },
+    {
+      "id": "base2-55",
+      "local_id": "124",
+      "name": "Mankey",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/55/high.webp",
+      "game_rarity": "common",
+      "points": 114
+    },
+    {
+      "id": "base2-56",
+      "local_id": "125",
+      "name": "Meowth",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/56/high.webp",
+      "game_rarity": "common",
+      "points": 115
+    },
+    {
+      "id": "base2-57",
+      "local_id": "126",
+      "name": "Nidoran♀",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/57/high.webp",
+      "game_rarity": "common",
+      "points": 116
+    },
+    {
+      "id": "base2-58",
+      "local_id": "127",
+      "name": "Oddish",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/58/high.webp",
+      "game_rarity": "common",
+      "points": 117
+    },
+    {
+      "id": "base2-59",
+      "local_id": "128",
+      "name": "Paras",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/59/high.webp",
+      "game_rarity": "common",
+      "points": 118
+    },
+    {
+      "id": "base2-60",
+      "local_id": "129",
+      "name": "Pikachu",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/60/high.webp",
+      "game_rarity": "common",
+      "points": 119
+    },
+    {
+      "id": "base2-61",
+      "local_id": "130",
+      "name": "Rhyhorn",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/61/high.webp",
+      "game_rarity": "common",
+      "points": 120
+    },
+    {
+      "id": "base2-62",
+      "local_id": "131",
+      "name": "Spearow",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/62/high.webp",
+      "game_rarity": "common",
+      "points": 121
+    },
+    {
+      "id": "base2-63",
+      "local_id": "132",
+      "name": "Venonat",
+      "image_url": "https://assets.tcgdex.net/en/base/base2/63/high.webp",
+      "game_rarity": "common",
+      "points": 122
+    },
+    {
+      "id": "base3-1",
+      "local_id": "133",
+      "name": "Aerodactyl",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/1/high.webp",
+      "game_rarity": "rare",
+      "points": 778
+    },
+    {
+      "id": "base3-2",
+      "local_id": "134",
+      "name": "Articuno",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/2/high.webp",
+      "game_rarity": "legendary",
+      "points": 954
+    },
+    {
+      "id": "base3-3",
+      "local_id": "135",
+      "name": "Ditto",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/3/high.webp",
+      "game_rarity": "rare",
+      "points": 779
+    },
+    {
+      "id": "base3-4",
+      "local_id": "136",
+      "name": "Dragonite",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/4/high.webp",
+      "game_rarity": "rare",
+      "points": 780
+    },
+    {
+      "id": "base3-5",
+      "local_id": "137",
+      "name": "Gengar",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/5/high.webp",
+      "game_rarity": "rare",
+      "points": 781
+    },
+    {
+      "id": "base3-6",
+      "local_id": "138",
+      "name": "Haunter",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/6/high.webp",
+      "game_rarity": "rare",
+      "points": 782
+    },
+    {
+      "id": "base3-7",
+      "local_id": "139",
+      "name": "Hitmonlee",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/7/high.webp",
+      "game_rarity": "rare",
+      "points": 783
+    },
+    {
+      "id": "base3-8",
+      "local_id": "140",
+      "name": "Hypno",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/8/high.webp",
+      "game_rarity": "rare",
+      "points": 784
+    },
+    {
+      "id": "base3-9",
+      "local_id": "141",
+      "name": "Kabutops",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/9/high.webp",
+      "game_rarity": "rare",
+      "points": 785
+    },
+    {
+      "id": "base3-10",
+      "local_id": "142",
+      "name": "Lapras",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/10/high.webp",
+      "game_rarity": "rare",
+      "points": 786
+    },
+    {
+      "id": "base3-11",
+      "local_id": "143",
+      "name": "Magneton",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/11/high.webp",
+      "game_rarity": "rare",
+      "points": 787
+    },
+    {
+      "id": "base3-12",
+      "local_id": "144",
+      "name": "Moltres",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/12/high.webp",
+      "game_rarity": "legendary",
+      "points": 955
+    },
+    {
+      "id": "base3-13",
+      "local_id": "145",
+      "name": "Muk",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/13/high.webp",
+      "game_rarity": "rare",
+      "points": 788
+    },
+    {
+      "id": "base3-14",
+      "local_id": "146",
+      "name": "Raichu",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/14/high.webp",
+      "game_rarity": "rare",
+      "points": 789
+    },
+    {
+      "id": "base3-15",
+      "local_id": "147",
+      "name": "Zapdos",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/15/high.webp",
+      "game_rarity": "legendary",
+      "points": 956
+    },
+    {
+      "id": "base3-16",
+      "local_id": "148",
+      "name": "Aerodactyl",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/16/high.webp",
+      "game_rarity": "common",
+      "points": 360
+    },
+    {
+      "id": "base3-17",
+      "local_id": "149",
+      "name": "Articuno",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/17/high.webp",
+      "game_rarity": "common",
+      "points": 361
+    },
+    {
+      "id": "base3-18",
+      "local_id": "150",
+      "name": "Ditto",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/18/high.webp",
+      "game_rarity": "common",
+      "points": 362
+    },
+    {
+      "id": "base3-19",
+      "local_id": "151",
+      "name": "Dragonite",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/19/high.webp",
+      "game_rarity": "common",
+      "points": 363
+    },
+    {
+      "id": "base3-20",
+      "local_id": "152",
+      "name": "Gengar",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/20/high.webp",
+      "game_rarity": "common",
+      "points": 364
+    },
+    {
+      "id": "base3-21",
+      "local_id": "153",
+      "name": "Haunter",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/21/high.webp",
+      "game_rarity": "common",
+      "points": 365
+    },
+    {
+      "id": "base3-22",
+      "local_id": "154",
+      "name": "Hitmonlee",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/22/high.webp",
+      "game_rarity": "common",
+      "points": 366
+    },
+    {
+      "id": "base3-23",
+      "local_id": "155",
+      "name": "Hypno",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/23/high.webp",
+      "game_rarity": "common",
+      "points": 367
+    },
+    {
+      "id": "base3-24",
+      "local_id": "156",
+      "name": "Kabutops",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/24/high.webp",
+      "game_rarity": "common",
+      "points": 368
+    },
+    {
+      "id": "base3-25",
+      "local_id": "157",
+      "name": "Lapras",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/25/high.webp",
+      "game_rarity": "common",
+      "points": 369
+    },
+    {
+      "id": "base3-26",
+      "local_id": "158",
+      "name": "Magneton",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/26/high.webp",
+      "game_rarity": "common",
+      "points": 370
+    },
+    {
+      "id": "base3-27",
+      "local_id": "159",
+      "name": "Moltres",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/27/high.webp",
+      "game_rarity": "common",
+      "points": 371
+    },
+    {
+      "id": "base3-28",
+      "local_id": "160",
+      "name": "Muk",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/28/high.webp",
+      "game_rarity": "common",
+      "points": 372
+    },
+    {
+      "id": "base3-29",
+      "local_id": "161",
+      "name": "Raichu",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/29/high.webp",
+      "game_rarity": "common",
+      "points": 373
+    },
+    {
+      "id": "base3-30",
+      "local_id": "162",
+      "name": "Zapdos",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/30/high.webp",
+      "game_rarity": "common",
+      "points": 374
+    },
+    {
+      "id": "base3-31",
+      "local_id": "163",
+      "name": "Arbok",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/31/high.webp",
+      "game_rarity": "common",
+      "points": 375
+    },
+    {
+      "id": "base3-32",
+      "local_id": "164",
+      "name": "Cloyster",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/32/high.webp",
+      "game_rarity": "common",
+      "points": 376
+    },
+    {
+      "id": "base3-33",
+      "local_id": "165",
+      "name": "Gastly",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/33/high.webp",
+      "game_rarity": "common",
+      "points": 377
+    },
+    {
+      "id": "base3-34",
+      "local_id": "166",
+      "name": "Golbat",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/34/high.webp",
+      "game_rarity": "common",
+      "points": 378
+    },
+    {
+      "id": "base3-35",
+      "local_id": "167",
+      "name": "Golduck",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/35/high.webp",
+      "game_rarity": "common",
+      "points": 379
+    },
+    {
+      "id": "base3-36",
+      "local_id": "168",
+      "name": "Golem",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/36/high.webp",
+      "game_rarity": "common",
+      "points": 380
+    },
+    {
+      "id": "base3-37",
+      "local_id": "169",
+      "name": "Graveler",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/37/high.webp",
+      "game_rarity": "common",
+      "points": 381
+    },
+    {
+      "id": "base3-38",
+      "local_id": "170",
+      "name": "Kingler",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/38/high.webp",
+      "game_rarity": "common",
+      "points": 382
+    },
+    {
+      "id": "base3-39",
+      "local_id": "171",
+      "name": "Magmar",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/39/high.webp",
+      "game_rarity": "common",
+      "points": 383
+    },
+    {
+      "id": "base3-40",
+      "local_id": "172",
+      "name": "Omastar",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/40/high.webp",
+      "game_rarity": "common",
+      "points": 384
+    },
+    {
+      "id": "base3-41",
+      "local_id": "173",
+      "name": "Sandslash",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/41/high.webp",
+      "game_rarity": "common",
+      "points": 385
+    },
+    {
+      "id": "base3-42",
+      "local_id": "174",
+      "name": "Seadra",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/42/high.webp",
+      "game_rarity": "common",
+      "points": 386
+    },
+    {
+      "id": "base3-43",
+      "local_id": "175",
+      "name": "Slowbro",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/43/high.webp",
+      "game_rarity": "common",
+      "points": 387
+    },
+    {
+      "id": "base3-44",
+      "local_id": "176",
+      "name": "Tentacruel",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/44/high.webp",
+      "game_rarity": "common",
+      "points": 388
+    },
+    {
+      "id": "base3-45",
+      "local_id": "177",
+      "name": "Weezing",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/45/high.webp",
+      "game_rarity": "common",
+      "points": 389
+    },
+    {
+      "id": "base3-46",
+      "local_id": "178",
+      "name": "Ekans",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/46/high.webp",
+      "game_rarity": "common",
+      "points": 123
+    },
+    {
+      "id": "base3-47",
+      "local_id": "179",
+      "name": "Geodude",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/47/high.webp",
+      "game_rarity": "common",
+      "points": 124
+    },
+    {
+      "id": "base3-48",
+      "local_id": "180",
+      "name": "Grimer",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/48/high.webp",
+      "game_rarity": "common",
+      "points": 125
+    },
+    {
+      "id": "base3-49",
+      "local_id": "181",
+      "name": "Horsea",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/49/high.webp",
+      "game_rarity": "common",
+      "points": 126
+    },
+    {
+      "id": "base3-50",
+      "local_id": "182",
+      "name": "Kabuto",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/50/high.webp",
+      "game_rarity": "common",
+      "points": 127
+    },
+    {
+      "id": "base3-51",
+      "local_id": "183",
+      "name": "Krabby",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/51/high.webp",
+      "game_rarity": "common",
+      "points": 128
+    },
+    {
+      "id": "base3-52",
+      "local_id": "184",
+      "name": "Omanyte",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/52/high.webp",
+      "game_rarity": "common",
+      "points": 129
+    },
+    {
+      "id": "base3-53",
+      "local_id": "185",
+      "name": "Psyduck",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/53/high.webp",
+      "game_rarity": "common",
+      "points": 130
+    },
+    {
+      "id": "base3-54",
+      "local_id": "186",
+      "name": "Shellder",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/54/high.webp",
+      "game_rarity": "common",
+      "points": 131
+    },
+    {
+      "id": "base3-55",
+      "local_id": "187",
+      "name": "Slowpoke",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/55/high.webp",
+      "game_rarity": "common",
+      "points": 132
+    },
+    {
+      "id": "base3-56",
+      "local_id": "188",
+      "name": "Tentacool",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/56/high.webp",
+      "game_rarity": "common",
+      "points": 133
+    },
+    {
+      "id": "base3-57",
+      "local_id": "189",
+      "name": "Zubat",
+      "image_url": "https://assets.tcgdex.net/en/base/base3/57/high.webp",
+      "game_rarity": "common",
+      "points": 134
+    }
+  ]
+}
