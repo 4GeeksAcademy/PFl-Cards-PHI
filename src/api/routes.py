@@ -183,12 +183,12 @@ def add_to_collection(user_id: int, card_ids: list[str]) -> None:
 @api.route('/buy', methods=['POST'])
 @jwt_required()
 def buy_packs():
-    """
-    Body JSON requerido:
-      { "quantity": 1 }   # o 5, o 10
+    
+    # Body JSON requerido:
+    #   { "quantity": 1 }   # o 5, o 10
 
-    Devuelve sobres disponibles tras la compra.
-    """
+    # Devuelve sobres disponibles tras la compra.
+    
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -217,10 +217,9 @@ def buy_packs():
 @api.route('/packs', methods=['GET'])
 @jwt_required()
 def get_packs():
-    """
-    Sin body.
-    Devuelve: {"packs_available": <int>}
-    """
+    # Sin body.
+    # Devuelve: {"packs_available": <int>}
+    
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
