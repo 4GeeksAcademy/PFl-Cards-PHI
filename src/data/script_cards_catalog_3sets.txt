@@ -1,0 +1,32 @@
+1. Asegúrate de tener el archivo en:
+src/data/cards_catalog_3sets.json
+
+
+2. Abre el shell de Flask:
+pipenv run flask shell
+
+
+3. Pega este bloque (tal cual). Inserta todo de una vez:
+
+from src.api.models import db, Card
+import json, pathlib
+
+# 1) Cargar JSON
+p = pathlib.Path("src/data/cards_catalog_3sets.json")
+data = json.loads(p.read_text(encoding="utf-8"))["cards"]
+
+# (Opcional en desarrollo) Vaciar la tabla antes de cargar:
+# db.session.execute(db.delete(Card))
+
+# 2) Insertar en bloque (rápido; las claves del JSON ya coinciden con tu modelo)
+db.session.bulk_insert_mappings(Card, data)
+db.session.commit()
+
+print(f"✅ Insertadas {len(data)} cartas")
+
+
+Nota⚠️: Si tu tabla Card ya tiene datos y tienes restricciones UNIQUE (por ejemplo local_id), te puede dar error al “mezclarlos”. En ese caso:
+
+O vacías la tabla antes (descomenta la línea db.session.execute(db.delete(Card))).
+
+O usa la versión “actualiza si existe / inserta si no existe” (te dejo abajo una variante compacta).
