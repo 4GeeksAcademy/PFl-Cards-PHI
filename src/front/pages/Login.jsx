@@ -3,11 +3,35 @@ import React, { useState } from "react";
 const Login = () => {
     const [usuario, setUsuario] = useState("");
     const [contraseña, setContraseña] = useState("");
+    const [mensaje, setMensaje] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Usuario:", usuario);
-        console.log("Contraseña:", contraseña);
+
+        try {
+            const response = await fetch("http://localhost:5000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: usuario,
+                    password: contraseña
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMensaje("Inicio de sesión exitoso.");
+                // Aquí puedes guardar el token si tu API lo devuelve
+                // localStorage.setItem("token", data.access_token);
+            } else {
+                setMensaje(data.msg || "Error al iniciar sesión.");
+            }
+        } catch (error) {
+            setMensaje("No se pudo conectar con el servidor.");
+        }
     };
 
     return (
@@ -26,6 +50,11 @@ const Login = () => {
                     </div>
                     <button type="submit" className="btn btn-primary w-100">Ingresar</button>
                 </form>
+                {mensaje && (
+                    <div className="alert alert-info mt-3" role="alert">
+                        {mensaje}
+                    </div>
+                )}
             </div>
           </div>
         </div>
