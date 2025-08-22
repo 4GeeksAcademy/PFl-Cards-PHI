@@ -1,37 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
     const [usuario, setUsuario] = useState("");
     const [contraseña, setContraseña] = useState("");
-    const [mensaje, setMensaje] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await fetch("http://localhost:5000/api/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: usuario,
-                    password: contraseña
-                })
-            });
+        // Obtener usuarios guardados
+        const usuariosGuardados = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-            const data = await response.json();
+        // Verificar si el usuario y contraseña coinciden
+        const usuarioValido = usuariosGuardados.find(
+            (u) => u.usuario === usuario && u.contraseña === contraseña
+        );
 
-            if (response.ok) {
-                setMensaje("Inicio de sesión exitoso.");
-                // Aquí puedes guardar el token si tu API lo devuelve
-                // localStorage.setItem("token", data.access_token);
-            } else {
-                setMensaje(data.msg || "Error al iniciar sesión.");
-            }
-        } catch (error) {
-            setMensaje("No se pudo conectar con el servidor.");
+        if (!usuarioValido) {
+            setError("Usuario o contraseña incorrectos.");
+            return;
         }
+
+        // Autenticar y redirigir
+        login();
+        navigate("/");
     };
 
     return (
@@ -48,6 +44,7 @@ const Login = () => {
                         <label htmlFor="contraseña" className="form-label">Contraseña</label>
                         <input type="password" className="form-control" id="contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} required/>
                     </div>
+                    {error && <div className="alert alert-danger">{error}</div>}
                     <button type="submit" className="btn btn-primary w-100">Ingresar</button>
                 </form>
                 {mensaje && (

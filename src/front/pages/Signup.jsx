@@ -1,38 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
     const [usuario, setUsuario] = useState("");
     const [correo, setCorreo] = useState("");
     const [contraseña, setContraseña] = useState("");
+    const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [mensaje, setMensaje] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await fetch("http://localhost:5000/api/signup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: correo,
-                    password: contraseña,
-                    username: usuario
-                })
-            });
+        // Obtener usuarios guardados
+        const usuariosGuardados = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-            const data = await response.json();
+        // Verificar si el usuario o correo ya existen
+        const existe = usuariosGuardados.some(
+            (u) => u.usuario === usuario || u.correo === correo
+        );
 
-            if (response.ok) {
-                setMensaje("Usuario creado exitosamente.");
-                setUsuario("");
-                setCorreo("");
-                setContraseña("");
-            } else {
-                setMensaje(data.msg || "Error al crear usuario.");
-            }
-        } catch (error) {
-            setMensaje("Error de conexión con el servidor.");
+        if (existe) {
+            setError("El usuario o correo ya existen.");
+            return;
         }
+
+        // Guardar nuevo usuario
+        const nuevoUsuario = { usuario, correo, contraseña };
+        localStorage.setItem(
+            "usuarios",
+            JSON.stringify([...usuariosGuardados, nuevoUsuario])
+        );
+
+        // Limpiar error y autenticar
+        setError("");
+        login();
+        navigate("/");
     };
 
     return (
@@ -53,6 +58,7 @@ const Signup = () => {
                             <label htmlFor="contraseña" className="form-label">Contraseña</label>
                             <input type="password" className="form-control" id="contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} required />
                         </div>
+                        {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="btn btn-primary w-100">Registrarse</button>
                     </form>
                     {mensaje && (

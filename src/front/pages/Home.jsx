@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from "react"const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/hello`)//(backendUrl + "/api/hello")
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
@@ -12,7 +12,7 @@ export const Home = () => {
 
 			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
 
-			const response = await fetch(backendUrl + "/api/hello")
+			const response = await fetch(`${backendUrl}/hello`)
 			const data = await response.json()
 
 			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
