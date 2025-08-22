@@ -47,11 +47,6 @@ const Login = () => {
                     {error && <div className="alert alert-danger">{error}</div>}
                     <button type="submit" className="btn btn-primary w-100">Ingresar</button>
                 </form>
-                {mensaje && (
-                    <div className="alert alert-info mt-3" role="alert">
-                        {mensaje}
-                    </div>
-                )}
             </div>
           </div>
         </div>
