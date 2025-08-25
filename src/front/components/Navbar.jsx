@@ -55,7 +55,7 @@ export default function Navbar() {
                 <li>
                   <Link className="dropdown-item" to="/PackOpen">My Packs</Link>
                 </li>
-                  <Link className="dropdown-item" to="/Collection">Collection and Deck</Link>
+                  <Link className="dropdown-item" to="/CollectionDeck">Collection and Deck</Link>
                 </li>
                 <div className="bg-danger-subtle p-2">
                   <li>
