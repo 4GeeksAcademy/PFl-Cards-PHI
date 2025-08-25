@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
+    const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -16,21 +17,16 @@ const Login = () => {
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
+                body: JSON.stringify({ email, password })
             });
-           
-            
+
             if (!resp.ok) {
                 throw new Error("Login error");
             }
 
             const data = await resp.json();
-            localStorage.setItem("token", data.token); // store token in browser
-             console.log(data);
-            navigate("/"); // redirect to home or desired route
+            login(data.token); // 🔑 usar el contexto en lugar de setItem directo
+            navigate("/");     // redirigir al home
         } catch (err) {
             console.error(err);
             setError("Incorrect email or password");

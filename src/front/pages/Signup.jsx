@@ -80,11 +80,7 @@ const Signup = () => {
                         {error && <p className="text-danger">{error}</p>}
                         <button type="submit" className="btn btn-primary w-100">Sign Up</button>
                     </form>
-                    {mensaje && (
-                        <div className="alert alert-info mt-3" role="alert">
-                            {mensaje}
-                        </div>
-                    )}
+                    
                 </div>
             </div>
         </div>
