@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function PackCard({ title, description, buttonText }) {
+export default function PackCard({ title, description, buttonText, onComprar }) {
   return (
     <div className="card text-center shadow-sm" style={{ width: "18rem" }}>
       <div className="card-body">
@@ -9,11 +9,9 @@ export default function PackCard({ title, description, buttonText }) {
           className="bg-secondary mb-3"
           style={{ width: "100%", height: "150px" }}
         ></div> */}
-
         <h5 className="card-title">{title}</h5>
         <p className="card-text">{description}</p>
-
-        <button className="btn btn-primary">{buttonText}</button>
+        <button className="btn btn-primary" onClick={onComprar}>{buttonText}</button>
       </div>
     </div>
   );
