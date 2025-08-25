@@ -25,7 +25,8 @@ const Login = () => {
             }
 
             const data = await resp.json();
-            login(data.token); // 🔑 usar el contexto en lugar de setItem directo
+            console.log("Login response:", data);
+            login(data.access_token); //  usar el contexto 
             navigate("/");     // redirigir al home
         } catch (err) {
             console.error(err);

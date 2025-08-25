@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Signup = () => {
+    const { login } = useContext(AuthContext);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -29,9 +30,10 @@ const Signup = () => {
             }
 
             const data = await resp.json();
-            localStorage.setItem("token", data.token); // store token if backend returns it
-
-            navigate("/"); // redirect to home or /login as preferred
+            console.log("Signup response:", data); // store token if backend returns it
+            console.log("Access token recibido:", data.access_token);
+            login(data.access_token);
+            navigate("/login"); 
         } catch (err) {
             console.error(err);
             setError("Unable to create account, please try again");
