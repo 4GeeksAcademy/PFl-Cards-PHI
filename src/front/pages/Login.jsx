@@ -3,52 +3,73 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-    const [usuario, setUsuario] = useState("");
-    const [contraseña, setContraseña] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
 
-        // Obtener usuarios guardados
-        const usuariosGuardados = JSON.parse(localStorage.getItem("usuarios")) || [];
+        try {
+            const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+           
+            
+            if (!resp.ok) {
+                throw new Error("Login error");
+            }
 
-        // Verificar si el usuario y contraseña coinciden
-        const usuarioValido = usuariosGuardados.find(
-            (u) => u.usuario === usuario && u.contraseña === contraseña
-        );
-
-        if (!usuarioValido) {
-            setError("Usuario o contraseña incorrectos.");
-            return;
+            const data = await resp.json();
+            localStorage.setItem("token", data.token); // store token in browser
+             console.log(data);
+            navigate("/"); // redirect to home or desired route
+        } catch (err) {
+            console.error(err);
+            setError("Incorrect email or password");
         }
-
-        // Autenticar y redirigir
-        login();
-        navigate("/");
     };
 
     return (
         <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-4">
-                <h2 className="text-center mb-4">Iniciar Sesión</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="usuario" className="form-label">Usuario</label>
-                        <input type="text" className="form-control" id="usuario" value={usuario} onChange={(e) => setUsuario(e.target.value)} required/>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="contraseña" className="form-label">Contraseña</label>
-                        <input type="password" className="form-control" id="contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} required/>
-                    </div>
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    <button type="submit" className="btn btn-primary w-100">Ingresar</button>
-                </form>
+            <div className="row justify-content-center">
+                <div className="col-md-4">
+                    <h2 className="text-center mb-4">Login</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {error && <p className="text-danger">{error}</p>}
+                        <button type="submit" className="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
             </div>
-          </div>
         </div>
     );
 };
