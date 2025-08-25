@@ -45,19 +45,19 @@ export default function Navbar() {
           ) : (
             <div className="dropdown me-2">
               <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                Mi Perfil
+                My Profile
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <Link className="dropdown-item" to="/mis-cartas">Perfil</Link>
+                  <Link className="dropdown-item" to="/Profile">Profile</Link>
                 </li>
                 <li>
                 <li>
-                  <Link className="dropdown-item" to="/mis-sobres">Mis Sobres</Link>
+                  <Link className="dropdown-item" to="/PackOpen">My Packs</Link>
                 </li>
-                  <Link className="dropdown-item" to="/mis-cartas">Coleccion y Mazo</Link>
+                  <Link className="dropdown-item" to="/Collection">Collection and Deck</Link>
                 </li>
-                <div style={{ backgroundColor: "#f8d7da", padding: "8px" }}>
+                <div className="bg-danger-subtle p-2">
                   <li>
                     <button className="dropdown-item text-danger" onClick={handleLogout}>Log out</button>
                   </li>

@@ -9,8 +9,9 @@ const Signup = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const [mensaje, setMensaje] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Obtener usuarios guardados
@@ -60,6 +61,11 @@ const Signup = () => {
                         {error && <div className="alert alert-danger">{error}</div>}
                         <button type="submit" className="btn btn-primary w-100">Registrarse</button>
                     </form>
+                    {mensaje && (
+                        <div className="alert alert-info mt-3" role="alert">
+                            {mensaje}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

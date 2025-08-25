@@ -9,7 +9,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Obtener usuarios guardados
