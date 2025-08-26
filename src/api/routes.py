@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Card, UserCard, PackPurchase, PackOpen
+from api.models import db, User, Card, UserCard, PackPurchase, PackOpen, Deck, DeckCard
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -277,6 +277,48 @@ def open_pack():
     except Exception as e:
         db.session.rollback()
         return jsonify({"msg": "Error opening the pack", "details": str(e)}), 500
+
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Endpoints de la API relativos al MAZO (Deck) y la COLECCIÓN (UserCard)
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# GET /collection -> listar la colección del usuario
+@api.route('/collection', methods=['GET'])
+@jwt_required()
+def get_collection():
+    
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    try:
+        # Se devuelve la colección del usuario (autenticado) uniendo con join UserCard y Card, de este modo el frontend recibe toda la info relevante para mostrar en la lista de cartas
+        rows = (
+            UserCard.query
+            .filter_by(user_id=user_id)
+            .join(Card, UserCard.card_id == Card.id)
+            .all()
+        )
+
+        items = []
+        for uc in rows:
+            c = uc.card
+            items.append({
+                "card_id": c.id,
+                "name": c.name,
+                "image_url": c.image_url,
+                "game_rarity": c.game_rarity,
+                "points": c.points,
+                "quantity": uc.quantity
+            })
+
+        return jsonify({"User collection": items}), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Error fetching collection", "details": str(e)}), 500
+
+
 
 
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------

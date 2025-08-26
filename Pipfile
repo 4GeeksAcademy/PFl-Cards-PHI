@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 flask = "*"
-flask-sqlalchemy = "*"
 flask-swagger = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
@@ -21,6 +20,7 @@ wtforms = "==3.1.2"
 sqlalchemy = "*"
 colorama = "*"
 flask-migrate = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.13"
