@@ -33,7 +33,7 @@ const Signup = () => {
             console.log("Signup response:", data); // store token if backend returns it
             console.log("Access token recibido:", data.access_token);
             login(data.access_token);
-            navigate("/login"); 
+            navigate("/"); 
         } catch (err) {
             console.error(err);
             setError("Unable to create account, please try again");
