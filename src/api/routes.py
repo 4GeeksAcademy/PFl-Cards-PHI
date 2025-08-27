@@ -32,7 +32,7 @@ def signup():
         data = request.get_json()
 
         email = data.get('email')
-        password = data.get('password')
+        password = str(data.get('password'))
         username = data.get('username')
 
         if not email or not password:
@@ -50,7 +50,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        access_token = create_access_token(identity=new_user.id)
+        access_token = create_access_token(identity=str(new_user.id))
         return jsonify({
         "access_token": access_token,
         "user": {
