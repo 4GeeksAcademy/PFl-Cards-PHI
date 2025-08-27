@@ -1,129 +1,144 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import Opening from "../components/Opening";
+
+const packImg = "https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png";
 
 const PackOpen = () => {
-    const [showCards, setShowCards] = useState([]);
-    const [packs, setPacks] = useState(parseInt(localStorage.getItem("packsBuy") || "0", 10));
-    const [loading, setLoading] = useState(false);
+    const [totalPacks, setTotalPacks] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const buttonsRef = useRef(null);
+    const [imgWidth, setImgWidth] = useState(220);
+    const [cardsToShow, setCardsToShow] = useState([]);
+    const [showOpening, setShowOpening] = useState(false);
 
-    const fetchRandomCards = async (n) => {
-        setLoading(true);
+    useLayoutEffect(() => {
+        if (buttonsRef.current) {
+            setImgWidth(buttonsRef.current.offsetWidth);
+        }
+    }, [buttonsRef.current]);
+
+    // Fetch available packs on load
+    useEffect(() => {
+        const accessToken = localStorage.getItem("accessToken");
+        const fetchTotalPacks = async () => {
+            try {
+                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                    },
+                });
+                if (!resp.ok) throw new Error("Error fetching total packs");
+                const data = await resp.json();
+                setTotalPacks(data.packs_available);
+            } catch (err) {
+                setTotalPacks(0);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTotalPacks();
+    }, []);
+
+    // Open packs and show cards
+    const handleOpenPack = async (quantity) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (totalPacks < quantity) {
+            alert("You don't have enough packs!");
+            return;
+        }
+        let resp, data;
         try {
-            const backendUrl = import.meta.env.VITE_BACKEND_URL;
-            const response = await fetch(`${backendUrl}/api/cards/random?n=${n}`);
-            const data = await response.json();
-            setShowCards(data.cards); // data.cards debe ser un array de objetos { image, name, ... }
-        } catch (error) {
-            setShowCards([]);
-        }
-        setLoading(false);
-    };
-
-    const handleOpenOne = async () => {
-        if (packs >= 1) {
-            localStorage.setItem("packsBuy", packs - 1);
-            setPacks(packs - 1);
-            await fetchRandomCards(5);
-        }
-    };
-
-    const handleOpenFive = async () => {
-        if (packs >= 5) {
-            localStorage.setItem("packsBuy", packs - 5);
-            setPacks(packs - 5);
-            await fetchRandomCards(25);
-        }
-    };
-
-    const handleOpenTen = async () => {
-        if (packs >= 10) {
-            localStorage.setItem("packsBuy", packs - 10);
-            setPacks(packs - 10);
-            await fetchRandomCards(50);
+            if (quantity === 1) {
+                resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                data = await resp.json();
+                if (!resp.ok) throw new Error(data.msg || "Error opening the pack");
+                setCardsToShow([data.cards]);
+                setTotalPacks(data.packs_remaining);
+            } else {
+                resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-packs`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ quantity })
+                });
+                data = await resp.json();
+                if (!resp.ok) throw new Error(data.msg || "Error opening the packs");
+                setCardsToShow(data.cards);
+                setTotalPacks(data.packs_remaining);
+            }
+            setShowOpening(true);
+        } catch (err) {
+            alert(err.message);
         }
     };
 
-    function renderCardBlocks(cards) {
-        const blocks = [];
-        for (let i = 0; i < cards.length; i += 5) {
-            blocks.push(cards.slice(i, i + 5));
-        }
-        return blocks.map((block, blockIdx) => (
-            <div key={blockIdx} className="mb-4">
-                <div className="d-flex justify-content-center mb-2">
-                    {block.slice(0, 2).map((card, idx) => (
-                        <img
-                            key={idx}
-                            src={card.image}
-                            alt={card.name || `Card ${blockIdx * 5 + idx + 1}`}
-                            style={{ width: "100px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.15)", margin: "0 8px" }}
-                        />
-                    ))}
-                </div>
-                <div className="d-flex justify-content-center">
-                    {block.slice(2, 5).map((card, idx) => (
-                        <img
-                            key={idx}
-                            src={card.image}
-                            alt={card.name || `Card ${blockIdx * 5 + idx + 3}`}
-                            style={{ width: "100px", borderRadius: "8px", boxShadow: "0 2px 8px rgba(0,0,0,0.15)", margin: "0 8px" }}
-                        />
-                    ))}
-                </div>
-            </div>
-        ));
-    }
+    const handleCloseOpening = () => {
+        setShowOpening(false);
+        setCardsToShow([]);
+    };
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-start" style={{ minHeight: "60vh", marginTop: "1.5rem" }}>
-            <p style={{ fontSize: "1.3rem", textAlign: "center", marginTop: "0" }}>
-                You have{" "}
-                <span
-                    style={{
-                        backgroundColor: "#b9fbc0",
-                        borderRadius: "12px",
-                        padding: "0.3em 0.8em",
-                        fontWeight: "bold",
-                        color: "#155724",
-                        fontSize: "1.3rem"
-                    }}
-                >
-                    {packs}
-                </span>{" "}
-                packs to open.
-            </p>
-            <img
-                src="https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png"
-                alt="Pack"
-                style={{ width: "180px", margin: "1.5rem 0" }}
-            />
-            <div className="d-flex gap-3 mb-4">
-                <button
-                    className="btn btn-success"
-                    onClick={handleOpenOne}
-                    disabled={packs < 1 || loading}
-                >
-                    Open 1 pack
-                </button>
-                <button
-                    className="btn btn-success"
-                    onClick={handleOpenFive}
-                    disabled={packs < 5 || loading}
-                >
-                    Open 5 packs
-                </button>
-                <button
-                    className="btn btn-success"
-                    onClick={handleOpenTen}
-                    disabled={packs < 10 || loading}
-                >
-                    Open 10 packs
-                </button>
+        <div className="container">
+            {/* Packs info at the top */}
+            <div style={{ marginTop: "2rem", marginBottom: "2rem", textAlign: "center" }}>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <span style={{ fontSize: "1.5rem" }}>
+                        You have{" "}
+                        <span
+                            style={{
+                                background: "#b2f7c1",
+                                color: "#155724",
+                                borderRadius: "50%",
+                                padding: "0.2em 0.6em",
+                                fontWeight: "bold",
+                                fontSize: "1.2rem",
+                                display: "inline-block",
+                                minWidth: "1.5em"
+                            }}
+                        >
+                            {totalPacks}
+                        </span>{" "}
+                        pack{totalPacks === 1 ? "" : "s"} available.
+                    </span>
+                )}
             </div>
-            {loading && <p>Loading cards...</p>}
-            {showCards.length > 0 && (
-                <div>
-                    {renderCardBlocks(showCards)}
+            {/* Pack image and buttons closer to the top */}
+            <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem" }}>
+                <img
+                    src={packImg}
+                    alt="Pack"
+                    style={{
+                        width: imgWidth,
+                        height: "400px",
+                        objectFit: "contain",
+                        marginBottom: "1.5rem",
+                        transition: "width 0.2s"
+                    }}
+                />
+                <div className="d-flex justify-content-center gap-3" ref={buttonsRef}>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(1)}>
+                        Open 1
+                    </button>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(5)}>
+                        Open 5
+                    </button>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(10)}>
+                        Open 10
+                    </button>
                 </div>
+            </div>
+            {showOpening && (
+                <Opening packs={cardsToShow} onClose={handleCloseOpening} />
             )}
         </div>
     );

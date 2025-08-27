@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Card, UserCard, PackPurchase, PackOpen
+from api.models import db, User, Card, UserCard, PackPurchase, PackOpen, Deck, DeckCard
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -52,11 +52,11 @@ def signup():
 
         access_token = create_access_token(identity=new_user.id)
         return jsonify({
-        "access_token": access_token,
-        "user": {
-            "id": new_user.id,
-            "username": new_user.username,
-            "email": new_user.email
+            "access_token": access_token,
+            "user": {
+                "id": new_user.id,
+                "username": new_user.username,
+                "email": new_user.email
             }
         }), 201
 
@@ -94,12 +94,14 @@ def login():
 PACK_SIZE = 5  # cantidad de cartas por sobre
 P_COMMON = 0.80  # probabilidad de carta común
 P_RARE = 0.18  # probabilidad de carta rara
-P_LEGENDARY = 0.02  # probabilidad de carta legendaria
+P_LEGEND = 0.02  # probabilidad de carta legendaria
 # Nota: deben sumar 1.0
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Funciones auxiliares ---------------------------------------------
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def current_user_id_from_jwt():
     # En login se crea el token con: create_access_token(identity=str(user.id))
     # Aquí se recupera el user con get_jwt_identity() y se convierte a int
@@ -129,11 +131,11 @@ def pick_rarity() -> str:
     # guarda en r un valor entre 0.0 y 1.0, poara luego compararlo con las probabilidades definidas
     r = random.random()
     if r < P_COMMON:
-        return "common"
+        return "Common"
     elif r < P_COMMON + P_RARE:
-        return "rare"
+        return "Rare"
     else:
-        return "legendary"
+        return "Legend"
 
 
 def draw_cards_for_pack(n: int = PACK_SIZE) -> list[str]:
@@ -143,11 +145,11 @@ def draw_cards_for_pack(n: int = PACK_SIZE) -> list[str]:
     # Devuelve lista de ids de cartas.
 
     common_ids = db.session.scalars(
-        select(Card.id).where(Card.game_rarity == "common")).all()
+        select(Card.id).where(func.lower(Card.game_rarity) == "common")).all()
     rare_ids = db.session.scalars(
-        select(Card.id).where(Card.game_rarity == "rare")).all()
-    leg_ids = db.session.scalars(select(Card.id).where(
-        Card.game_rarity == "legendary")).all()
+        select(Card.id).where(func.lower(Card.game_rarity) == "rare")).all()
+    leg_ids = db.session.scalars(
+        select(Card.id).where(func.lower(Card.game_rarity) == "legend")).all()
 
     if not common_ids:
         raise ValueError(
@@ -156,9 +158,9 @@ def draw_cards_for_pack(n: int = PACK_SIZE) -> list[str]:
     chosen = []
     for _ in range(n):
         rarity = pick_rarity()
-        if rarity == "legendary" and leg_ids:
+        if rarity == "Legend" and leg_ids:
             chosen.append(random.choice(leg_ids))
-        elif rarity == "rare" and rare_ids:
+        elif rarity == "Rare" and rare_ids:
             chosen.append(random.choice(rare_ids))
         else:
             chosen.append(random.choice(common_ids))
@@ -174,29 +176,31 @@ def add_to_collection(user_id: int, card_ids: list[str]) -> None:
         uc = db.session.execute(
             select(UserCard).where((UserCard.user_id == user_id)
                                    & (UserCard.card_id == card_id))
-        ).scalar_one_or_none()   # si la consulta no devuelve nada, uc es None; si la consulta devuelve algo, uc es ese objeto UserCard; y si la consulta devuelve más de uno, lanza excepción ya que la combinación user_id + card_id debería ser única.
+            # si la consulta no devuelve nada, uc es None; si la consulta devuelve algo, uc es ese objeto UserCard; y si la consulta devuelve más de uno, lanza excepción ya que la combinación user_id + card_id debería ser única.
+        ).scalar_one_or_none()
 
         if uc:
-            uc.quantity += 1
+            uc.quantity += 1  # si ya existe, suma 1
         else:
             db.session.add(
+                # si no existe, la crea
                 UserCard(user_id=user_id, card_id=card_id, quantity=1))
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Endpoints de la API relativos a la compra, disponibilidad y apertura de sobres (en este último se añaden las cartas a la colección del usuario (UserCard)) ----------------------------
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # POST /buy -> registrar compra de sobres (1, 5 o 10)
 @api.route('/buy', methods=['POST'])
 @jwt_required()
 def buy_packs():
-    
+
     # Body JSON requerido:
     #   { "quantity": 1 }   # o 5, o 10
 
     # Devuelve sobres disponibles tras la compra.
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -227,7 +231,7 @@ def buy_packs():
 def get_packs():
     # Sin body.
     # Devuelve: {"packs_available": <int>}
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -244,14 +248,14 @@ def get_packs():
 def open_pack():
     # No se requiere body.
     # Devuelve las cartas obtenidas y sobres restantes.
-    
+
     # Flujo del endpoint:
     #   1) Verificar la cantidad de sobres disponibles con packs_available()
     #   2) Elegir 5 cartas por probabilidad mediante la función draw_cards_for_pack()
     #   3) Se registra PackOpen para que el sobre se consuma
     #   4) Añadimos las cartas a la colección del usuario (UserCard) con add_to_collection()
     #   5) Commit y respuesta para el frontend
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -288,3 +292,585 @@ def open_pack():
 
 
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# HECTOR DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@api.route('/cards', methods=['GET'])
+def get_cards():
+    cards = db.session.scalars(select(Card)).all()
+    return jsonify([card.serialize() for card in cards]), 200
+
+
+@api.route('/user-packs', methods=['GET'])
+@jwt_required()
+def get_user_packs():
+    user_id = get_jwt_identity()
+    # Sum all PackPurchase quantities for this user
+    total_packs = db.session.query(func.sum(PackPurchase.quantity)).filter_by(
+        user_id=user_id).scalar() or 0
+    return jsonify({"packs": total_packs}), 200
+
+
+@api.route('/open-packs', methods=['POST'])
+@jwt_required()
+def open_packs():
+    print("POST /open-packs called")
+    print("Request JSON:", request.json)
+    # Body JSON requerido: { "quantity": 1 } o 5 o 10
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    if not request.is_json:
+        return jsonify({"msg": "Body must be JSON"}), 400
+
+    quantity = request.json.get('quantity')
+    if quantity not in (1, 5, 10):
+        return jsonify({"msg": "quantity must be 1, 5 or 10"}), 400
+
+    available = packs_available(user_id)
+    if available < quantity:
+        return jsonify({"msg": "Not enough packs to open"}), 400
+
+    try:
+        all_cards = []
+        for _ in range(quantity):
+            card_ids = draw_cards_for_pack(n=PACK_SIZE)
+            db.session.add(PackOpen(user_id=user_id))
+            add_to_collection(user_id, card_ids)
+            cards = db.session.scalars(
+                select(Card).where(Card.id.in_(card_ids))).all()
+            opened = [{
+                "id": c.id,
+                "name": c.name,
+                "image_url": c.image_url,
+                "game_rarity": c.game_rarity,
+                "points": c.points
+            } for c in cards]
+            all_cards.append(opened)
+        db.session.commit()
+        return jsonify({
+            "message": f"{quantity} packs opened",
+            "packs_remaining": packs_available(user_id),
+            "packs_opened": quantity,
+            "cards": all_cards  # lista de listas, cada sublista son 5 cartas
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Error opening packs", "details": str(e)}), 500
+
+
+@api.route('/user-packs-total', methods=['GET'])
+@jwt_required()
+def get_user_packs_total():
+    user_id = get_jwt_identity()
+    total_packs = db.session.query(func.sum(PackPurchase.quantity)).filter_by(
+        user_id=user_id).scalar() or 0
+    return jsonify({"packs_total": total_packs}), 200
+
+
+@api.route('/user-collection', methods=['GET'])
+@jwt_required()
+def user_collection():
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    # Obtiene todas las cartas del usuario con su cantidad
+    user_cards = db.session.scalars(
+        select(UserCard).where(UserCard.user_id == user_id)
+    ).all()
+
+    # Junta los datos de la carta y la cantidad
+    collection = []
+    for uc in user_cards:
+        card = db.session.get(Card, uc.card_id)
+        if card:
+            card_data = card.serialize()
+            card_data["quantity"] = uc.quantity
+            collection.append(card_data)
+
+    return jsonify({"collection": collection}), 200
+
+
+@api.route('/user-deck', methods=['GET', 'POST'])
+@jwt_required()
+def user_deck():
+    user_id = get_jwt_identity()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    # GET: devuelve las cartas del deck del usuario
+    if request.method == 'GET':
+        deck = db.session.scalars(
+            select(Deck).where(Deck.user_id == user_id)
+        ).first()
+        if not deck:
+            return jsonify({"deck": []}), 200
+        # Devuelve las cartas del deck con los datos completos
+        deck_cards = db.session.scalars(
+            select(DeckCard).where(DeckCard.deck_id == deck.id)
+        ).all()
+        cards = []
+        for dc in deck_cards:
+            card = db.session.get(Card, dc.card_id)
+            if card:
+                cards.append(card.serialize())
+        return jsonify({"deck": cards}), 200
+
+    # POST: añade una carta al deck del usuario
+    if request.method == 'POST':
+        data = request.get_json()
+        card_id = data.get("card_id")
+        if not card_id:
+            return jsonify({"msg": "card_id is required"}), 400
+
+        deck = db.session.scalars(
+            select(Deck).where(Deck.user_id == user_id)
+        ).first()
+        if not deck:
+            deck = Deck(user_id=user_id, name="My Deck")
+            db.session.add(deck)
+            db.session.commit()
+
+        # Verifica si la carta ya está en el deck
+        exists = db.session.scalars(
+            select(DeckCard).where(DeckCard.deck_id ==
+                                   deck.id, DeckCard.card_id == card_id)
+        ).first()
+        if exists:
+            return jsonify({"msg": "Card already in deck"}), 400
+
+        deck_card = DeckCard(deck_id=deck.id, card_id=card_id)
+        db.session.add(deck_card)
+        db.session.commit()
+        return jsonify({"msg": "Card added to deck", "deck_id": deck.id, "card_id": card_id}), 201
+
+@api.route('/user-deck', methods=['DELETE'])
+@jwt_required()
+def remove_from_deck():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+    card_id = data.get("card_id")
+    if not card_id:
+        return jsonify({"msg": "card_id is required"}), 400
+
+    deck = db.session.scalars(
+        select(Deck).where(Deck.user_id == user_id)
+    ).first()
+    if not deck:
+        return jsonify({"msg": "Deck not found"}), 404
+
+    deck_card = db.session.scalars(
+        select(DeckCard).where(DeckCard.deck_id == deck.id, DeckCard.card_id == card_id)
+    ).first()
+    if not deck_card:
+        return jsonify({"msg": "Card not in deck"}), 404
+
+    db.session.delete(deck_card)
+    db.session.commit()
+    return jsonify({"msg": "Card removed from deck"}), 200

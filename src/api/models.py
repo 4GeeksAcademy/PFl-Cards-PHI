@@ -52,7 +52,7 @@ class Card(db.Model):
     # game_rarity puede ser "common", "rare" y "legendary"
     # points es la cantidad de puntos que da la carta cuando es añadida a un mazo
     game_rarity: Mapped[str] = mapped_column(
-        String(20), nullable=False, default="common")
+        String(20), nullable=False, default="Common")
     points: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     def serialize(self):
