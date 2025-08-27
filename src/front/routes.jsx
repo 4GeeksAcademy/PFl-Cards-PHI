@@ -9,9 +9,8 @@ import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import Shop from "./pages/Shop"
 import PackOpen from "./pages/PackOpen";
-import Decks from "./pages/Decks";
 import Profile from "./pages/Profile";
-import Collection from "./pages/Collection";
+import CollectionDeck from "./pages/CollectionDeck";
 import Ranking from "./pages/Ranking";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -33,9 +32,8 @@ export const router = createBrowserRouter(
         <Route path= "/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/packopen" element={<PackOpen/>}/>
-        <Route path="/collection" element={<Collection />} />
+        <Route path="/collectiondeck" element={<CollectionDeck />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/decks" element={<Decks />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
