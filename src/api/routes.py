@@ -319,6 +319,38 @@ def get_collection():
         return jsonify({"msg": "Error fetching collection", "details": str(e)}), 500
 
 
+# GET /deck -> obtener el mazo actual del usuario (si no existe, se crea vacío con el nombre MyDeck)
+@api.route('/deck', methods=['GET'])
+@jwt_required()
+def get_deck():
+    
+    # Devuelve el mazo del usuario autenticado (cartas que lo componen, el total de puntos y el total de cartas).
+    # Si el usuario aún no tiene mazo, se crea automáticamente con name="My Deck".
+    
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    try:
+        deck = Deck.query.filter_by(user_id=user_id).first()
+        if not deck:
+            deck = Deck(user_id=user_id, name="My Deck")
+            db.session.add(deck)
+            db.session.commit()
+
+        cards = [dc.card for dc in deck.cards]
+        payload = {
+            "deck_id": deck.id,
+            "name": deck.name,
+            "cards": [c.serialize() for c in cards],
+            "total_cards": len(cards),
+            "total_points": sum(c.points for c in cards)
+        }
+        return jsonify(payload), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Error fetching deck", "details": str(e)}), 500
+
 
 
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
