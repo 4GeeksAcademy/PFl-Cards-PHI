@@ -10,7 +10,7 @@ def setup_admin(app):
     admin = Admin(app, name='4Geeks Admin', template_mode='bootstrap3')
 
     class UserView(ModelView):
-        column_list = ('id', 'username', 'email')
+        column_list = ('id', 'username', 'email', 'password')
         form_columns = ('username', 'email', 'password')
 
     class CardView(ModelView):
