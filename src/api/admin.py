@@ -10,6 +10,7 @@ def setup_admin(app):
     admin = Admin(app, name='4Geeks Admin', template_mode='bootstrap3')
 
     class UserView(ModelView):
+        # Borrar password de la column list por seguridad una vez terminenos los tests
         column_list = ('id', 'username', 'email', 'password')
         form_columns = ('username', 'email', 'password')
 

@@ -407,6 +407,7 @@ def open_pack():
 @jwt_required()
 def get_collection():
 
+    # No es necesario body, solo el token de autenticación
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -477,7 +478,7 @@ def get_deck():
 @jwt_required()
 def deck_add():
     
-    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" }
+    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
     # Reglas de negocio: máx. 20 cartas en el mazo y no se permiten duplicados.
     
     user_id = current_user_id_from_jwt()
@@ -542,7 +543,7 @@ def deck_add():
 @api.route('/deck/remove', methods=['PUT'])
 @jwt_required()
 def deck_remove():
-    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" }
+    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
     # Si la carta está en el mazo, se elimina una ocurrencia (en tu caso no permites duplicados).
     
     user_id = current_user_id_from_jwt()
