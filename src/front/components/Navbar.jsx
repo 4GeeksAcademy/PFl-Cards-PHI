@@ -52,9 +52,9 @@ export default function Navbar() {
                   <Link className="dropdown-item" to="/Profile">Profile</Link>
                 </li>
                 <li>
-                <li>
                   <Link className="dropdown-item" to="/PackOpen">My Packs</Link>
                 </li>
+                <li>
                   <Link className="dropdown-item" to="/CollectionDeck">Collection and Deck</Link>
                 </li>
                 <div className="bg-danger-subtle p-2">
