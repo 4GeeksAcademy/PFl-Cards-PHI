@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Card, UserCard, PackPurchase, PackOpen, Deck, DeckCard
+from api.models import db, User, Card, UserCard, PackPurchase, PackOpen
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -32,7 +32,7 @@ def signup():
         data = request.get_json()
 
         email = data.get('email')
-        password = data.get('password')
+        password = str(data.get('password'))
         username = data.get('username')
 
         if not email or not password:
@@ -50,7 +50,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        access_token = create_access_token(identity=new_user.id)
+        access_token = create_access_token(identity=str(new_user.id))
         return jsonify({
         "access_token": access_token,
         "user": {
@@ -88,54 +88,54 @@ def login():
     except Exception as e:
         return jsonify({"error": "Server error", "details": str(e)}), 500
 
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
+    try:
+        
+        user_id = int(get_jwt_identity())
+        user = User.query.get(user_id)
 
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
+        return jsonify({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email 
+        }), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+@api.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    try:
+        user_id = int(get_jwt_identity())
+        body = request.get_json()
 
+        if not body:
+            return jsonify({"error": "Faltan datos en la petición"}), 400
 
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
+        # Actualizamos username 
+        if "username" in body:
+            user.username = body["username"]
 
+        db.session.commit()
 
+        return jsonify({
+            "msg": "Perfil actualizado correctamente",
+            "username": user.username
+        }), 200
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 
 
