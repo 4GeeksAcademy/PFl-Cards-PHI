@@ -50,7 +50,15 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"msg": "User created successfully"}), 201
+        access_token = create_access_token(identity=new_user.id)
+        return jsonify({
+        "access_token": access_token,
+        "user": {
+            "id": new_user.id,
+            "username": new_user.username,
+            "email": new_user.email
+            }
+        }), 201
 
     except Exception as e:
         return jsonify({"error": "Server error", "details": str(e)}), 500
