@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Card, UserCard, PackPurchase, PackOpen
+from api.models import db, User, Card, UserCard, PackPurchase, PackOpen, Deck, DeckCard
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -32,7 +32,7 @@ def signup():
         data = request.get_json()
 
         email = data.get('email')
-        password = str(data.get('password'))
+        password = data.get('password')
         username = data.get('username')
 
         if not email or not password:
@@ -50,7 +50,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        access_token = create_access_token(identity=str(new_user.id))
+        access_token = create_access_token(identity=new_user.id)
         return jsonify({
         "access_token": access_token,
         "user": {
@@ -88,54 +88,17 @@ def login():
     except Exception as e:
         return jsonify({"error": "Server error", "details": str(e)}), 500
 
-@api.route('/profile', methods=['GET'])
-@jwt_required()
-def get_profile():
-    try:
-        
-        user_id = int(get_jwt_identity())
-        user = User.query.get(user_id)
 
-        if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404
 
-        return jsonify({
-            "id": user.id,
-            "username": user.username,
-            "email": user.email 
-        }), 200
 
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
-@api.route('/profile', methods=['PUT'])
-@jwt_required()
-def update_profile():
-    try:
-        user_id = int(get_jwt_identity())
-        body = request.get_json()
 
-        if not body:
-            return jsonify({"error": "Faltan datos en la petición"}), 400
 
-        user = User.query.get(user_id)
-        if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404
 
-        # Actualizamos username 
-        if "username" in body:
-            user.username = body["username"]
 
-        db.session.commit()
 
-        return jsonify({
-            "msg": "Perfil actualizado correctamente",
-            "username": user.username
-        }), 200
 
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)}), 500
+
 
 
 
@@ -250,9 +213,11 @@ P_RARE = 0.18  # probabilidad de carta rara
 P_LEGENDARY = 0.02  # probabilidad de carta legendaria
 # Nota: deben sumar 1.0
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Funciones auxiliares ---------------------------------------------
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def current_user_id_from_jwt():
     # En login se crea el token con: create_access_token(identity=str(user.id))
     # Aquí se recupera el user con get_jwt_identity() y se convierte a int
@@ -327,7 +292,8 @@ def add_to_collection(user_id: int, card_ids: list[str]) -> None:
         uc = db.session.execute(
             select(UserCard).where((UserCard.user_id == user_id)
                                    & (UserCard.card_id == card_id))
-        ).scalar_one_or_none()   # si la consulta no devuelve nada, uc es None; si la consulta devuelve algo, uc es ese objeto UserCard; y si la consulta devuelve más de uno, lanza excepción ya que la combinación user_id + card_id debería ser única.
+            # si la consulta no devuelve nada, uc es None; si la consulta devuelve algo, uc es ese objeto UserCard; y si la consulta devuelve más de uno, lanza excepción ya que la combinación user_id + card_id debería ser única.
+        ).scalar_one_or_none()
 
         if uc:
             uc.quantity += 1
@@ -336,20 +302,20 @@ def add_to_collection(user_id: int, card_ids: list[str]) -> None:
                 UserCard(user_id=user_id, card_id=card_id, quantity=1))
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Endpoints de la API relativos a la compra, disponibilidad y apertura de sobres (en este último se añaden las cartas a la colección del usuario (UserCard)) ----------------------------
-#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # POST /buy -> registrar compra de sobres (1, 5 o 10)
 @api.route('/buy', methods=['POST'])
 @jwt_required()
 def buy_packs():
-    
+
     # Body JSON requerido:
     #   { "quantity": 1 }   # o 5, o 10
 
     # Devuelve sobres disponibles tras la compra.
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -380,7 +346,7 @@ def buy_packs():
 def get_packs():
     # Sin body.
     # Devuelve: {"packs_available": <int>}
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -397,14 +363,14 @@ def get_packs():
 def open_pack():
     # No se requiere body.
     # Devuelve las cartas obtenidas y sobres restantes.
-    
+
     # Flujo del endpoint:
     #   1) Verificar la cantidad de sobres disponibles con packs_available()
     #   2) Elegir 5 cartas por probabilidad mediante la función draw_cards_for_pack()
     #   3) Se registra PackOpen para que el sobre se consuma
     #   4) Añadimos las cartas a la colección del usuario (UserCard) con add_to_collection()
     #   5) Commit y respuesta para el frontend
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -440,4 +406,300 @@ def open_pack():
         return jsonify({"msg": "Error opening the pack", "details": str(e)}), 500
 
 
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Endpoints de la API relativos al MAZO (Deck) y la COLECCIÓN (UserCard)
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# GET /collection -> listar la colección del usuario
+@api.route('/collection', methods=['GET'])
+@jwt_required()
+def get_collection():
+
+    # No es necesario body, solo el token de autenticación
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+        # Se devuelve la colección del usuario (autenticado) uniendo con join UserCard y Card, de este modo el frontend recibe toda la info relevante para mostrar en la lista de cartas
+    try:
+        rows = (
+            UserCard.query
+            .filter_by(user_id=user_id)
+            .join(Card, UserCard.card_id == Card.id)
+            .all()
+        )
+
+        items = []
+        for uc in rows:
+            c = uc.card
+            items.append({
+                "card_id": c.id,
+                "name": c.name,
+                "image_url": c.image_url,
+                "game_rarity": c.game_rarity,
+                "points": c.points,
+                "quantity": uc.quantity
+            })
+
+        return jsonify({"User collection": items}), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Error fetching collection", "details": str(e)}), 500
+
+
+# GET /deck -> obtener el mazo actual del usuario (si no existe, se crea vacío con el nombre MyDeck)
+@api.route('/deck', methods=['GET'])
+@jwt_required()
+def get_deck():
+
+    # No es necesario body, solo el token de autenticación
+    # Devuelve el mazo del usuario autenticado (cartas que lo componen, el total de puntos y el total de cartas).
+    # Si el usuario aún no tiene mazo, se crea automáticamente con name="My Deck".
+
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    try:
+        deck = Deck.query.filter_by(user_id=user_id).first()
+        if not deck:
+            deck = Deck(user_id=user_id, name="My Deck")
+            db.session.add(deck)
+            db.session.commit()
+
+        cards = [dc.card for dc in deck.cards]
+        payload = {
+            "deck_id": deck.id,
+            "name": deck.name,
+            "cards": [c.serialize() for c in cards],
+            "total_cards": len(cards),
+            "total_points": sum(c.points for c in cards)
+        }
+        return jsonify(payload), 200
+
+    except Exception as e:
+        return jsonify({"msg": "Error fetching deck", "details": str(e)}), 500
+
+
+# PUT /deck/add -> añadir carta al mazo (máx. 20 y sin duplicados)
+@api.route('/deck/add', methods=['PUT'])
+@jwt_required()
+def deck_add():
+    
+    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
+    # Reglas de negocio: máx. 20 cartas en el mazo y no se permiten duplicados.
+    
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    if not request.is_json:
+        return jsonify({"error": "Body must be JSON"}), 400
+
+    card_id = (request.json or {}).get("card_id")
+    if not card_id:
+        return jsonify({"error": "card_id required"}), 400
+
+    try:
+        # Se comprueba que la carta existe en el catálogo
+        card = Card.query.get(card_id)
+        if not card:
+            return jsonify({"error": "The card does not exist"}), 404
+
+        deck = Deck.query.filter_by(user_id=user_id).first()
+        if not deck:
+            deck = Deck(user_id=user_id, name="My Deck")
+            db.session.add(deck)
+            db.session.commit()
+
+        # Reglas de negocio: máx. 20 cartas en el mazo y no se permiten duplicados.
+        if len(deck.cards) >= 20:
+            return jsonify({"error": "Your deck has reached the max. amount of 20 cards"}), 400
+
+        if any(dc.card_id == card_id for dc in deck.cards):
+            return jsonify({"error": "This card is already in your deck, duplicated cards aren't allowed"}), 409
+
+        # Valida que el usuario posee la carta en su colección:
+        uc = UserCard.query.filter_by(user_id=user_id, card_id=card_id).first()
+        if not uc or (uc.quantity or 0) < 1:
+            return jsonify({"error": "You don't own that card"}), 403
+        
+        # Si más adelante decidiésemos que al añadir una carta al mazo, esta se "descontase" de la colección 
+        # (por ejemplo si quisiésemos convertir cartas sobrantes en gemas, o si permitiésemos tener varios mazos y que las cartas fuesen "únicas" como en la vida real, es decir, 
+        # si una carta ya está en un mazo, no puede estar al mismo tiempo en otro mazo a no ser que tengas un duplicado de dicha carta), 
+        # aquí podríamos decrementar ----> uc.quantity -= 1
+
+        db.session.add(DeckCard(deck_id=deck.id, card_id=card_id))
+        db.session.commit()
+
+        # Respuesta con el mazo actualizado con la nueva carta añadida
+        cards = [dc.card for dc in deck.cards]
+        return jsonify({
+            "deck_id": deck.id,
+            "name": deck.name,
+            "cards": [c.serialize() for c in cards],
+            "total_cards": len(cards),
+            "total_points": sum(c.points for c in cards)
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Error adding card to deck", "details": str(e)}), 500
+
+
+# PUT /deck/remove -> quitar carta del mazo (devuelve el estado actualizado)
+@api.route('/deck/remove', methods=['PUT'])
+@jwt_required()
+def deck_remove():
+    # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
+    # Si la carta está en el mazo, se elimina una ocurrencia (en tu caso no permites duplicados).
+    
+    user_id = current_user_id_from_jwt()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    if not request.is_json:
+        return jsonify({"error": "Body must be JSON"}), 400
+
+    card_id = (request.json or {}).get("card_id")
+    if not card_id:
+        return jsonify({"error": "card_id required"}), 400
+
+    try:
+        deck = Deck.query.filter_by(user_id=user_id).first()
+        if not deck:
+            return jsonify({"error": "You don't have a deck yet"}), 400
+
+        #Comprobar que la carta está en el mazo, si es asi la guardamos en dc para luego eliminarla con db.session.delete(dc).
+        # Si la carta no está en el mazo, dc es None y devolvemos error 404.
+        dc = next((dc for dc in deck.cards if dc.card_id == card_id), None)
+        if not dc:
+            return jsonify({"error": "This card is not in your deck"}), 404
+
+        db.session.delete(dc)
+
+        # De igual modo que el comentario en el /add aquí podríamos incrementar la cantidad en la colección del usuario si nos resulta útil en el futuro. 
+        # Para ello habría que incrementar uc.quantity += 1
+
+        db.session.commit()
+
+        # Respuesta con el mazo actualizado sin la carta eliminada
+        cards = [dc.card for dc in deck.cards]
+        return jsonify({
+            "deck_id": deck.id,
+            "name": deck.name,
+            "cards": [c.serialize() for c in cards],
+            "total_cards": len(cards),
+            "total_points": sum(c.points for c in cards)
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Error removing card from deck", "details": str(e)}), 500
+
+
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# HECTOR DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@api.route('/cards', methods=['GET'])
+def get_cards():
+    cards = db.session.scalars(select(Card)).all()
+    return jsonify([card.serialize() for card in cards]), 200

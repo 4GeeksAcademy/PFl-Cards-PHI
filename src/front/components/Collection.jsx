@@ -1,106 +1,132 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Card from "./Card";
 
-const getCardContainerStyle = (isMobile) => {
-    if (isMobile) {
-        return {
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "8px",
-            justifyContent: "center",
-            margin: "0 auto",
-            maxWidth: "180px"
-        };
-    }
-    return {
-        display: "grid",
-        gridTemplateColumns: "repeat(5, 1fr)",
-        gap: "24px",
-        justifyContent: "center",
-        margin: "0 auto",
-        maxWidth: "1400px"
-    };
-};
-
-const cardStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    background: "#fafafa",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    padding: "12px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
-};
-
-const imgStyle = {
-    width: "180px",
-    height: "247px",
-    background: "#e0e0e0",
-    objectFit: "cover",
-    borderRadius: "4px",
-    marginBottom: "12px"
-};
-
-const infoLineStyle = {
-    display: "flex",
-    width: "180px",
-    borderTop: "1px solid #ccc",
-    marginTop: "8px",
-    paddingTop: "6px",
-    fontSize: "15px",
-    justifyContent: "space-between",
-    alignItems: "center"
-};
-
-const addButtonStyle = (disabled) => ({
-    padding: "4px 10px",
-    background: disabled ? "#bbb" : "#1976d2",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: disabled ? "not-allowed" : "pointer",
-    fontSize: "13px"
-});
-
-const Collection = ({ cards, deck, handleAddToDeck, isCardInDeck }) => {
-    const [isMobile, setIsMobile] = useState(false);
+const Collection = () => {
+    const [allCards, setAllCards] = useState([]);
+    const [userCollection, setUserCollection] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [deckCards, setDeckCards] = useState([]);
+    const [successMsg, setSuccessMsg] = useState("");
 
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 600);
+        const fetchData = async () => {
+            try {
+                const respAll = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`);
+                const all = await respAll.json();
+
+                const accessToken = localStorage.getItem("accessToken");
+                // Colección del usuario
+                const respUser = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                const userData = await respUser.json();
+
+                // Deck del usuario
+                const respDeck = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                const deckData = await respDeck.json();
+
+                // Mapeo de cartas y cantidades
+                const userCardsMap = {};
+                if (userData["User collection"]) {
+                    userData["User collection"].forEach(card => {
+                        userCardsMap[card.card_id] = card.quantity;
+                    });
+                }
+                setAllCards(all);
+                setUserCollection(userCardsMap);
+                setDeckCards(deckData.cards || []);
+            } catch (err) {
+                setAllCards([]);
+                setUserCollection({});
+                setDeckCards([]);
+            } finally {
+                setLoading(false);
+            }
         };
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
+        fetchData();
     }, []);
 
-    const cardContainerStyle = getCardContainerStyle(isMobile);
+    const handleAddToDeck = async (cardId) => {
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ card_id: cardId })
+            });
+            const data = await resp.json();
+            if (!resp.ok) {
+                alert(data.error || data.msg || "Error adding card to deck");
+            } else {
+                setSuccessMsg("Card added to deck successfully!");
+                setTimeout(() => setSuccessMsg(""), 2000);
+                // Actualiza deckCards tras añadir
+                setDeckCards(data.cards || []);
+            }
+        } catch (err) {
+            alert("Network error");
+        }
+    };
+
+    // Verifica si la carta ya está en el deck
+    const isCardInDeck = (cardId) => deckCards.some(card => card.id === cardId);
 
     return (
-        <div style={cardContainerStyle}>
-            {cards.map((card, idx) => {
-                const disabled = deck.length >= 20 || isCardInDeck(card, idx);
-                return (
-                    <div key={idx} style={cardStyle}>
-                        <img
-                            src={card.image_url}
-                            alt={card.name}
-                            style={imgStyle}
-                        />
-                        <div style={infoLineStyle}>
-                            <span>{card.game_rarity || "Rareza"}</span>
-                            <span>{card.points}</span>
-                            <button
-                                style={addButtonStyle(disabled)}
-                                onClick={() => handleAddToDeck(card, idx)}
-                                disabled={disabled}
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-                );
-            })}
+        <div className="container mt-4">
+            <h2 className="mb-4">Your Card Collection</h2>
+            {successMsg && (
+                <div className="alert alert-success" role="alert" style={{ position: "fixed", top: "80px", right: "30px", zIndex: 9999 }}>
+                    {successMsg}
+                </div>
+            )}
+            {loading ? (
+                <p>Loading cards...</p>
+            ) : (
+                <div className="row">
+                    {allCards.filter(card => userCollection[card.id] > 0).length === 0 ? (
+                        <p>You don't have any cards in your collection yet.</p>
+                    ) : (
+                        allCards
+                            .filter(card => userCollection[card.id] > 0)
+                            .map((card, idx) => (
+                                <div key={card.id || idx} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                                    <div style={{ position: "relative" }}>
+                                        <Card
+                                            card={card}
+                                            onAddToDeck={() => handleAddToDeck(card.id)}
+                                            isAlreadyInDeck={isCardInDeck(card.id)}
+                                        />
+                                        <span
+                                            style={{
+                                                position: "absolute",
+                                                top: "12px",
+                                                right: "16px",
+                                                background: "#eee",
+                                                borderRadius: "8px",
+                                                padding: "4px 10px",
+                                                fontWeight: "bold",
+                                                color: "#333"
+                                            }}
+                                        >
+                                            x{userCollection[card.id]}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
+                    )}
+                </div>
+            )}
         </div>
     );
 };
