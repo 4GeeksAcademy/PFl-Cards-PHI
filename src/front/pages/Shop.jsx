@@ -1,6 +1,31 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Gateway from "../components/Gateway";
 import PackCard from "../components/PackCard";
+import { useNavigate } from "react-router-dom";
+
+// Image URL for card 4
+const cardImg = "https://raw.githubusercontent.com/Porki5/PFl-Cards-PHI/main/src/front/assets/cards/4.png";
+
+const packData = [
+    {
+        title: "1 Pack",
+        img: cardImg,
+        description: "A pack with 5 random cards.",
+        quantity: 1
+    },
+    {
+        title: "5 Packs",
+        img: cardImg,
+        description: "Five packs with random cards.",
+        quantity: 5
+    },
+    {
+        title: "10 Packs",
+        img: cardImg,
+        description: "Ten packs with random cards.",
+        quantity: 10
+    }
+];
 
 const Shop = () => {
     const [showModal, setShowModal] = useState(false);
@@ -8,12 +33,9 @@ const Shop = () => {
     const [quantity, setQuantity] = useState(0);
     const navigate = useNavigate();
 
-    const handleBuy = (pack) => {
+    const handleBuy = (pack, qty) => {
         setPackSelected(pack);
-        // Determina la cantidad según el pack seleccionado
-        if (pack === "1 Pack") setQuantity(1);
-        else if (pack === "5 Packs") setQuantity(5);
-        else if (pack === "10 Packs") setQuantity(10);
+        setQuantity(qty);
         setShowModal(true);
     };
 
@@ -23,66 +45,33 @@ const Shop = () => {
         setQuantity(0);
     };
 
-    const handlePay = () => {
-        // Suma la cantidad comprada a la que ya existe
-        const packsNow = parseInt(localStorage.getItem("packsBuy") || "0", 10);
-        localStorage.setItem("packsBuy", packsNow + quantity);
-        navigate("/packopen");
-    };
-
     return (
         <>
-            <div className="row justify-content-center g-4 mt-5 mb-5">
-                <div className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
-                    <PackCard
-                        title="1 Pack"
-                        description="A pack with random cards."
-                        buttonText="Buy 1"
-                        onComprar={() => handleBuy("1 Pack")}
-                    />
-                </div>
-                <div className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
-                    <PackCard
-                        title="5 Packs"
-                        description="Five packs with random cards."
-                        buttonText="Buy 5"
-                        onComprar={() => handleBuy("5 Packs")}
-                    />
-                </div>
-                <div className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
-                    <PackCard
-                        title="10 Packs"
-                        description="Ten packs with random cards."
-                        buttonText="Buy 10"
-                        onComprar={() => handleBuy("10 Packs")}
-                    />
+            <div className="container mt-5">
+                <div className="row justify-content-center g-4">
+                    {packData.map((pack, idx) => (
+                        <div key={idx} className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
+                            <PackCard
+                                title={pack.title}
+                                img={pack.img}
+                                description={pack.description}
+                                buttonText={`Buy ${pack.quantity}`}
+                                onComprar={() => handleBuy(pack.title, pack.quantity)}
+                            />
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Modal de pago */}
             {showModal && (
-                <div className="modal show d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.5)" }}>
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Payment Gateway</h5>
-                                <button type="button" className="btn-close" onClick={handleClose}></button>
-                            </div>
-                            <div className="modal-body">
-                                <p>You are buying: <strong>{packSeleccionado}</strong></p>
-                                <p>Number of Packs: <strong>{quantity}</strong></p>
-                                {/* Aquí puedes integrar tu pasarela de pago real */}
-                                <p>Simulación de pago...</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={handlePay}>Pay</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Gateway
+                    packSeleccionado={packSeleccionado}
+                    quantity={quantity}
+                    onClose={handleClose}
+                />
             )}
         </>
     );
-}
-export default Shop
+};
+
+export default Shop;

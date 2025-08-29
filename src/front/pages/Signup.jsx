@@ -30,10 +30,13 @@ const Signup = () => {
             }
 
             const data = await resp.json();
-            console.log("Signup response:", data); // store token if backend returns it
+            console.log("Signup response:", data);
             console.log("Access token recibido:", data.access_token);
+
+            localStorage.setItem("accessToken", data.access_token); // <-- Guarda el token
+
             login(data.access_token);
-            navigate("/"); 
+            navigate("/");
         } catch (err) {
             console.error(err);
             setError("Unable to create account, please try again");
@@ -82,7 +85,7 @@ const Signup = () => {
                         {error && <p className="text-danger">{error}</p>}
                         <button type="submit" className="btn btn-primary w-100">Sign Up</button>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
