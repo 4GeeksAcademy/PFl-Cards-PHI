@@ -19,7 +19,7 @@ def setup_commands(app):
     @app.cli.command("insert-test-users") # name of our command
     @click.argument("count") # argument of out command
     def insert_test_users(count):
-        print("Creating test users")
+        print("Creando usuarios de prueba...")
         for x in range(1, int(count) + 1):
             email = "test_user" + str(x) + "@test.com"
 
@@ -28,7 +28,7 @@ def setup_commands(app):
                 select(User).where(User.email == email)
             ).scalar_one_or_none()
             if exists:
-                print("User:", email, "already exists. Skipping.")
+                print(f"Usuario {email} ya existe. Se omite.")
                 continue
 
             user = User()
@@ -37,9 +37,9 @@ def setup_commands(app):
             user.username = "test_user" + str(x)
             db.session.add(user)
             db.session.commit()
-            print("User:", user.email, "created.")
+            print(f"Usuario {user.email} creado correctamente.")
 
-        print("All test users processed")
+        print("Proceso de creación de usuarios de prueba finalizado.")
 
     # @app.cli.command("insert-test-data")
     # def insert_test_data():
@@ -54,12 +54,12 @@ def setup_commands(app):
             with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception as e:
-            click.echo(f"Cannot open/parse JSON: {e}")
+            print(f"No se pudo abrir o parsear el JSON en la ruta indicada: {e}")
             return
 
         cards = data.get("cards", [])
         if not cards:
-            click.echo("'cards' list is empty in provided JSON.")
+            print("El JSON no contiene cartas en la clave 'cards'.")
             return
 
         created, updated = 0, 0
@@ -91,7 +91,7 @@ def setup_commands(app):
                 updated += 1
 
         db.session.commit()
-        click.echo(f"Catalog succesfully loaded. Created: {created} | Updated: {updated}")
+        print(f"Catálogo cargado correctamente. Creadas: {created} | Actualizadas: {updated}")
 
     # Generar mazos aleatorios SOLO para usuarios test_user*@test.com
     @app.cli.command("make-random-decks")
@@ -99,7 +99,7 @@ def setup_commands(app):
         # 1) Comprobar que hay cartas suficientes
         card_ids = db.session.scalars(select(Card.id)).all()
         if len(card_ids) < 20:
-            print("Not enough cards in Card (need at least 20). Run load-catalog first.")
+            print("No hay cartas suficientes en la tabla Card (mínimo 20). Ejecuta primero el comando load-catalog.")
             return
 
         # 2) Seleccionar solo usuarios de pruebas
@@ -107,7 +107,7 @@ def setup_commands(app):
             select(User).where(User.email.like("test_user%@test.com"))
         ).all()
         if not test_users:
-            print("No test users found. Run insert-test-users command first.")
+            print("No se encontraron usuarios de prueba. Ejecuta antes: pipenv run flask insert-test-users <N>")
             return
 
         # 3) Para cada test user: resetear su mazo y crear uno de 20 cartas aleatorias distintas
@@ -126,7 +126,7 @@ def setup_commands(app):
             chosen = random.sample(card_ids, 20)
 
             for cid in chosen:
-                # asegurar que el usuario "posee" esa carta en la colección con al menos quantity=1
+                # asegurar que el usuario posee la carta en la colección con al menos quantity=1
                 uc = db.session.execute(
                     select(UserCard).where((UserCard.user_id == u.id) & (UserCard.card_id == cid))
                 ).scalar_one_or_none()
@@ -141,25 +141,25 @@ def setup_commands(app):
 
             db.session.commit()
 
-        print(f"Random decks created for {len(test_users)} test users.")
+        print(f"Se han creado mazos aleatorios para {len(test_users)} usuarios de prueba.")
 
     # Todo en uno: seguro ante duplicados y sin ranking
-    @app.cli.command("bootstrap-demo")
+    @app.cli.command("todo-en-uno")
     @click.argument("users_count", type=int)
     @click.option("--catalog", default="src/data/cards_catalog_3sets.json",
                   help="Path to catalog JSON (default: src/data/cards_catalog_3sets.json)")
-    def bootstrap_demo(users_count, catalog):
+    def todo_en_uno(users_count, catalog):
         # 1) Cargar/actualizar catálogo (upsert)
         try:
             with open(catalog, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception as e:
-            click.echo(f"Cannot open/parse JSON: {e}")
+            print(f"No se pudo abrir o parsear el JSON del catálogo: {e}")
             return
 
         cards = data.get("cards", [])
         if not cards:
-            click.echo("⚠️ 'cards' list is empty in provided JSON.")
+            print("El JSON de catálogo no contiene cartas en la clave 'cards'.")
             return
 
         created, updated = 0, 0
@@ -187,17 +187,17 @@ def setup_commands(app):
                 card.points = int(item.get("points", 0))
                 updated += 1
         db.session.commit()
-        click.echo(f"▶️  Catalog OK. Created: {created} | Updated: {updated}")
+        print(f"Catálogo verificado. Creadas: {created} | Actualizadas: {updated}")
 
         # 2) Crear usuarios de prueba (evitar duplicados)
-        print("Creating test users")
+        print("Creando usuarios de prueba...")
         for x in range(1, int(users_count) + 1):
             email = "test_user" + str(x) + "@test.com"
             exists = db.session.execute(
                 select(User).where(User.email == email)
             ).scalar_one_or_none()
             if exists:
-                print("User:", email, "already exists. Skipping.")
+                print(f"Usuario {email} ya existe. Se omite.")
                 continue
 
             user = User()
@@ -206,20 +206,20 @@ def setup_commands(app):
             user.username = "test_user" + str(x)
             db.session.add(user)
             db.session.commit()
-            print("User:", user.email, "created.")
-        print("All test users processed")
+            print(f"Usuario {user.email} creado correctamente.")
+        print("Proceso de creación de usuarios de prueba finalizado.")
 
         # 3) Generar mazos aleatorios SOLO para test users
         card_ids = db.session.scalars(select(Card.id)).all()
         if len(card_ids) < 20:
-            print("❌ Not enough cards in Card (need at least 20). Run load-catalog first.")
+            print("No hay cartas suficientes en la tabla Card (mínimo 20). Ejecuta primero el comando load-catalog.")
             return
 
         test_users = db.session.scalars(
             select(User).where(User.email.like("test_user%@test.com"))
         ).all()
         if not test_users:
-            print("⚠️ No test users found. Run: flask insert-test-users <N>")
+            print("No se encontraron usuarios de prueba. Ejecuta antes: pipenv run flask insert-test-users <N>")
             return
 
         for u in test_users:
@@ -246,4 +246,4 @@ def setup_commands(app):
 
             db.session.commit()
 
-        click.echo("✅ Demo environment ready.")
+        print("Entorno de demo preparado correctamente.")
