@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "./Card";
 
-const TOTAL_SLOTS = 20; // 5 lines x 4 cards
+const TOTAL_SLOTS = 20; 
 
 const Deck = () => {
     const [deckCards, setDeckCards] = useState([]);
-
-    // Fetch deck cards from API when component mounts
+    const [isMobile, setIsMobile] = useState(false);
+    
+    useEffect(() => {
+        const checkMobile = () => {setIsMobile(window.innerWidth <= 576)}
+        checkMobile();
+    }, []);
+    
     useEffect(() => {
         fetchDeck();
     }, []);
@@ -28,7 +33,6 @@ const Deck = () => {
         }
     };
 
-    // Remove card from deck via API
     const handleRemoveFromDeck = async (cardId) => {
         const accessToken = localStorage.getItem("accessToken");
         try {
@@ -51,14 +55,13 @@ const Deck = () => {
         }
     };
 
-    // Fill slots with deck cards or null for empty
     const slots = [];
     for (let i = 0; i < TOTAL_SLOTS; i++) {
         slots.push(deckCards[i] || null);
     }
 
-    // Calculate total points
     const totalPoints = deckCards.reduce((sum, card) => sum + (card.points || 0), 0);
+
 
     return (
         <div className="container mt-4">
@@ -74,37 +77,41 @@ const Deck = () => {
                 </Link>
             </div>
             <div className="row">
-                {[0, 1, 2, 3, 4].map((rowIdx) => (
-                    <div key={rowIdx} className="d-flex mb-4 justify-content-center">
-                        {slots.slice(rowIdx * 4, rowIdx * 4 + 4).map((card, idx) => (
-                            <div key={idx} style={{ margin: "0 10px" }}>
-                                {card ? (
-                                    <Card
-                                        card={card}
-                                        inDeck={true}
-                                        onRemoveFromDeck={() => handleRemoveFromDeck(card.id)}
-                                    />
-                                ) : (
-                                    <div
-                                        style={{
-                                            width: "220px",
-                                            height: "340px",
-                                            borderRadius: "14px",
-                                            background: "#f2f2f2",
-                                            boxShadow: "0 4px 16px #bbb",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            color: "#aaa",
-                                            fontSize: "2rem",
-                                            fontWeight: "bold"
-                                        }}
-                                    >
-                                        Empty
-                                    </div>
-                                )}
+                {slots.map((card, idx) => (
+                    <div
+                        key={idx}
+                        className={
+                            isMobile
+                                ? "col-12 mb-4"
+                                : "col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                        }
+                        style={{ display: "flex", justifyContent: "center" }}
+                    >
+                        {card ? (
+                            <Card
+                                card={card}
+                                inDeck={true}
+                                onRemoveFromDeck={() => handleRemoveFromDeck(card.id)}
+                            />
+                        ) : (
+                            <div
+                                style={{
+                                    width: "220px",
+                                    height: "340px",
+                                    borderRadius: "14px",
+                                    background: "#f2f2f2",
+                                    boxShadow: "0 4px 16px #bbb",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    color: "#aaa",
+                                    fontSize: "2rem",
+                                    fontWeight: "bold"
+                                }}
+                            >
+                                Empty
                             </div>
-                        ))}
+                        )}
                     </div>
                 ))}
             </div>
