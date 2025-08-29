@@ -52,11 +52,11 @@ def signup():
 
         access_token = create_access_token(identity=str(new_user.id))
         return jsonify({
-        "access_token": access_token,
-        "user": {
-            "id": new_user.id,
-            "username": new_user.username,
-            "email": new_user.email
+            "access_token": access_token,
+            "user": {
+                "id": new_user.id,
+                "username": new_user.username,
+                "email": new_user.email
             }
         }), 201
 
@@ -88,25 +88,26 @@ def login():
     except Exception as e:
         return jsonify({"error": "Server error", "details": str(e)}), 500
 
+
 @api.route('/profile', methods=['GET'])
 @jwt_required()
 def get_profile():
-    try:
-        
-        user_id = int(get_jwt_identity())
-        user = User.query.get(user_id)
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    deck = Deck.query.filter_by(user_id=user.id).first()
+    deck_points = 0
+    if deck:
+        deck_points = sum(
+            [card.points for card in [dc.card for dc in deck.cards]])
+    return jsonify({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "deck_points": deck_points
+    }), 200
 
-        if not user:
-            return jsonify({"error": "Usuario no encontrado"}), 404
-
-        return jsonify({
-            "id": user.id,
-            "username": user.username,
-            "email": user.email 
-        }), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 @api.route('/profile', methods=['PUT'])
 @jwt_required()
@@ -122,7 +123,7 @@ def update_profile():
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        # Actualizamos username 
+        # Actualizamos username
         if "username" in body:
             user.username = body["username"]
 
@@ -136,226 +137,6 @@ def update_profile():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # PEDRO DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -638,10 +419,10 @@ def get_deck():
 @api.route('/deck/add', methods=['PUT'])
 @jwt_required()
 def deck_add():
-    
+
     # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
     # Reglas de negocio: máx. 20 cartas en el mazo y no se permiten duplicados.
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -676,10 +457,10 @@ def deck_add():
         uc = UserCard.query.filter_by(user_id=user_id, card_id=card_id).first()
         if not uc or (uc.quantity or 0) < 1:
             return jsonify({"error": "You don't own that card"}), 403
-        
-        # Si más adelante decidiésemos que al añadir una carta al mazo, esta se "descontase" de la colección 
-        # (por ejemplo si quisiésemos convertir cartas sobrantes en gemas, o si permitiésemos tener varios mazos y que las cartas fuesen "únicas" como en la vida real, es decir, 
-        # si una carta ya está en un mazo, no puede estar al mismo tiempo en otro mazo a no ser que tengas un duplicado de dicha carta), 
+
+        # Si más adelante decidiésemos que al añadir una carta al mazo, esta se "descontase" de la colección
+        # (por ejemplo si quisiésemos convertir cartas sobrantes en gemas, o si permitiésemos tener varios mazos y que las cartas fuesen "únicas" como en la vida real, es decir,
+        # si una carta ya está en un mazo, no puede estar al mismo tiempo en otro mazo a no ser que tengas un duplicado de dicha carta),
         # aquí podríamos decrementar ----> uc.quantity -= 1
 
         db.session.add(DeckCard(deck_id=deck.id, card_id=card_id))
@@ -706,7 +487,7 @@ def deck_add():
 def deck_remove():
     # Body JSON requerido: { "card_id": "<id de carta del catálogo>" } además del token de autenticación
     # Si la carta está en el mazo, se elimina una ocurrencia (en tu caso no permites duplicados).
-    
+
     user_id = current_user_id_from_jwt()
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
@@ -723,7 +504,7 @@ def deck_remove():
         if not deck:
             return jsonify({"error": "You don't have a deck yet"}), 400
 
-        #Comprobar que la carta está en el mazo, si es asi la guardamos en dc para luego eliminarla con db.session.delete(dc).
+        # Comprobar que la carta está en el mazo, si es asi la guardamos en dc para luego eliminarla con db.session.delete(dc).
         # Si la carta no está en el mazo, dc es None y devolvemos error 404.
         dc = next((dc for dc in deck.cards if dc.card_id == card_id), None)
         if not dc:
@@ -731,7 +512,7 @@ def deck_remove():
 
         db.session.delete(dc)
 
-        # De igual modo que el comentario en el /add aquí podríamos incrementar la cantidad en la colección del usuario si nos resulta útil en el futuro. 
+        # De igual modo que el comentario en el /add aquí podríamos incrementar la cantidad en la colección del usuario si nos resulta útil en el futuro.
         # Para ello habría que incrementar uc.quantity += 1
 
         db.session.commit()
@@ -754,52 +535,32 @@ def deck_remove():
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # HECTOR DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @api.route('/cards', methods=['GET'])
 def get_cards():
     cards = db.session.scalars(select(Card)).all()
     return jsonify([card.serialize() for card in cards]), 200
+
+
+@api.route('/users', methods=['GET'])
+def get_users_ranking():
+    try:
+        # Obtiene todos los usuarios
+        users = User.query.all()
+        result = []
+        for user in users:
+            # Busca el deck del usuario
+            deck = Deck.query.filter_by(user_id=user.id).first()
+            deck_points = 0
+            if deck:
+                deck_points = sum(
+                    [card.points for card in [dc.card for dc in deck.cards]])
+            result.append({
+                "id": user.id,
+                "username": user.username,
+                "deck_points": deck_points
+            })
+        return jsonify({"users": result}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
