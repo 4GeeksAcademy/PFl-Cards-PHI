@@ -1,25 +1,26 @@
 // import { toast } from "react-toastify";
-import { useContext } from "react";
-// import { AuthContext } from "../"
+let hasShownSessionExpired = false; // bandera global
 
-export const apiFetch = async (url, options = {}, navigate) => {
+export const apiFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
 
   const resp = await fetch(url, {
     ...options,
     headers: {
-      ...options.headers,
-      Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": "application/json",
+      ...(options.headers || {}),
+      Authorization: token ? `Bearer ${token}` : "",
     },
   });
 
-  // Si el token expiró o es inválido
-  if (resp.status === 401 || resp.status === 422) {
-    alert("Tu sesión ha expirado, por favor vuelve a iniciar sesión.");
-    localStorage.removeItem("token");
-    navigate("/login");
-    return null; //  para que no intentes leer json
+  if (resp && (resp.status === 401 || resp.status === 422)) {
+    if (!hasShownSessionExpired) {
+      hasShownSessionExpired = true; // evitar duplicados
+      alert("⚠️ Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
+      localStorage.removeItem("token");
+      window.location.href = "/login"; // fuerza recarga y navbar se actualiza
+    }
+    return null;
   }
 
   return resp;
