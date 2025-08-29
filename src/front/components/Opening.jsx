@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import Card from "./Card";
 
 const Opening = ({ packs = [], onClose }) => {
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+    
+        useEffect(() => {
+            const checkMobile = () => setIsMobile(window.innerWidth <= 576);
+            window.addEventListener("resize", checkMobile);
+            return () => window.removeEventListener("resize", checkMobile);
+        }, []);
 
-    useEffect(() => {
-        const checkMobile = () => { setIsMobile(window.innerWidth <= 576); };
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
-    }, []);
-
-    // Helper para dividir las cartas en 2 arriba y 3 abajo
+    
     const renderPack = (pack, packIdx) => {
         if (!Array.isArray(pack)) pack = [pack];
         if (isMobile) {

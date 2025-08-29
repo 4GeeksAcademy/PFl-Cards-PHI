@@ -6,11 +6,12 @@ const TOTAL_SLOTS = 20;
 
 const Deck = () => {
     const [deckCards, setDeckCards] = useState([]);
-    const [isMobile, setIsMobile] = useState(false);
-    
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+
     useEffect(() => {
-        const checkMobile = () => {setIsMobile(window.innerWidth <= 576)}
-        checkMobile();
+        const checkMobile = () => setIsMobile(window.innerWidth <= 576);
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
     }, []);
     
     useEffect(() => {

@@ -19,6 +19,7 @@ const CollectionDeck = () => {
     const [cards, setCards] = useState([]);
     const [deck, setDeck] = useState([]);
 
+
     useEffect(() => {
         fetch("/src/data/cards_catalog_3sets.json")
             .then((res) => res.json())

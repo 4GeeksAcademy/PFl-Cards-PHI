@@ -8,8 +8,14 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState("all");
     const [orderAsc, setOrderAsc] = useState(true);
-    const [isMobile, setIsMobile] = useState(false);
     const [search, setSearch] = useState(""); // Estado para la búsqueda
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 576);
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
@@ -33,26 +39,18 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
             .finally(() => setLoading(false));
     }, []);
 
-
-
-    // Detecta si es móvil
-
-    useEffect(() => {
-        const checkMobile = () => { setIsMobile(window.innerWidth <= 576) }
-        checkMobile();
-    }, []);
-
     const ownedCards = cards.filter(card => userCollection[card.id] > 0);
     const uniqueOwned = ownedCards.length;
     const totalUnique = cards.length;
 
     let filteredCards = ownedCards;
     if (filter === "rarity") {
-        filteredCards = [...ownedCards].sort((a, b) =>
-            orderAsc
-                ? a.game_rarity.localeCompare(b.game_rarity)
-                : b.game_rarity.localeCompare(a.game_rarity)
-        );
+        const rarityOrder = ["common", "rare", "legendary"];
+        filteredCards = [...ownedCards].sort((a, b) => {
+            const aIdx = rarityOrder.indexOf(a.game_rarity);
+            const bIdx = rarityOrder.indexOf(b.game_rarity);
+            return orderAsc ? aIdx - bIdx : bIdx - aIdx;
+        });
     } else if (filter === "points") {
         filteredCards = [...ownedCards].sort((a, b) =>
             orderAsc ? b.points - a.points : a.points - b.points

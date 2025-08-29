@@ -8,14 +8,14 @@ const options = [
     { value: "all_with_missing", label: "All collection", double: false }
 ];
 
-
 const Order = ({ filter, setFilter, orderAsc, setOrderAsc }) => {
     const [showDropdown, setShowDropdown] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
 
     useEffect(() => {
-        const checkMobile = () => {setIsMobile(window.innerWidth <= 576)}
-        checkMobile();
+        const checkMobile = () => setIsMobile(window.innerWidth <= 576);
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
     if (isMobile) {
