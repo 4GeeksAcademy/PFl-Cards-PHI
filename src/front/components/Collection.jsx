@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import { apiFetch } from "../utils/apiFetch";
 
 const Collection = () => {
     const [allCards, setAllCards] = useState([]);
@@ -11,12 +12,12 @@ const Collection = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const respAll = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`);
+                const respAll = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`);
                 const all = await respAll.json();
 
                 const accessToken = localStorage.getItem("access_token");
                 // Colección del usuario
-                const respUser = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
+                const respUser = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
                         "Content-Type": "application/json"
@@ -25,7 +26,7 @@ const Collection = () => {
                 const userData = await respUser.json();
 
                 // Deck del usuario
-                const respDeck = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+                const respDeck = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
                         "Content-Type": "application/json"
@@ -57,7 +58,7 @@ const Collection = () => {
     const handleAddToDeck = async (cardId) => {
         const accessToken = localStorage.getItem("acces_token");
         try {
-            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,

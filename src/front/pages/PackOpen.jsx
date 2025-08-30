@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
+import { apiFetch } from "../utils/apiFetch";
 
 const packImg = "https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png";
 
@@ -22,7 +23,7 @@ const PackOpen = () => {
         const accessToken = localStorage.getItem("access_token");
         const fetchTotalPacks = async () => {
             try {
-                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
+                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
                     },
@@ -49,7 +50,7 @@ const PackOpen = () => {
         let cardsOpened = [];
         try {
             for (let i = 0; i < quantity; i++) {
-                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
+                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,

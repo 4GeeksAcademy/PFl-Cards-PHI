@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "./Card";
+import { apiFetch } from "../utils/apiFetch";
 
 const TOTAL_SLOTS = 20; // 5 lines x 4 cards
 
@@ -15,7 +16,7 @@ const Deck = () => {
     const fetchDeck = async () => {
         const accessToken = localStorage.getItem("access_token");
         try {
-            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
@@ -32,7 +33,7 @@ const Deck = () => {
     const handleRemoveFromDeck = async (cardId) => {
         const accessToken = localStorage.getItem("access_token");
         try {
-            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/remove`, {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/remove`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
