@@ -33,7 +33,7 @@ const Signup = () => {
             console.log("Signup response:", data);
             console.log("Access token recibido:", data.access_token);
 
-            localStorage.setItem("accessToken", data.access_token); // <-- Guarda el token
+            // localStorage.setItem("accessToken", data.access_token); // <-- Guarda el token
 
             login(data.access_token);
             navigate("/");

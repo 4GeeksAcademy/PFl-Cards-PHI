@@ -5,13 +5,15 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   // Guardamos el token en estado
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+  console.log(token);
+  
 
   // Función para hacer login (guardar token en memoria y en localStorage)
   const login = (newToken) => {
     setToken(newToken);
-    localStorage.setItem("token", newToken);
+    localStorage.setItem("access_token", newToken);
   };
-
+  
   // Función para hacer logout (borrar token en memoria y en localStorage)
   const logout = () => {
     setToken(null);
