@@ -13,7 +13,7 @@ const Deck = () => {
     }, []);
 
     const fetchDeck = async () => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         try {
             const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
                 headers: {
@@ -30,7 +30,7 @@ const Deck = () => {
 
     // Remove card from deck via API
     const handleRemoveFromDeck = async (cardId) => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         try {
             const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/remove`, {
                 method: "PUT",

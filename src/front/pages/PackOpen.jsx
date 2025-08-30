@@ -19,7 +19,7 @@ const PackOpen = () => {
 
     // Fetch available packs on load
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         const fetchTotalPacks = async () => {
             try {
                 const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
@@ -41,7 +41,7 @@ const PackOpen = () => {
 
     // Open packs and show cards
     const handleOpenPack = async (quantity) => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         if (totalPacks < quantity) {
             alert("You don't have enough packs!");
             return;

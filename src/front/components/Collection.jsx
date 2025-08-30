@@ -14,7 +14,7 @@ const Collection = () => {
                 const respAll = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`);
                 const all = await respAll.json();
 
-                const accessToken = localStorage.getItem("accessToken");
+                const accessToken = localStorage.getItem("access_token");
                 // Colección del usuario
                 const respUser = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
                     headers: {
@@ -55,7 +55,7 @@ const Collection = () => {
     }, []);
 
     const handleAddToDeck = async (cardId) => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("acces_token");
         try {
             const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
                 method: "PUT",
