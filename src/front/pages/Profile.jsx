@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../utils/apiFetch";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -6,60 +8,57 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const token = localStorage.getItem("token"); // <- access_token
+  const navigate = useNavigate();
 
-  // Carga la info del usuario
+  // Cargar perfil
   useEffect(() => {
     const fetchProfile = async () => {
-      try {
-        const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-        });
+      const resp = await apiFetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+        { method: "GET" },
+        navigate
+      );
 
-        if (!resp.ok) {
-          throw new Error("Failed to load profile");
-        }
+      if (!resp) return; // 👈 si hubo 401, ya redirigimos
 
-        const data = await resp.json();
-        setUserData(data);
-        setNewUsername(data.username);
-      } catch (err) {
-        setError(err.message);
-      } finally {
+      if (!resp.ok) {
+        setError("Failed to load profile");
         setLoading(false);
+        return;
       }
+
+      const data = await resp.json();
+      setUserData(data);
+      setNewUsername(data.username);
+      setLoading(false);
     };
 
-    if (token) fetchProfile();
-  }, [token]);
+    fetchProfile();
+  }, [navigate]);
 
   // Update username
   const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
+
+    const resp = await apiFetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+      {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
         body: JSON.stringify({ username: newUsername }),
-      });
+      },
+      navigate
+    );
 
-      if (!resp.ok) {
-        throw new Error("Failed to update username");
-      }
+    if (!resp) return; // 👈 si 401, redirige al login
 
-      const data = await resp.json();
-      setUserData((prev) => ({ ...prev, username: data.username }));
-      alert("Username updated successfully");
-    } catch (err) {
-      setError(err.message);
+    if (!resp.ok) {
+      setError("Failed to update username");
+      return;
     }
+
+    const data = await resp.json();
+    setUserData((prev) => ({ ...prev, username: data.username }));
+    alert("Username updated successfully");
   };
 
   if (loading) return <p>Loading profile...</p>;
