@@ -1,130 +1,150 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
+import Order from "./Order";
 
-const Collection = () => {
-    const [allCards, setAllCards] = useState([]);
+
+const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) => {
     const [userCollection, setUserCollection] = useState({});
     const [loading, setLoading] = useState(true);
-    const [deckCards, setDeckCards] = useState([]);
-    const [successMsg, setSuccessMsg] = useState("");
+    const [filter, setFilter] = useState("all");
+    const [orderAsc, setOrderAsc] = useState(true);
+    const [search, setSearch] = useState(""); // Estado para la búsqueda
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const respAll = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`);
-                const all = await respAll.json();
+        const checkMobile = () => setIsMobile(window.innerWidth <= 576);
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
-                const accessToken = localStorage.getItem("access_token");
-                // Colección del usuario
-                const respUser = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const userData = await respUser.json();
-
-                // Deck del usuario
-                const respDeck = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const deckData = await respDeck.json();
-
-                // Mapeo de cartas y cantidades
+    useEffect(() => {
+        const accessToken = localStorage.getItem("access_token");
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+                "Content-Type": "application/json"
+            }
+        })
+            .then(resp => resp.json())
+            .then(userData => {
                 const userCardsMap = {};
                 if (userData["User collection"]) {
                     userData["User collection"].forEach(card => {
                         userCardsMap[card.card_id] = card.quantity;
                     });
                 }
-                setAllCards(all);
                 setUserCollection(userCardsMap);
-                setDeckCards(deckData.cards || []);
-            } catch (err) {
-                setAllCards([]);
-                setUserCollection({});
-                setDeckCards([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
+            })
+            .catch(() => setUserCollection({}))
+            .finally(() => setLoading(false));
     }, []);
 
-    const handleAddToDeck = async (cardId) => {
-        const accessToken = localStorage.getItem("acces_token");
-        try {
-            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
-                method: "PUT",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ card_id: cardId })
-            });
-            const data = await resp.json();
-            if (!resp.ok) {
-                alert(data.error || data.msg || "Error adding card to deck");
-            } else {
-                setSuccessMsg("Card added to deck successfully!");
-                setTimeout(() => setSuccessMsg(""), 2000);
-                // Actualiza deckCards tras añadir
-                setDeckCards(data.cards || []);
-            }
-        } catch (err) {
-            alert("Network error");
-        }
-    };
+    const ownedCards = cards.filter(card => userCollection[card.id] > 0);
+    const uniqueOwned = ownedCards.length;
+    const totalUnique = cards.length;
 
-    // Verifica si la carta ya está en el deck
-    const isCardInDeck = (cardId) => deckCards.some(card => card.id === cardId);
+    let filteredCards = ownedCards;
+    if (filter === "rarity") {
+        const rarityOrder = ["common", "rare", "legendary"];
+        filteredCards = [...ownedCards].sort((a, b) => {
+            const aIdx = rarityOrder.indexOf(a.game_rarity);
+            const bIdx = rarityOrder.indexOf(b.game_rarity);
+            return orderAsc ? aIdx - bIdx : bIdx - aIdx;
+        });
+    } else if (filter === "points") {
+        filteredCards = [...ownedCards].sort((a, b) =>
+            orderAsc ? b.points - a.points : a.points - b.points
+        );
+    } else if (filter === "missing") {
+        filteredCards = cards.filter(card => !userCollection[card.id]);
+    } else if (filter === "all_with_missing") {
+        filteredCards = [...cards];
+    }
+
+    // Filtra por búsqueda de nombre
+    if (search.trim() !== "") {
+        filteredCards = filteredCards.filter(card =>
+            card.name && card.name.toLowerCase().includes(search.toLowerCase())
+        );
+    }
 
     return (
         <div className="container mt-4">
-            <h2 className="mb-4">Your Card Collection</h2>
-            {successMsg && (
-                <div className="alert alert-success" role="alert" style={{ position: "fixed", top: "80px", right: "30px", zIndex: 9999 }}>
-                    {successMsg}
-                </div>
-            )}
+            <h2 className="mb-4">
+                Your Collection &nbsp;
+                <span style={{ fontSize: "1rem", color: "#1976d2" }}>
+                    ({uniqueOwned} / {totalUnique})
+                </span>
+            </h2>
+            <Order
+                filter={filter}
+                setFilter={setFilter}
+                orderAsc={orderAsc}
+                setOrderAsc={setOrderAsc}
+            />
+            {/* Barra de búsqueda */}
+            <div className="mb-3" style={{ display: "flex", justifyContent: "center" }}>
+                <input
+                    type="text"
+                    className="form-control"
+                    style={{ maxWidth: 320 }}
+                    placeholder="Search cards by name..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                />
+            </div>
             {loading ? (
                 <p>Loading cards...</p>
             ) : (
                 <div className="row">
-                    {allCards.filter(card => userCollection[card.id] > 0).length === 0 ? (
-                        <p>You don't have any cards in your collection yet.</p>
+                    {filteredCards.length === 0 ? (
+                        <p>No cards to display.</p>
                     ) : (
-                        allCards
-                            .filter(card => userCollection[card.id] > 0)
-                            .map((card, idx) => (
-                                <div key={card.id || idx} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                        filteredCards.map((card, idx) => {
+                            const owned = userCollection[card.id] > 0;
+                            return (
+                                <div
+                                    key={card.id || idx}
+                                    className={
+                                        isMobile
+                                            ? "col-12 mb-4"
+                                            : "col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                                    }
+                                    style={{ display: "flex", justifyContent: "center" }}
+                                >
                                     <div style={{ position: "relative" }}>
                                         <Card
                                             card={card}
-                                            onAddToDeck={() => handleAddToDeck(card.id)}
-                                            isAlreadyInDeck={isCardInDeck(card.id)}
+                                            onAddToDeck={() => handleAddToDeck(card, idx)}
+                                            isAlreadyInDeck={isCardInDeck(card, idx)}
+                                            hideAddToDeck={!owned}
+                                            style={
+                                                (filter === "missing" || (filter === "all_with_missing" && !owned))
+                                                    ? { filter: "grayscale(1)", opacity: 0.6 }
+                                                    : {}
+                                            }
                                         />
-                                        <span
-                                            style={{
-                                                position: "absolute",
-                                                top: "12px",
-                                                right: "16px",
-                                                background: "#eee",
-                                                borderRadius: "8px",
-                                                padding: "4px 10px",
-                                                fontWeight: "bold",
-                                                color: "#333"
-                                            }}
-                                        >
-                                            x{userCollection[card.id]}
-                                        </span>
+                                        {owned && (
+                                            <span
+                                                style={{
+                                                    position: "absolute",
+                                                    top: "12px",
+                                                    right: "16px",
+                                                    background: "#eee",
+                                                    borderRadius: "8px",
+                                                    padding: "4px 10px",
+                                                    fontWeight: "bold",
+                                                    color: "#333"
+                                                }}
+                                            >
+                                                x{userCollection[card.id]}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
-                            ))
+                            );
+                        })
                     )}
                 </div>
             )}
