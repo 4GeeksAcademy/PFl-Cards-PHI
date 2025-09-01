@@ -564,3 +564,21 @@ def get_users_ranking():
         return jsonify({"users": result}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@api.route('/users/<int:user_id>', methods=['GET'])
+def get_user_profile(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"error": "Usuario no encontrado"}), 404
+    deck = Deck.query.filter_by(user_id=user.id).first()
+    deck_points = 0
+    if deck:
+        deck_points = sum(
+            [card.points for card in [dc.card for dc in deck.cards]])
+    return jsonify({
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "deck_points": deck_points
+    }), 200

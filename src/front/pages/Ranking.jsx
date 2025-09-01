@@ -18,7 +18,7 @@ const Ranking = () => {
     const [myRanking, setMyRanking] = useState(null);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}api/users`)
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
             .then(res => res.json())
             .then(data => {
                 const sorted = data.users.sort((a, b) => b.deck_points - a.deck_points);
@@ -28,15 +28,15 @@ const Ranking = () => {
     }, []);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
+        const accessToken = localStorage.getItem("access_token");
+        if (!accessToken) {
             setMyProfile(null);
             setMyRanking(null);
             return;
         }
         fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
             headers: {
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
             }
         })

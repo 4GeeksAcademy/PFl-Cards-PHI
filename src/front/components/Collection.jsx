@@ -93,7 +93,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                 />
-            </div>
+            </div> 
             {loading ? (
                 <p>Loading cards...</p>
             ) : (
