@@ -1,40 +1,33 @@
 import React, { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Guardamos el token en estado
-  const [token, setToken] = useState(localStorage.getItem("access_token") || null);
-  console.log(token);
-  
+  const [token, setToken] = useState(localStorage.getItem("access_token"));
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  // Función para hacer login (guardar token en memoria y en localStorage)
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("access_token", token);
+    } else {
+      localStorage.removeItem("access_token");
+    }
+  }, [token]);
+
   const login = (newToken) => {
     setToken(newToken);
-    localStorage.setItem("access_token", newToken);
   };
-  
-  // Función para hacer logout (borrar token en memoria y en localStorage)
+
   const logout = () => {
     setToken(null);
-    localStorage.removeItem("access_token");
+    setUser(null);
+    navigate("/login"); // redirige al login
   };
 
-  // Cuando la app se monta, comprobamos si ya había un token guardado
-  useEffect(() => {
-    const savedToken = localStorage.getItem("access_token");
-    if (savedToken) setToken(savedToken);
-  }, []);
-
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        isAuthenticated: !!token, 
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ token, user, setUser, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

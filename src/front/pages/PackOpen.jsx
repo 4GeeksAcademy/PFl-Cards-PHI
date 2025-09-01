@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
-import { apiFetch } from "../utils/apiFetch";
+import { useApiFetch } from "../utils/apiFetch";
 
 const packImg = "https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png";
 

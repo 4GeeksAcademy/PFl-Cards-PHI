@@ -1,27 +1,36 @@
 // import { toast } from "react-toastify";
-let hasShownSessionExpired = false; // bandera global
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
-export const apiFetch = async (url, options = {}) => {
-  const token = localStorage.getItem("access_token");
+let hasShownSessionExpired = false; // para que no muestre múltiples alerts
 
-  const resp = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  });
+export const useApiFetch = () => {
+  const { logout } = useContext(AuthContext);
 
-  if (resp && (resp.status === 401 || resp.status === 422)) {
-    if (!hasShownSessionExpired) {
-      hasShownSessionExpired = true; // evitar duplicados
-      alert(" Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
-      localStorage.removeItem("access_token");
-      window.location.href = "/login"; // fuerza recarga y navbar se actualiza
+  const apiFetch = async (url, options = {}) => {
+    const accessToken = localStorage.getItem("access_token"); 
+
+    const resp = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+        Authorization: accessToken ? `Bearer ${accessToken}` : "",
+      },
+    });
+
+    // Si el token caduca o es inválido
+    if (resp && (resp.status === 401 || resp.status === 422)) {
+      if (!hasShownSessionExpired) {
+        hasShownSessionExpired = true;
+        alert(" Sesion expired. Please, log in.");
+      }
+      logout(); // limpia estado global y te manda al login
+      return null;
     }
-    return null;
-  }
 
-  return resp;
+    return resp;
+  };
+
+  return apiFetch;
 };

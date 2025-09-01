@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "./Card";
-import { apiFetch } from "../utils/apiFetch";
+import { useApiFetch } from "../utils/apiFetch";
 
 const TOTAL_SLOTS = 20; 
 

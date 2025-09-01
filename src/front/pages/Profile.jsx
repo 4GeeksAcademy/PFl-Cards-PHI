@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiFetch } from "../utils/apiFetch";
+import { useApiFetch } from "../utils/apiFetch";
+import { AuthContext } from "../context/AuthContext";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -8,57 +9,54 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Cargar perfil
+  // Carga la info del usuario
   useEffect(() => {
     const fetchProfile = async () => {
-      const resp = await apiFetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
-        { method: "GET" },
-        navigate
-      );
-
-      if (!resp) return; // 👈 si hubo 401, ya redirigimos
-
-      if (!resp.ok) {
-        setError("Failed to load profile");
+      try {
+        const data = await apiFetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+          { method: "GET" },
+          logout,
+          navigate
+        );
+        if (data) {
+          setUserData(data);
+          setNewUsername(data.username);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      const data = await resp.json();
-      setUserData(data);
-      setNewUsername(data.username);
-      setLoading(false);
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, [logout, navigate]);
 
   // Update username
   const handleUpdate = async (e) => {
     e.preventDefault();
+    try {
+      const data = await apiFetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ username: newUsername }),
+        },
+        logout,
+        navigate
+      );
 
-    const resp = await apiFetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
-      {
-        method: "PUT",
-        body: JSON.stringify({ username: newUsername }),
-      },
-      navigate
-    );
-
-    if (!resp) return; // 👈 si 401, redirige al login
-
-    if (!resp.ok) {
-      setError("Failed to update username");
-      return;
+      if (data) {
+        setUserData((prev) => ({ ...prev, username: data.username }));
+        alert("Username updated successfully");
+      }
+    } catch (err) {
+      setError(err.message);
     }
-
-    const data = await resp.json();
-    setUserData((prev) => ({ ...prev, username: data.username }));
-    alert("Username updated successfully");
   };
 
   if (loading) return <p>Loading profile...</p>;
@@ -66,35 +64,24 @@ const Profile = () => {
 
   return (
     <div className="container mt-4">
-      <div className="row">
-        {/* Left column with user data */}
-        <div className="col-md-4">
-          <h3>My profile</h3>
-          <p><strong>Username:</strong> {userData?.username}</p>
-          <p><strong>Email:</strong> {userData?.email}</p>
+      <h3>My profile</h3>
+      <p><strong>Username:</strong> {userData?.username}</p>
+      <p><strong>Email:</strong> {userData?.email}</p>
 
-          <form onSubmit={handleUpdate}>
-            <div className="mb-3">
-              <label className="form-label">New username</label>
-              <input
-                type="text"
-                className="form-control"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Update
-            </button>
-          </form>
+      <form onSubmit={handleUpdate}>
+        <div className="mb-3">
+          <label className="form-label">New username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+          />
         </div>
-
-        {/* Placeholder for ranking and collection */}
-        <div className="col-md-8">
-          <h3>User cards</h3>
-          <p>Aqui se mostraran las cartas</p>
-        </div>
-      </div>
+        <button type="submit" className="btn btn-primary">
+          Update
+        </button>
+      </form>
     </div>
   );
 };
