@@ -139,6 +139,214 @@ def update_profile():
         return jsonify({"error": str(e)}), 500
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # PEDRO DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Configuracion de sobres y cartas
 PACK_SIZE = 5  # cantidad de cartas por sobre
@@ -233,7 +441,7 @@ def add_to_collection(user_id: int, card_ids: list[str]) -> None:
             uc.quantity += 1
         else:
             db.session.add(
-                UserCard(user_id=user_id, card_id=card_id, quantity=1))
+                UserCard(user_id=user_id, card_id=card_id, quantity=1)) 
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -535,6 +743,60 @@ def deck_remove():
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # HECTOR DESDE AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 @api.route('/cards', methods=['GET'])
@@ -574,8 +836,7 @@ def get_user_profile(user_id):
     deck = Deck.query.filter_by(user_id=user.id).first()
     deck_points = 0
     if deck:
-        deck_points = sum(
-            [card.points for card in [dc.card for dc in deck.cards]])
+        deck_points = sum([card.points for card in [dc.card for dc in deck.cards]])
     return jsonify({
         "id": user.id,
         "username": user.username,
