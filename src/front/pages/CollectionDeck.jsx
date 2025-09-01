@@ -29,7 +29,7 @@ const CollectionDeck = () => {
     // Fetch deck from API
     useEffect(() => {
         const fetchDeck = async () => {
-            const accessToken = localStorage.getItem("accessToken");
+            const accessToken = localStorage.getItem("access_token");
             try {
                 const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
                     headers: {
@@ -56,7 +56,7 @@ const CollectionDeck = () => {
     // Actualiza para usar la API
     const handleAddToDeck = async (card, idx) => {
         if (deck.length >= 20 || isCardInDeck(card, idx)) return;
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         try {
             const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
                 method: "PUT",

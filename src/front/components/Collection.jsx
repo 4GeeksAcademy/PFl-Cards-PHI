@@ -18,7 +18,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
     }, []);
 
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem("access_token");
         fetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
