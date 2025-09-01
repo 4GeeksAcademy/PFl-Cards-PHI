@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import News from "../components/News";
 
 
 export const Home = () => {
@@ -54,6 +55,7 @@ export const Home = () => {
                         ¡Pero debes decidirte rápido!
                         Cada drop solo está disponible durante un tiempo limitado. ¡Si te lo pierdes, desaparece!
                     </p>
+                    <News />
                 </div>
 
                 {/* Columna derecha */}
