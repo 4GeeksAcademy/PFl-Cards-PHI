@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 const Gateway = ({ packSeleccionado, quantity, onClose }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("access_token");
 
     const handleBuy = async () => {
         setLoading(true);
         try {
             console.log("Quantity sent to API:", quantity);
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/buy`, {
+            const response = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/buy`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,

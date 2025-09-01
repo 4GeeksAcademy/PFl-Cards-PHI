@@ -12,13 +12,16 @@ const Card = ({
     onAddToDeck,
     onRemoveFromDeck,
     isAlreadyInDeck = false, // true if this card is already in deck
-    hideAddToDeck = false // <-- nueva prop
+    hideAddToDeck = false, // <-- nueva prop
+    style
 }) => {
     if (!card) return null;
 
     return (
         <div
+            className="card"
             style={{
+                ...style,
                 width: "220px",
                 borderRadius: "14px",
                 boxShadow: "0 4px 16px #bbb",

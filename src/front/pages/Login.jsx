@@ -27,7 +27,7 @@ const Login = () => {
             const data = await resp.json();
             console.log("Login response:", data);
 
-            localStorage.setItem("accessToken", data.access_token); // Save token in localStorage
+            // localStorage.setItem("accessToken", data.access_token); // Save token in localStorage
             login(data.access_token); // Use context
             navigate("/"); // Redirect to home
         } catch (err) {

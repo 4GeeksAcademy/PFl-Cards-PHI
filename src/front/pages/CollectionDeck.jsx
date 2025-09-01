@@ -19,10 +19,31 @@ const CollectionDeck = () => {
     const [cards, setCards] = useState([]);
     const [deck, setDeck] = useState([]);
 
+
     useEffect(() => {
         fetch("/src/data/cards_catalog_3sets.json")
             .then((res) => res.json())
             .then((data) => setCards(data.cards));
+    }, []);
+
+    // Fetch deck from API
+    useEffect(() => {
+        const fetchDeck = async () => {
+            const accessToken = localStorage.getItem("access_token");
+            try {
+                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                const data = await resp.json();
+                setDeck(data.cards || []);
+            } catch (err) {
+                setDeck([]);
+            }
+        };
+        fetchDeck();
     }, []);
 
     const getCardId = (card, idx) => card.id || card.name || idx;
@@ -32,9 +53,27 @@ const CollectionDeck = () => {
         return deck.some((d, i) => getCardId(d, i) === cardId);
     };
 
-    const handleAddToDeck = (card, idx) => {
-        if (deck.length < 20 && !isCardInDeck(card, idx)) {
-            setDeck([...deck, card]);
+    // Actualiza para usar la API
+    const handleAddToDeck = async (card, idx) => {
+        if (deck.length >= 20 || isCardInDeck(card, idx)) return;
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ card_id: card.id })
+            });
+            const data = await resp.json();
+            if (!resp.ok) {
+                alert(data.error || data.msg || "Error adding card to deck");
+            } else {
+                setDeck(data.cards || []);
+            }
+        } catch (err) {
+            alert("Network error");
         }
     };
 
