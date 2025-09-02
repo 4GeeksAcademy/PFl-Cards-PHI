@@ -8,6 +8,13 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token
 from sqlalchemy import select, func
 import random
+import os
+
+import stripe
+# This test secret API key is a placeholder. Don't include personal details in requests with this key.
+# To see your test secret API key embedded in code samples, sign in to your Stripe account.
+# You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
+stripe.api_key = 'sk_test_51S2TbbEH0jXBnQSieqTwDF1MGJAMOZYYGz6Knr4aOivRWqB1rDKi4pd8t6q0PbSqsXquUURd2SCTSQRRPofLdP4a00CdWAt3vl'
 
 
 api = Blueprint('api', __name__)
@@ -136,173 +143,6 @@ def update_profile():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -749,6 +589,31 @@ def deck_remove():
     except Exception as e:
         db.session.rollback()
         return jsonify({"msg": "Error removing card from deck", "details": str(e)}), 500
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Endpoints Stripe pasarela de pago ----------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@api.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, price_1234) of the product you want to sell
+                    'price': '{{PRICE_ID}}',
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url= os.getenv('VITE_BACKEND_URL') + '?success=true',
+            cancel_url= os.getenv('VITE_BACKEND_URL') + '?canceled=true',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
 
 
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
