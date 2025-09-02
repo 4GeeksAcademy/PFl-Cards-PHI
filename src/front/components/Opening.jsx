@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 
-const backImg = "docs/Imagenes/DorsoPKM.png";
+const backImg = "docs/Imagenes/Dorso.png";
 
 const Opening = ({ packs = [], onClose }) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
@@ -49,7 +49,7 @@ const Opening = ({ packs = [], onClose }) => {
                                     <Card card={card} hideAddToDeck={true} style={{
                                         width: "220px",
                                         height: "340px",
-                                        borderRadius: "14px"
+                                        borderRadius: "0px"
                                     }} />
                                 </div>
                             </div>

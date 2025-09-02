@@ -1,17 +1,34 @@
 import React from "react";
+import OnepacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/1pack.png";
+import FivepacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/5pack.png";
+import TenpacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/10pack.png";
+
+const packImages = {
+  "1 Pack": OnepacK,
+  "5 Packs": FivepacK,
+  "10 Packs": TenpacK
+};
 
 export default function PackCard({ title, description, buttonText, onComprar }) {
   return (
-    <div className="card text-center shadow-sm" style={{ width: "18rem" }}>
-      <div className="card-body">
-        <img className="card-img-top" src="https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png"/>
-        {/* <div
-          className="bg-secondary mb-3"
-          style={{ width: "100%", height: "150px" }}
-        ></div> */}
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{description}</p>
-        <button className="btn btn-primary" onClick={onComprar}>{buttonText}</button>
+    <div className="card text-center shadow-sm" style={{ width: "22rem", minHeight: "520px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+      <div className="card-body d-flex flex-column align-items-center">
+        <img
+          className="card-img-top"
+          src={packImages[title]}
+          alt={title}
+          style={{
+            width: "240px",
+            height: "240px",
+            objectFit: "contain",
+            marginBottom: "20px"
+          }}
+        />
+        <h5 className="card-title" style={{ fontSize: "2rem" }}>{title}</h5>
+        <p className="card-text" style={{ fontSize: "1.2rem" }}>{description}</p>
+      </div>
+      <div className="card-footer bg-transparent border-0">
+        <button className="btn btn-primary btn-lg" onClick={onComprar}>{buttonText}</button>
       </div>
     </div>
   );

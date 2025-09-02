@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
 
-const packImg = "docs/Imagenes/Sobre.png";
+
+const packImg = "docs/Imagenes/1pack.png";
 
 const PackOpen = () => {
     const [totalPacks, setTotalPacks] = useState(null);

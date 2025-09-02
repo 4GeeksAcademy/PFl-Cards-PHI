@@ -3,25 +3,20 @@ import Gateway from "../components/Gateway";
 import PackCard from "../components/PackCard";
 import { useNavigate } from "react-router-dom";
 
-// Image URL for card 4
-const cardImg = "https://raw.githubusercontent.com/Porki5/PFl-Cards-PHI/main/src/front/assets/cards/4.png";
 
 const packData = [
     {
         title: "1 Pack",
-        img: cardImg,
         description: "A pack with 5 random cards.",
         quantity: 1
     },
     {
         title: "5 Packs",
-        img: cardImg,
         description: "Five packs with random cards.",
         quantity: 5
     },
     {
         title: "10 Packs",
-        img: cardImg,
         description: "Ten packs with random cards.",
         quantity: 10
     }
@@ -53,7 +48,6 @@ const Shop = () => {
                         <div key={idx} className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
                             <PackCard
                                 title={pack.title}
-                                img={pack.img}
                                 description={pack.description}
                                 buttonText={`Buy ${pack.quantity}`}
                                 onComprar={() => handleBuy(pack.title, pack.quantity)}
