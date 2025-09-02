@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const USERS_PER_PAGE = 50;
 const medals = ["🥈", "🥇", "🥉"]; // El oro (1º) va en el centro

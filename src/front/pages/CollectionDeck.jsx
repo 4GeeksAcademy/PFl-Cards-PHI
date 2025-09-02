@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Deck from "../components/Deck";
 import Collection from "../components/Collection";
+import { toast } from "react-toastify";
 
 const tabStyle = (active) => ({
     padding: "10px 24px",
@@ -72,7 +73,7 @@ const CollectionDeck = () => {
             setSuccessMsg("¡Carta añadida con éxito!");
             setTimeout(() => setSuccessMsg(""), 2000); // Oculta el mensaje tras 2 segundos
         } catch (err) {
-            alert("Network error");
+            toast.error("Network error");
         }
     };
 

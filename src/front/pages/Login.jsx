@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
     const { login } = useContext(AuthContext);
@@ -20,19 +21,20 @@ const Login = () => {
                 body: JSON.stringify({ email, password })
             });
 
-            if (!resp.ok) {
-                throw new Error("Login error");
-            }
-
             const data = await resp.json();
             console.log("Login response:", data);
 
-            // localStorage.setItem("accessToken", data.access_token); // Save token in localStorage
+            if (!resp.ok) {
+                toast.error(data.msg || "Unable to login. Please try again.");
+                throw new Error(data.msg || "Login error");
+            }
+
+            toast.success("Login successful!");
             login(data.access_token); // Use context
             navigate("/"); // Redirect to home
         } catch (err) {
             console.error(err);
-            setError("Incorrect email or password");
+            toast.error("Server connection error.");
         }
     };
 

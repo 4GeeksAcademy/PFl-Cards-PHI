@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
+import { toast } from "react-toastify";
 
 const packImg = "docs/Imagenes/Sobre.png";
 
@@ -43,7 +44,7 @@ const PackOpen = () => {
     const handleOpenPack = async (quantity) => {
         const accessToken = localStorage.getItem("access_token");
         if (totalPacks < quantity) {
-            alert("You don't have enough packs!");
+            toast.error("You don't have enough packs!");
             return;
         }
         let cardsOpened = [];
@@ -67,7 +68,7 @@ const PackOpen = () => {
             setCardsToShow(cardsOpened);
             setShowOpening(true);
         } catch (err) {
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
