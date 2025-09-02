@@ -843,3 +843,20 @@ def get_user_profile(user_id):
         "email": user.email,
         "deck_points": deck_points
     }), 200
+
+
+@api.route('/users/<int:user_id>/deck', methods=['GET'])
+def get_user_deck(user_id):
+    deck = Deck.query.filter_by(user_id=user_id).first()
+    if not deck:
+        return jsonify({"cards": []}), 200
+
+    deck_cards = (
+        db.session.query(Card)
+        .join(DeckCard, DeckCard.card_id == Card.id)
+        .filter(DeckCard.deck_id == deck.id)
+        .all()
+    )
+
+    cards_list = [card.serialize() for card in deck_cards]
+    return jsonify({"cards": cards_list}), 200

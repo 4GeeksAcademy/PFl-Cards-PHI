@@ -9,7 +9,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     navigate("/login");
-  };
+  }; 
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

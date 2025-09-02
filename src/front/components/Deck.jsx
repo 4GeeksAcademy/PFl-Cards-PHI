@@ -15,7 +15,7 @@ const Deck = () => {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
     
-    useEffect(() => {
+    useEffect(() => { 
         fetchDeck(); 
     }, []);
 
