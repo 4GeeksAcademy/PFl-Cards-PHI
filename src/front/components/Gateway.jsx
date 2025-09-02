@@ -10,7 +10,7 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
         setLoading(true);
         try {
             console.log("Quantity sent to API:", quantity);
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/buy`, {
+            const response = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/buy`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
