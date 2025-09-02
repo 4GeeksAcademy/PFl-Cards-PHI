@@ -22,7 +22,7 @@ const PackOpen = () => {
         const accessToken = localStorage.getItem("access_token");
         const fetchTotalPacks = async () => {
             try {
-                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
+                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
                     },
@@ -49,7 +49,7 @@ const PackOpen = () => {
         let cardsOpened = [];
         try {
             for (let i = 0; i < quantity; i++) {
-                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
+                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${accessToken}`,
