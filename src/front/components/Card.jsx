@@ -30,20 +30,35 @@ const Card = ({
                 flexDirection: "column",
                 alignItems: "center",
                 padding: "16px",
-                margin: "16px auto"
+                margin: "16px auto",
+                overflow: "hidden"
             }}
         >
-            <img
-                src={card.image_url}
-                alt={card.name}
+            <div
                 style={{
                     width: "180px",
                     height: "270px",
-                    objectFit: "contain",
                     borderRadius: "10px",
-                    marginBottom: "12px"
+                    marginBottom: "12px",
+                    overflow: "hidden",
+                    background: "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden"
                 }}
-            />
+            >
+                <img
+                    src={card.image_url}
+                    alt={card.name}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover", // Cambia contain por cover
+                        borderRadius: "10px"
+                    }}
+                />
+            </div>
             <div
                 style={{
                     width: "100%",
