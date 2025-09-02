@@ -11,11 +11,6 @@ import random
 import os
 
 import stripe
-# This test secret API key is a placeholder. Don't include personal details in requests with this key.
-# To see your test secret API key embedded in code samples, sign in to your Stripe account.
-# You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
-stripe.api_key = 'sk_test_51S2TbbEH0jXBnQSieqTwDF1MGJAMOZYYGz6Knr4aOivRWqB1rDKi4pd8t6q0PbSqsXquUURd2SCTSQRRPofLdP4a00CdWAt3vl'
-
 
 api = Blueprint('api', __name__)
 
@@ -592,28 +587,100 @@ def deck_remove():
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Endpoints Stripe pasarela de pago ----------------------------
+# Endpoints y configuracion para la pasarela de pago Stripe ----------------------------
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-@api.route('/create-checkout-session', methods=['POST'])
-def create_checkout_session():
-    try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    # Provide the exact Price ID (for example, price_1234) of the product you want to sell
-                    'price': '{{PRICE_ID}}',
-                    'quantity': 1,
-                },
-            ],
-            mode='payment',
-            success_url= os.getenv('VITE_BACKEND_URL') + '?success=true',
-            cancel_url= os.getenv('VITE_BACKEND_URL') + '?canceled=true',
-        )
-    except Exception as e:
-        return str(e)
+# El env contiene la variable con la clave secreta de Stripe
+# You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
-    return redirect(checkout_session.url, code=303)
+# Registro los precios a través de variables de entorno
+    # (estos precios se crean en el dashboard de Stripe, en Products -> Prices)
+PRICE_MAP = {
+    1: os.getenv("STRIPE_PRICE_PACK_1"),
+    5: os.getenv("STRIPE_PRICE_PACK_5"),
+    10: os.getenv("STRIPE_PRICE_PACK_10"),
+}
+
+# Endpoint para crear la sesión de checkout en Stripe -----------------------------------------------------------------------------------
+    # El frontend llama a este endpoint y redirige al usuario a la URL que devuelve
+    # El success_url y cancel_url son URLs del frontend a las que redirigir tras el pago o cancelación
+
+@api.route('/create-checkout-session', methods=['POST'])
+@jwt_required()  # Token obligatorio: solo usuarios logueados pueden iniciar una compra
+def create_checkout_session():
+    # Leo el pack del body (espero 1, 5 o 10)
+    data = request.get_json()
+    pack = int(data.get("pack", 0))
+
+    # Valido el pack y obtengo el price_id de PRICE_MAP
+    price_id = PRICE_MAP.get(pack)
+    if not price_id:
+        return jsonify({"msg": "Invalid pack. Use 1, 5 or 10."}), 400
+
+    # Obtengo el user_id del token JWT
+    user_id = get_jwt_identity()
+
+    # Se crea la sesión de pago en Stripe con los parametros necesarios
+    try:
+        session = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=[{"price": price_id, "quantity": 1}],
+            success_url=os.getenv("VITE_BACKEND_URL") + "/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=os.getenv("VITE_BACKEND_URL") + "?canceled=true",
+            metadata={"user_id": str(user_id), "pack_selected": str(pack)},
+        )
+        # Se debvuelve el id para que el frontend haga redirect con stripe.redirectToCheckout
+        return jsonify({"id": session.id}), 200
+    except Exception as e:
+        return jsonify({"msg": "Failed to create checkout session.", "error": str(e)}), 500
+
+
+# Endpoint para confirmar el pago y conceder los sobres al usuario -----------------------------------------------------------------------
+    # El frontend llama a este endpoint tras la redirección desde Stripe al success_url
+@api.route('/checkout/confirm', methods=['POST'])
+@jwt_required()  # de nuevo, solo usuarios logueados
+def checkout_confirm():
+    # Leo el session_id que llega desde el frontend 
+    data = request.get_json()
+    session_id = data.get("session_id") or request.args.get("session_id")
+    if not session_id:
+        return jsonify({"msg": "Missing session_id."}), 400
+
+    try:
+        # Obtengo mi user_id del JWT para cruzarlo con la sesión de Stripe
+        user_id = int(get_jwt_identity())
+
+        # Pido a Stripe los datos de la sesión para verificar que el pago está realizado
+        # (Uso mi clave secreta ya configurada en stripe.api_key)
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        # Se comrprueba que la sesión está pagada (en test debe ser 'paid' tras completar el Checkout)
+        if session.get("payment_status") != "paid":
+            return jsonify({"msg": "Session not paid yet."}), 402
+
+        # Aquí debajo verifico que la sesión de Stripe pertenece al usuario autenticado y leo la cantidad de sobres comprados
+        meta = session.get("metadata")
+        session_user = meta.get("user_id")
+        pack_selected = meta.get("pack_selected")
+        if not session_user or not pack_selected:
+            return jsonify({"msg": "Missing metadata in the Stripe session."}), 400
+        if int(session_user) != user_id:
+            return jsonify({"msg": "Session does not belong to this user."}), 403
+
+        # Se añaden los sobres a la cuenta del usuario
+        db.session.add(PackPurchase(user_id=user_id, quantity=int(pack_selected)))
+        db.session.commit()
+
+        # Mandos respuesta de éxito al frontend
+        return jsonify({"msg": "Packs granted successfully."}), 200
+
+    except stripe.error.InvalidRequestError as e:
+        # Por ejemplo: session_id inexistente o mal referenciada
+        return jsonify({"msg": "Stripe session retrieval failed.", "error": str(e)}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Unexpected server error.", "error": str(e)}), 500
 
 
 # PEDRO HASTA AQUI ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
