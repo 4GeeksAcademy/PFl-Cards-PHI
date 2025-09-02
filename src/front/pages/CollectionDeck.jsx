@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Deck from "../components/Deck";
 import Collection from "../components/Collection";
 
@@ -18,7 +18,7 @@ const CollectionDeck = () => {
     const [activeTab, setActiveTab] = useState("collection");
     const [cards, setCards] = useState([]);
     const [deck, setDeck] = useState([]);
-
+    const [successMsg, setSuccessMsg] = useState("");
 
     useEffect(() => {
         fetch("/src/data/cards_catalog_3sets.json")
@@ -67,11 +67,10 @@ const CollectionDeck = () => {
                 body: JSON.stringify({ card_id: card.id })
             });
             const data = await resp.json();
-            if (!resp.ok) {
-                alert(data.error || data.msg || "Error adding card to deck");
-            } else {
-                setDeck(data.cards || []);
-            }
+            if (!resp.ok) throw new Error(data.error || "Error adding card");
+            setDeck(data.cards || []);
+            setSuccessMsg("¡Carta añadida con éxito!");
+            setTimeout(() => setSuccessMsg(""), 2000); // Oculta el mensaje tras 2 segundos
         } catch (err) {
             alert("Network error");
         }
@@ -79,6 +78,11 @@ const CollectionDeck = () => {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px" }}>
+            {successMsg && (
+                <div className="alert alert-success text-center" style={{ position: "fixed", top: "70px", left: 0, right: 0, zIndex: 9999 }}>
+                    {successMsg}
+                </div>
+            )}
             <div style={{
                 display: "flex",
                 justifyContent: "center",

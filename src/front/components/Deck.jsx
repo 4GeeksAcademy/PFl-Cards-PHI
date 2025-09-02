@@ -16,7 +16,7 @@ const Deck = () => {
     }, []);
     
     useEffect(() => {
-        fetchDeck();
+        fetchDeck(); 
     }, []);
 
     const fetchDeck = async () => {
