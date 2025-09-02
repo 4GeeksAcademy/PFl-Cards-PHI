@@ -87,7 +87,7 @@ const CollectionDeck = () => {
                 marginBottom: "24px"
             }}>
                 <button
-                    onClick={() => setActiveTab("collection")}
+                    onClick={() => window.location.reload()} // Recarga la página al pulsar "Collection"
                     style={tabStyle(activeTab === "collection")}
                 >
                     Collection
