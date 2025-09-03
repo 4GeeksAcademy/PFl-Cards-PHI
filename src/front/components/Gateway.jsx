@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { apiFetch } from "../utils/apiFetch";
 
 const Gateway = ({ packSeleccionado, quantity, onClose }) => {
     const [loading, setLoading] = useState(false);

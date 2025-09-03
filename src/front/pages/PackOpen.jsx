@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
 import { toast } from "react-toastify";
+import { apiFetch } from "../utils/apiFetch";
 
 const packImg = "docs/Imagenes/Sobre.png";
 
