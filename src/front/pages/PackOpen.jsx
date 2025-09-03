@@ -115,7 +115,7 @@ const PackOpen = () => {
                 )}
             </div>
             {/* Pack image and buttons closer to the top */}
-            <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem" }}>
+            <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem", width: "100%" }}>
                 <img
                     src={packImg}
                     alt="Pack"
@@ -128,15 +128,34 @@ const PackOpen = () => {
                         borderRadius: "24px"
                     }}
                 />
-                <div className="d-flex justify-content-center gap-3" ref={buttonsRef}>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(1)} disabled={buttonsDisabled}>
+                {/* Línea superior: 3 botones */}
+                <div
+                    className="d-flex justify-content-center gap-3"
+                    ref={buttonsRef}
+                    style={{ width: "320px", maxWidth: "100%" }}
+                >
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(1)} disabled={buttonsDisabled}>
                         Open 1
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(5)} disabled={buttonsDisabled}>
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(5)} disabled={buttonsDisabled}>
                         Open 5
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(10)} disabled={buttonsDisabled}>
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(10)} disabled={buttonsDisabled}>
                         Open 10
+                    </button>
+                </div>
+                {/* Línea inferior: botón "Open All" con el mismo ancho */}
+                <div
+                    className="d-flex justify-content-center"
+                    style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
+                >
+                    <button
+                        className="btn btn-danger flex-grow-1"
+                        style={{ minWidth: "180px", maxWidth: "300px" }}
+                        onClick={() => handleOpenPack(totalPacks)}
+                        disabled={buttonsDisabled || totalPacks < 1}
+                    >
+                        Open All ({totalPacks})
                     </button>
                 </div>
             </div>
