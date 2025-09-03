@@ -101,20 +101,31 @@ const ProfilePrivate = ({
                         {userData?.deck_points}
                     </span>
                 </div>
-                {deckCards.length === 0 ? (
-                    <p>There are no cards in the deck.</p>
-                ) : (
-                    <div className="row justify-content-center">
-                        {deckCards.map((card) => (
-                            <div
-                                className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 d-flex justify-content-center"
-                                key={card.id}
-                            >
-                                <Card card={card} hideAddToDeck={true} />
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <div
+                    style={{
+                        background: "#d6d8db",
+                        borderRadius: "18px",
+                        padding: "32px 18px",
+                        minHeight: "220px",
+                        marginBottom: "24px",
+                        boxShadow: "0 2px 12px #bbb"
+                    }}
+                >
+                    {deckCards.length === 0 ? (
+                        <p className="text-center">There are no cards in the deck.</p>
+                    ) : (
+                        <div className="row justify-content-center">
+                            {deckCards.map((card) => (
+                                <div
+                                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 d-flex justify-content-center"
+                                    key={card.id}
+                                >
+                                    <Card card={card} hideAddToDeck={true} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     </div>
