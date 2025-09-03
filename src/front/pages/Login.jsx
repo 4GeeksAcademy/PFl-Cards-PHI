@@ -25,8 +25,8 @@ const Login = () => {
             console.log("Login response:", data);
 
             if (!resp.ok) {
-                toast.error(data.msg || "Unable to login. Please try again.");
-                throw new Error(data.msg || "Login error");
+                toast.error(data.msg || data.error || "Unable to login. Please try again.");
+                throw new Error(data.msg || data.error || "Login error");
             }
 
             toast.success("Login successful!");
@@ -34,7 +34,7 @@ const Login = () => {
             navigate("/"); // Redirect to home
         } catch (err) {
             console.error(err);
-            toast.error("Server connection error.");
+            // toast.error("Server connection error.");
         }
     };
 
