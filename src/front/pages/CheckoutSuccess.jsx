@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CheckoutSuccess() {
   const [msg, setMsg] = useState("Confirming purchase...");
+  const didRun = useRef(false);
 
   useEffect(() => {
+    if (didRun.current) return; // Evita múltiples ejecuciones en modo estricto
+    didRun.current = true; 
+
     const url = new URL(window.location.href);
     const sessionId = url.searchParams.get("session_id");
     if (!sessionId) { setMsg("Missing session_id."); return; }
