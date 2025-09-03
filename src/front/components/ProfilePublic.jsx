@@ -46,13 +46,12 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     return (
         <div className="container mt-4">
             <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <div className="mb-3">
-                        {/* Username centered above the stats box */}
                         <div style={{
                             width: "100%",
                             display: "flex",
-                            justifyContent: "center",
+                            flexDirection: "column",
                             alignItems: "center",
                             marginBottom: "12px"
                         }}>
@@ -69,50 +68,58 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             <div className="mt-3 p-3 shadow-sm"
                                 style={{
                                     background: "#d5dee7ff",
-                                    textAlign: "left",
+                                    textAlign: "center",
                                     border: "1px solid #e0e0e0",
-                                    borderRadius: "18px", // Esquinas igual que el cuadro de cartas
+                                    borderRadius: "18px",
                                 }}>
-                                <div className="mb-2 d-flex justify-content-between align-items-center"
-                                    style={{ background: "#1976d2", borderRadius: "8px", padding: "6px 10px" }}>
-                                    <span style={{ color: "#fff" }}><strong>Total cards</strong></span>
-                                    <span style={{ color: "#fff", fontWeight: "bold" }}>
-                                        {collectionStats.totalCount}
-                                    </span>
-                                </div>
-                                <div className="mb-2 d-flex justify-content-between align-items-center"
-                                    style={{ background: "#43a047", borderRadius: "8px", padding: "6px 10px" }}>
-                                    <span style={{ color: "#fff" }}><strong>Unique cards</strong></span>
-                                    <span style={{ color: "#fff", fontWeight: "bold" }}>
-                                        {collectionStats.uniqueCount} / {collectionStats.totalUnique}
-                                    </span>
-                                </div>
-                                <div className="mb-2 d-flex justify-content-between align-items-center"
-                                    style={{ background: "#bdbdbd", borderRadius: "8px", padding: "6px 10px" }}>
-                                    <span style={{ color: "#333" }}><strong>Common</strong></span>
-                                    <span style={{ color: "#333", fontWeight: "bold" }}>
-                                        {collectionStats.commonCount} / {collectionStats.totalCommon}
-                                    </span>
-                                </div>
-                                <div className="mb-2 d-flex justify-content-between align-items-center"
-                                    style={{ background: "#b39ddb", borderRadius: "8px", padding: "6px 10px" }}>
-                                    <span style={{ color: "#fff" }}><strong>Rare</strong></span>
-                                    <span style={{ color: "#fff", fontWeight: "bold" }}>
-                                        {collectionStats.rareCount} / {collectionStats.totalRare}
-                                    </span>
-                                </div>
-                                <div className="mb-2 d-flex justify-content-between align-items-center"
-                                    style={{ background: "#ffe082", borderRadius: "8px", padding: "6px 10px" }}>
-                                    <span style={{ color: "#333" }}><strong>Legendary</strong></span>
-                                    <span style={{ color: "#333", fontWeight: "bold" }}>
-                                        {collectionStats.legendaryCount} / {collectionStats.totalLegendary}
-                                    </span>
+                                <div className="row g-2 justify-content-center">
+                                    <div className="col-6 col-md-12">
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#6acfeeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                                {collectionStats.totalCount}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-6 col-md-12">
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#99eea8ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                                {collectionStats.uniqueCount} / {collectionStats.totalUnique}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-6 col-md-12">
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#bdbdbd", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold" }}>Common</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                                {collectionStats.commonCount} / {collectionStats.totalCommon}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-6 col-md-12">
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#c0aae9ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold" }}>Rare</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                                {collectionStats.rareCount} / {collectionStats.totalRare}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="col-6 col-md-12">
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#ffe082", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold" }}>Legendary</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                                {collectionStats.legendaryCount} / {collectionStats.totalLegendary}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}
                     </div>
                 </div>
-                <div className="col-md-8">
+                {/* Columna de deck: ocupa más espacio */}
+                <div className="col-md-9">
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <h3 className="text-center flex-grow-1 mb-0" style={{
                             fontWeight: "bold",
@@ -143,23 +150,45 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                         style={{
                             background: "#d5dee7ff",
                             borderRadius: "18px",
-                            padding: "32px 18px",
                             minHeight: "220px",
                             marginBottom: "24px",
+                            width: "100%",
+                            overflowX: "auto",
+                            paddingLeft: "5px"
                         }}
                     >
                         {deckCards.length === 0 ? (
                             <p className="text-center">There are no cards in the deck.</p>
                         ) : (
-                            <div className="row justify-content-center">
-                                {deckCards.map((card) => (
-                                    <div
-                                        className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3 d-flex justify-content-center"
-                                        key={card.id}
-                                    >
-                                        <Card card={card} hideAddToDeck={true} />
-                                    </div>
-                                ))}
+                            <div
+                                className="d-flex justify-content-center"
+                                style={{
+                                    gap: "18px",
+                                    flexWrap: "wrap",
+                                    width: "100%",
+                                    minWidth: "320px",
+                                }}
+                            >
+                                {deckCards
+                                    .slice() // copia para no mutar el prop
+                                    .sort((a, b) => {
+                                        const rarityOrder = { legendary: 0, rare: 1, common: 2 };
+                                        return rarityOrder[a.game_rarity] - rarityOrder[b.game_rarity];
+                                    })
+                                    .map((card) => (
+                                        <div
+                                            key={card.id}
+                                            style={{
+                                                minWidth: "220px",
+                                                maxWidth: "220px",
+                                                flex: "1 0 220px",
+                                                display: "flex",
+                                                justifyContent: "center"
+                                            }}
+                                        >
+                                            <Card card={card} hideAddToDeck={true} />
+                                        </div>
+                                    ))}
                             </div>
                         )}
                     </div>

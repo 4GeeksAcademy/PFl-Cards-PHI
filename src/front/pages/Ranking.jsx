@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const USERS_PER_PAGE = 50;
-const medals = ["🥈", "🥇", "🥉"]; // El oro (1º) va en el centro
+const trophies = [
+    "🏆", // oro (1º, centro)
+    "🥈", // plata (2º, izquierda)
+    "🥉"  // bronce (3º, derecha)
+];
 const medalBg = [
     "rgba(192, 192, 192, 0.18)", // plata difuminado (2º, izquierda)
     "rgba(255, 215, 0, 0.18)",   // oro difuminado (1º, centro)
@@ -100,63 +104,198 @@ const Ranking = () => {
                     </div>
                 </div>
                 {/* Podium Top 3 */}
-                <div className="d-flex justify-content-center align-items-end mb-4" style={{ gap: "2rem" }}>
-                    {top3.map((user, idx) => (
-                        <div
-                            key={user.id}
-                            className="text-center d-flex flex-column justify-content-end"
-                            style={{
-                                background: medalBg[idx],
-                                borderRadius: "18px 18px 0 0",
-                                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-                                width: "180px",
-                                height: podiumHeights[idx],
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-end",
-                                position: "relative"
-                            }}
-                        >
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                marginBottom: "0.5rem"
-                            }}>
+                <div className="d-flex justify-content-center align-items-center mb-4">
+                    <div
+                        className="bg-white shadow rounded-4 p-4"
+                        style={{
+                            display: "flex",
+                            gap: "2rem",
+                            justifyContent: "center",
+                            alignItems: "flex-end",
+                            minWidth: "600px"
+                        }}
+                    >
+                        {/* Izquierda: 2º */}
+                        {top3[0] && (
+                            <div
+                                className="d-flex flex-column align-items-center"
+                                style={{ width: "180px" }}
+                            >
+                                {/* Trofeo plata */}
                                 <span style={{
                                     fontSize: "2.2rem",
                                     marginBottom: "0.2rem"
                                 }}>
-                                    {medals[idx]}
+                                    {trophies[1]}
                                 </span>
+                                {/* Nombre */}
                                 <Link
-                                    to={`/profile/${user.id}`}
+                                    to={`/profile/${top3[0].id}`}
                                     className="text-decoration-underline fw-bold mb-2"
                                     style={{
                                         color: "#2d6cdf",
-                                        fontSize: "1.3rem"
+                                        fontSize: "1.3rem",
+                                        marginBottom: "0.5rem"
                                     }}
                                 >
-                                    {user.username}
+                                    {top3[0].username}
                                 </Link>
+                                {/* Atril */}
+                                <div
+                                    style={{
+                                        background: medalBg[0],
+                                        borderRadius: "18px 18px 0 0",
+                                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                                        width: "100%",
+                                        height: podiumHeights[0],
+                                        display: "flex",
+                                        alignItems: "flex-end",
+                                        justifyContent: "center",
+                                        position: "relative"
+                                    }}
+                                >
+                                    <span
+                                        className="badge bg-primary mb-3"
+                                        style={{
+                                            fontSize: "2rem",
+                                            padding: "0.4em 1em"
+                                        }}
+                                    >
+                                        {top3[0].deck_points}
+                                    </span>
+                                    <div style={{
+                                        width: "100%",
+                                        height: "18px",
+                                        background: medalBg[0],
+                                        borderRadius: "0 0 18px 18px",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        left: 0
+                                    }}></div>
+                                </div>
                             </div>
-                            <span
-                                className="badge bg-primary mb-3"
-                                style={{
-                                    fontSize: "2rem",
-                                    padding: "0.4em 1em"
-                                }}
+                        )}
+                        {/* Centro: 1º */}
+                        {top3[1] && (
+                            <div
+                                className="d-flex flex-column align-items-center"
+                                style={{ width: "180px" }}
                             >
-                                {user.deck_points}
-                            </span>
-                            <div style={{
-                                width: "100%",
-                                height: "18px",
-                                background: medalBg[idx],
-                                borderRadius: "0 0 18px 18px"
-                            }}></div>
-                        </div>
-                    ))}
+                                {/* Trofeo oro */}
+                                <span style={{
+                                    fontSize: "2.2rem",
+                                    marginBottom: "0.2rem"
+                                }}>
+                                    {trophies[0]}
+                                </span>
+                                {/* Nombre */}
+                                <Link
+                                    to={`/profile/${top3[1].id}`}
+                                    className="text-decoration-underline fw-bold mb-2"
+                                    style={{
+                                        color: "#2d6cdf",
+                                        fontSize: "1.3rem",
+                                        marginBottom: "0.5rem"
+                                    }}
+                                >
+                                    {top3[1].username}
+                                </Link>
+                                {/* Atril */}
+                                <div
+                                    style={{
+                                        background: medalBg[1],
+                                        borderRadius: "18px 18px 0 0",
+                                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                                        width: "100%",
+                                        height: podiumHeights[1],
+                                        display: "flex",
+                                        alignItems: "flex-end",
+                                        justifyContent: "center",
+                                        position: "relative"
+                                    }}
+                                >
+                                    <span
+                                        className="badge bg-primary mb-3"
+                                        style={{
+                                            fontSize: "2rem",
+                                            padding: "0.4em 1em"
+                                        }}
+                                    >
+                                        {top3[1].deck_points}
+                                    </span>
+                                    <div style={{
+                                        width: "100%",
+                                        height: "18px",
+                                        background: medalBg[1],
+                                        borderRadius: "0 0 18px 18px",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        left: 0
+                                    }}></div>
+                                </div>
+                            </div>
+                        )}
+                        {/* Derecha: 3º */}
+                        {top3[2] && (
+                            <div
+                                className="d-flex flex-column align-items-center"
+                                style={{ width: "180px" }}
+                            >
+                                {/* Trofeo bronce */}
+                                <span style={{
+                                    fontSize: "2.2rem",
+                                    marginBottom: "0.2rem"
+                                }}>
+                                    {trophies[2]}
+                                </span>
+                                {/* Nombre */}
+                                <Link
+                                    to={`/profile/${top3[2].id}`}
+                                    className="text-decoration-underline fw-bold mb-2"
+                                    style={{
+                                        color: "#2d6cdf",
+                                        fontSize: "1.3rem",
+                                        marginBottom: "0.5rem"
+                                    }}
+                                >
+                                    {top3[2].username}
+                                </Link>
+                                {/* Atril */}
+                                <div
+                                    style={{
+                                        background: medalBg[2],
+                                        borderRadius: "18px 18px 0 0",
+                                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                                        width: "100%",
+                                        height: podiumHeights[2],
+                                        display: "flex",
+                                        alignItems: "flex-end",
+                                        justifyContent: "center",
+                                        position: "relative"
+                                    }}
+                                >
+                                    <span
+                                        className="badge bg-primary mb-3"
+                                        style={{
+                                            fontSize: "2rem",
+                                            padding: "0.4em 1em"
+                                        }}
+                                    >
+                                        {top3[2].deck_points}
+                                    </span>
+                                    <div style={{
+                                        width: "100%",
+                                        height: "18px",
+                                        background: medalBg[2],
+                                        borderRadius: "0 0 18px 18px",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        left: 0
+                                    }}></div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <h2 className="text-center mb-3">Ranking de Usuarios</h2>
                 <div className="table-responsive">
@@ -171,15 +310,15 @@ const Ranking = () => {
                         <tbody>
                             {usersToShow.map((user, idx) => {
                                 const globalIdx = startIdx + idx;
-                                let medal = null;
-                                if (globalIdx < 3) medal = medals[[1, 0, 2][globalIdx]];
+                                let trophy = null;
+                                if (globalIdx < 3) trophy = trophies[[1, 0, 2][globalIdx]];
                                 return (
                                     <tr key={user.id}>
                                         <td>{globalIdx + 1}º</td>
                                         <td>
-                                            {medal && (
+                                            {trophy && (
                                                 <span style={{ fontSize: "1.3rem", marginRight: "0.3rem", verticalAlign: "middle" }}>
-                                                    {medal}
+                                                    {trophy}
                                                 </span>
                                             )}
                                             <Link
