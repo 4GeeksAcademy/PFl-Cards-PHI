@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { apiFetch } from "../utils/apiFetch";
 import Card from "../components/Card";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -101,14 +102,14 @@ const Profile = () => {
     if (!resp) return;
 
     if (!resp.ok) {
-      setError("Failed to update username");
+      toast.error("Failed to update username");
       return;
     }
 
     const data = await resp.json();
     setUserData((prev) => ({ ...prev, username: data.username }));
+    toast.success("Username updated successfully");
     setEditingUsername(false); // Bloquea la línea tras guardar
-    alert("Username updated successfully");
   };
 
   if (loading) return <p>Loading profile...</p>;

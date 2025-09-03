@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
 
 const Gateway = ({ packSeleccionado, quantity, onClose }) => {
@@ -25,7 +26,7 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
             navigate("/packopen");
         } catch (error) {
             setLoading(false);
-            alert("There was a problem with the payment.");
+            toast.error("There was a problem with the payment.");
         }
     };
 
