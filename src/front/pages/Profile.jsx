@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { apiFetch } from "../utils/apiFetch";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -9,15 +10,22 @@ const Profile = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+  const { id } = useParams();
 
   // Cargar perfil
   useEffect(() => {
     const fetchProfile = async () => {
-      const resp = await apiFetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
-        { method: "GET" },
-        navigate
-      );
+      let url, options;
+      if (id) {
+        // Perfil público de otro usuario
+        url = `${import.meta.env.VITE_BACKEND_URL}/api/users/${id}`;
+        options = { method: "GET" };
+      } else {
+        // Mi perfil privado
+        url = `${import.meta.env.VITE_BACKEND_URL}/api/profile`;
+        options = { method: "GET" };
+      }
+      const resp = await apiFetch(url, options, navigate);
 
       if (!resp) return; // 👈 si hubo 401, ya redirigimos
 
@@ -34,7 +42,7 @@ const Profile = () => {
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, [navigate, id]);
 
   // Update username
   const handleUpdate = async (e) => {
@@ -52,13 +60,13 @@ const Profile = () => {
     if (!resp) return; // 👈 si 401, redirige al login
 
     if (!resp.ok) {
-      setError("Failed to update username");
+      toast.error("Failed to update username");
       return;
     }
 
     const data = await resp.json();
     setUserData((prev) => ({ ...prev, username: data.username }));
-    alert("Username updated successfully");
+    toast.success("Username updated successfully");
   };
 
   if (loading) return <p>Loading profile...</p>;

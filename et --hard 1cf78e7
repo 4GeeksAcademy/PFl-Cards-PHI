@@ -1,0 +1,82 @@
+[33m1cf78e7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mRanking-front-back[m[33m, [m[1;31morigin/Ranking-front-back[m[33m)[m Merge remote-tracking branch 'origin/Develop' into Ranking-front-back
+[33m410aa9a[m[33m ([m[1;31morigin/api-fetch-alerts[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/Develop[m[33m, [m[1;32mDevelop[m[33m)[m Merge pull request #21 from 4GeeksAcademy/admin-user-token
+[33medda441[m[33m ([m[1;31morigin/admin-user-token[m[33m)[m [Fix:]Solución de conflictos
+[33m7440c18[m Merge pull request #20 from 4GeeksAcademy/Boton-orden-collection
+[33mb0dee81[m[33m ([m[1;31morigin/Boton-orden-collection[m[33m)[m token
+[33maa5e12e[m [fix:]Updated fetch, fetch to apiFetch in JWT protected pages
+[33mb404165[m [fix:]accessToken name change to access_token
+[33m3cdadd4[m [fix:]Minor token fix
+[33m40f6961[m [feat:]Alert when sesion expired, also automatic logout and redirection to login
+[33m6c3a60b[m Creado front back, no hacer pr hasta que no se sepa que nadie toca routes
+[33m3facbdf[m Filtros reactivos a movil
+[33m8146016[m [fix:]Minor fix
+[33m64d5109[m filtros de busqueda
+[33m749b844[m Merge pull request #19 from 4GeeksAcademy/comandos-para-basedatos
+[33m3de69ae[m[33m ([m[1;31morigin/comandos-para-basedatos[m[33m)[m terminados los comandos para poblar base de datos y testeado
+[33m00e1741[m [feat:]Profile page updated, automatic log out apiFetch
+[33m9188cf2[m añadidos comandos para poblar la base de datos con el catálogo de cartas, con usuarios de test no repetidos, y con mazos de 20 cartas aleatorios para cada uno de los usuarios de test creados. Aun faltan ajustes y testeo
+[33mdbb16b2[m [feat:]New folder utils in front, added apiFetch file
+[33mcef4383[m Merge pull request #18 from 4GeeksAcademy/Funcionalidad-tienda-abrir-coleccion
+[33m596c72e[m[33m ([m[1;31morigin/Funcionalidad-tienda-abrir-coleccion[m[33m)[m Merge branch 'Develop' of https://github.com/4GeeksAcademy/PFl-Cards-PHI into Funcionalidad-tienda-abrir-coleccion
+[33md767cb1[m correcciones
+[33mf00a60d[m Merge pull request #15 from 4GeeksAcademy/endpoints-get-collection-y-get-add-remove-deck
+[33m3d1622c[m arreglado
+[33mef21480[m tienda apertura y collecciondeck funcionalidad con api
+[33m68528e3[m[33m ([m[1;31morigin/endpoints-get-collection-y-get-add-remove-deck[m[33m)[m Merge branch 'Develop' into endpoints-get-collection-y-get-add-remove-deck
+[33m05c66c0[m Merge pull request #16 from 4GeeksAcademy/endpoint-fetch-user-profile
+[33me7f90fa[m Revertidos archivos pipfile y pipfile.lock al estado de develop
+[33mcd66185[m[33m ([m[1;31morigin/endpoint-fetch-user-profile[m[33m)[m [feat:]Pofile info added to page Profile
+[33mbf04e52[m [feat:]Profile endpoints and fetch, not fully done
+[33ma1e6379[m añadido comentario recordatorio y testeados todos los endpoints
+[33m6522044[m añadido password de nuevo a la vista admin con fines de testeo
+[33mc5f24a4[m modificado admin.py para reflejar correctamente las columnas de nuestra base de datos, ya que si no se hace muy difícil de testear
+[33m5d7999b[m añadidos endpoints para añadir y eliminar cartas del mazo. falta realizar más tests y ajustes en caso de encontrar errores.
+[33mb2be1ce[m Merge pull request #14 from 4GeeksAcademy/updated-navbar-login
+[33m9432b1c[m añadido endpoint para mostrar el mazo del usuario autenticado
+[33m18e9be5[m[33m ([m[1;31morigin/updated-navbar-login[m[33m)[m Merge branch 'Develop' into updated-navbar-login
+[33mee4468f[m [Fix:]Minor name change
+[33mecb5405[m añadido endpoint para mostrar coleccion de usuario. Aun sin testear en profundidad
+[33m86b3c50[m Merge pull request #13 from 4GeeksAcademy/Vista-Collection&Deck
+[33m2fc8d5f[m [fix:]Signup backend updated, logged in directly when register
+[33mc03699a[m [feat:]Navbar updates when registered
+[33mb84123c[m[33m ([m[1;31morigin/Vista-Collection&Deck[m[33m)[m hecho como si tuvieses una copia de cada carta
+[33m7f10e2a[m [feat:]Navbar updated but partially
+[33m0ad4cb7[m Merge pull request #12 from 4GeeksAcademy/auth-api-connected-front
+[33mcf69bf0[m[33m ([m[1;31morigin/auth-api-connected-front[m[33m)[m [Fix]Solucion de conflictos, persite la rama auth-api-connected-front
+[33mf136f42[m [feat:]Login and signup connected with front forms
+[33m8536b7a[m Merge pull request #11 from 4GeeksAcademy/endpoints-buy-get-open-packs
+[33mda27256[m Merge pull request #10 from 4GeeksAcademy/AbrirSobres
+[33mf3b8f82[m[33m ([m[1;31morigin/endpoints-buy-get-open-packs[m[33m)[m [feat]Endpoints relativos a la apertura de ssobres funcionando. En el último commis quedan modificados comentarios y mensajes de error, y testeados endpoints.
+[33m6e20909[m añadidas funciones auxiliares y endpoints relativos a la apertura de sobres. falta testear bien
+[33me22a6d8[m[33m ([m[1;31morigin/OpenPack[m[33m)[m Funcionalidad botones
+[33m02615ae[m [feat:]Login and signup updated
+[33m88945bc[m Merge remote-tracking branch 'origin/Develop' into AbrirSobres
+[33mfeb337e[m beber end points
+[33m645d231[m Merge pull request #6 from 4GeeksAcademy/Navbar-dinamica-logout
+[33me40587e[m[33m ([m[1;31morigin/Navbar-dinamica-logout[m[33m)[m Merge remote-tracking branch 'origin/Develop' into Navbar-dinamica-logout
+[33m2ed5d39[m seguridad
+[33m9c090ec[m[33m ([m[1;31morigin/logout-endpoint[m[33m)[m Merge pull request #8 from 4GeeksAcademy/auth-enpoints
+[33m631ce76[m Merge pull request #9 from 4GeeksAcademy/catalogo-cartas
+[33m8122d5f[m[33m ([m[1;31morigin/catalogo-cartas[m[33m)[m añadido fichero txt ala nivel del catalogo de cartas explicando como poblar la base de datos de cada uno
+[33me95ba08[m[33m ([m[1;31morigin/auth-enpoints[m[33m)[m [feat:]Signup and login endpoints added and tested, new imports in app.py and routes.py
+[33mfc521df[m borrada carpeta migrations y añadido a gitignore la regla para que no se puedan subir los archivos migrations a develop
+[33m87e3bdf[m Merge pull request #7 from 4GeeksAcademy/catalogo-cartas
+[33m37631da[m añadido catalogo de cartas en un fichero .json dentro de una nueva carpeta llamada data, hija directa de src. Dentro de este fichero se almacena un array con la key cards  que contiene todas las cartas que usaremos. Falta poblar nuestra base de datos con esto.
+[33mcaae1ff[m Merge branch 'Develop' into Navbar-dinamica-logout
+[33m101467c[m Merge pull request #5 from 4GeeksAcademy/modelado-bd
+[33m78af74d[m Merge branch 'Develop' into Navbar-dinamica-logout
+[33mce414f1[m Merge pull request #4 from 4GeeksAcademy/home-structure
+[33m77fb8f2[m navbar dinamica
+[33m83dd74e[m[33m ([m[1;31morigin/modelado-bd[m[33m)[m modelado terminado, admin actualizado y migrations
+[33m85149e9[m creado modelado, falta testeo
+[33m7781184[m[33m ([m[1;31morigin/home-structure[m[33m)[m [feat]New structure to the Home page
+[33md35c654[m Merge pull request #3 from 4GeeksAcademy/pack-page
+[33mc47d3c3[m[33m ([m[1;31morigin/pack-page[m[33m)[m [feat:]Base structure for the shop/packs page
+[33m1db5c23[m Merge pull request #2 from 4GeeksAcademy/Log-in
+[33m5ebef33[m[33m ([m[1;31morigin/Log-in[m[33m)[m login y singup
+[33m9d360d1[m probando configuracion codespaces
+[33mf6a5593[m fix: dependency colorama
+[33mff54e5d[m [Feat:]Base packs page added
+[33m5cd4d1f[m Merge pull request #1 from 4GeeksAcademy/Home
+[33m6adfa1b[m[33m ([m[1;31morigin/Home[m[33m)[m [feat:] add Home, Decks, Packs, Login and Signup pages with Navbar
+[33m18ce861[m[33m ([m[1;31morigin/main[m[33m)[m Initial commit

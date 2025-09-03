@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
+import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
 
-const packImg = "https://images.wikidexcdn.net/mwuploads/wikidex/thumb/d/de/latest/20240212215431/Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png/230px-Jirachi_%28Brecha_Parad%C3%B3jica_TCG%29.png";
+const packImg = "docs/Imagenes/Sobre.png";
 
 const PackOpen = () => {
     const [totalPacks, setTotalPacks] = useState(null);
@@ -44,7 +45,7 @@ const PackOpen = () => {
     const handleOpenPack = async (quantity) => {
         const accessToken = localStorage.getItem("access_token");
         if (totalPacks < quantity) {
-            alert("You don't have enough packs!");
+            toast.error("You don't have enough packs!");
             return;
         }
         let cardsOpened = [];
@@ -68,7 +69,7 @@ const PackOpen = () => {
             setCardsToShow(cardsOpened);
             setShowOpening(true);
         } catch (err) {
-            alert(err.message);
+            toast.error(err.message);
         }
     };
 
@@ -114,7 +115,8 @@ const PackOpen = () => {
                         height: "400px",
                         objectFit: "contain",
                         marginBottom: "1.5rem",
-                        transition: "width 0.2s"
+                        transition: "width 0.2s",
+                        borderRadius:"24px"
                     }}
                 />
                 <div className="d-flex justify-content-center gap-3" ref={buttonsRef}>
