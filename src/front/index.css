@@ -1,0 +1,5 @@
+body {
+  background-color: #b4b2b2 !important; /* Gris clarito, con !important para forzar el color */
+  min-height: 100vh;
+  background-image: none !important;
+}
