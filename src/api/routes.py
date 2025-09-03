@@ -630,7 +630,7 @@ def create_checkout_session():
             cancel_url=os.getenv("VITE_BACKEND_URL") + "?canceled=true",
             metadata={"user_id": str(user_id), "pack_selected": str(pack)},
         )
-        # Se debvuelve el id para que el frontend haga redirect con stripe.redirectToCheckout
+        # Se devuelve el id para que el frontend haga redirect con stripe.redirectToCheckout
         return jsonify({"id": session.id}), 200
     except Exception as e:
         return jsonify({"msg": "Failed to create checkout session.", "error": str(e)}), 500
@@ -639,7 +639,7 @@ def create_checkout_session():
 # Endpoint para confirmar el pago y conceder los sobres al usuario -----------------------------------------------------------------------
     # El frontend llama a este endpoint tras la redirección desde Stripe al success_url
 @api.route('/checkout/confirm', methods=['POST'])
-@jwt_required()  # de nuevo, solo usuarios logueados
+@jwt_required()  # solo usuarios logueados
 def checkout_confirm():
     # Leo el session_id que llega desde el frontend 
     data = request.get_json()
