@@ -59,12 +59,14 @@ const Profile = () => {
 
     if (!resp) return; // 👈 si 401, redirige al login
 
-    if (!resp.ok) {
-      toast.error("Failed to update username");
+   
+
+    const data = await resp.json();
+     if (!resp.ok) {
+      toast.error(data.msg || data.error || "Failed to update username");
       return;
     }
 
-    const data = await resp.json();
     setUserData((prev) => ({ ...prev, username: data.username }));
     toast.success("Username updated successfully");
   };
