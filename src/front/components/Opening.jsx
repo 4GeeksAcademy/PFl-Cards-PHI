@@ -1,17 +1,49 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 
-const backImg = "docs/Imagenes/Dorso.png";
+const backImg = "/docs/Imagenes/Dorso.png";
+
+const CARD_WIDTH = 220;
+const CARD_HEIGHT = 340;
+const GAP_PX = 55;
+const POPUP_SIDE_MARGIN = 32;
+
+const MAX_CARDS_PER_ROW = 3;
+const popupMaxWidth = (CARD_WIDTH * MAX_CARDS_PER_ROW) + (GAP_PX * (MAX_CARDS_PER_ROW - 1)) + (POPUP_SIDE_MARGIN * 2);
 
 const Opening = ({ packs = [], onClose }) => {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+    const [cardsPerRow, setCardsPerRow] = useState(MAX_CARDS_PER_ROW);
+    const [cardSize, setCardSize] = useState({ width: CARD_WIDTH, height: CARD_HEIGHT });
     const [flipped, setFlipped] = useState({});
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth <= 576);
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        const calculateLayout = () => {
+            // Usa el ancho de la ventana, limitado por el ancho máximo del modal
+            const containerWidth = Math.min(window.innerWidth, popupMaxWidth);
+
+            if (containerWidth - POPUP_SIDE_MARGIN * 2 >= (CARD_WIDTH * 3 + GAP_PX * 2)) {
+                setCardsPerRow(3);
+                setCardSize({ width: CARD_WIDTH, height: CARD_HEIGHT });
+            } else if (containerWidth - POPUP_SIDE_MARGIN * 2 >= (CARD_WIDTH * 2 + GAP_PX)) {
+                setCardsPerRow(2);
+                setCardSize({ width: CARD_WIDTH, height: CARD_HEIGHT });
+            } else {
+                const available = containerWidth - POPUP_SIDE_MARGIN * 2;
+                setCardsPerRow(1);
+                setCardSize({
+                    width: Math.min(CARD_WIDTH, available),
+                    height: Math.min(CARD_HEIGHT, available * (CARD_HEIGHT / CARD_WIDTH))
+                });
+            }
+        };
+        calculateLayout();
+        window.addEventListener("resize", calculateLayout);
+        return () => window.removeEventListener("resize", calculateLayout);
     }, []);
+
+    const cardRadius = 10;
+    const gap = `${GAP_PX}px`;
+    const modalPadding = "32px";
 
     const handleFlip = (packIdx, cardIdx) => {
         setFlipped(prev => ({
@@ -20,69 +52,94 @@ const Opening = ({ packs = [], onClose }) => {
         }));
     };
 
-    // Divide en dos filas: primera con 2, segunda con 3
     const renderPack = (pack, packIdx) => {
         if (!Array.isArray(pack)) pack = [pack];
-        const cards = pack;
-        const firstRow = cards.slice(0, 2);
-        const secondRow = cards.slice(2, 5);
-
+        const cards = [...pack];
+        const rows = [];
+        for (let i = 0; i < cards.length; i += cardsPerRow) {
+            rows.push(cards.slice(i, i + cardsPerRow));
+        }
         return (
             <div>
-                <div className="d-flex justify-content-center mb-4 gap-4">
-                    {firstRow.map((card, idx) => (
-                        <div
-                            key={card.id || idx}
-                            className="flip-card"
-                            onClick={() => handleFlip(packIdx, idx)}
-                        >
-                            <div className={`flip-card-inner${flipped[`${packIdx}-${idx}`] ? " flipped" : ""}`}>
-                                <div className="flip-card-front">
-                                    <img
-                                        src={backImg}
-                                        alt="Dorso"
-                                        className="img-fluid rounded"
-                                        style={{ width: "220px", height: "340px", objectFit: "cover" }}
-                                    />
+                {rows.map((row, rowIdx) => (
+                    <div
+                        key={rowIdx}
+                        className="d-flex justify-content-center mb-4"
+                        style={{
+                            gap,
+                            flexWrap: "nowrap",
+                            marginLeft: POPUP_SIDE_MARGIN,
+                            marginRight: POPUP_SIDE_MARGIN,
+                            display: "flex",
+                            flexDirection: "row"
+                        }}
+                    >
+                        {row.map((card, idx) => {
+                            const globalIdx = rowIdx * cardsPerRow + idx;
+                            return (
+                                <div
+                                    key={card.id || globalIdx}
+                                    className="flip-card"
+                                    onClick={() => handleFlip(packIdx, globalIdx)}
+                                    style={{
+                                        width: cardSize.width,
+                                        height: cardSize.height,
+                                        flex: `0 1 ${cardSize.width}px`,
+                                        display: "flex",
+                                        justifyContent: "center"
+                                    }}
+                                >
+                                    <div className={`flip-card-inner${flipped[`${packIdx}-${globalIdx}`] ? " flipped" : ""}`}>
+                                        <div className="flip-card-front" style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center"
+                                        }}>
+                                            <img
+                                                src={backImg}
+                                                alt="Dorso"
+                                                className="img-fluid rounded"
+                                                style={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "contain",
+                                                    borderRadius: cardRadius
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="flip-card-back" style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center"
+                                        }}>
+                                            <div style={{
+                                                width: cardSize.width,
+                                                height: cardSize.height,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center"
+                                            }}>
+                                                <Card
+                                                    card={card}
+                                                    hideAddToDeck={true}
+                                                    style={{
+                                                        width: cardSize.width,
+                                                        height: cardSize.height,
+                                                        borderRadius: cardRadius,
+                                                        padding: "16px",
+                                                        margin: "16px auto"
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flip-card-back">
-                                    <Card card={card} hideAddToDeck={true} style={{
-                                        width: "220px",
-                                        height: "340px",
-                                        borderRadius: "0px"
-                                    }} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="d-flex justify-content-center mb-4 gap-4">
-                    {secondRow.map((card, idx) => (
-                        <div
-                            key={card.id || idx + 2}
-                            className="flip-card"
-                            onClick={() => handleFlip(packIdx, idx + 2)}
-                        >
-                            <div className={`flip-card-inner${flipped[`${packIdx}-${idx + 2}`] ? " flipped" : ""}`}>
-                                <div className="flip-card-front">
-                                    <img
-                                        src={backImg}
-                                        alt="Dorso"
-                                        className="img-fluid rounded"
-                                        style={{ width: "220px", height: "340px", objectFit: "cover" }}
-                                    />
-                                </div>
-                                <div className="flip-card-back">
-                                    <Card card={card} hideAddToDeck={true} style={{
-                                        width: "220px",
-                                        height: "340px",
-                                        borderRadius: "14px"
-                                    }} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                            );
+                        })}
+                    </div>
+                ))}
             </div>
         );
     };
@@ -102,18 +159,27 @@ const Opening = ({ packs = [], onClose }) => {
 
     return (
         <div className="modal show d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.7)" }}>
-            <div className="modal-dialog modal-lg" role="document">
-                <div className="modal-content">
+            <div
+                className="modal-dialog modal-lg"
+                role="document"
+                style={{
+                    maxWidth: `${popupMaxWidth}px`,
+                    width: "100%"
+                }}
+            >
+                <div className="modal-content" style={{ padding: modalPadding }}>
                     <div className="modal-header d-flex align-items-center justify-content-between">
                         <h5 className="modal-title text-center m-0 flex-grow-1">Congratulations!</h5>
                         <div className="d-flex align-items-center gap-2">
-                            <button
-                                type="button"
-                                className="btn btn-success btn-sm"
-                                onClick={handleFlipAll}
-                            >
-                                Turn all
-                            </button>
+                            {!(flippedCount >= totalCards) && (
+                                <button
+                                    type="button"
+                                    className="btn btn-success btn-sm"
+                                    onClick={handleFlipAll}
+                                >
+                                    Turn all
+                                </button>
+                            )}
                             {flippedCount >= totalCards && (
                                 <button type="button" className="btn-close ms-2" onClick={onClose}></button>
                             )}
@@ -124,18 +190,30 @@ const Opening = ({ packs = [], onClose }) => {
                             <p>Loading Cards...</p>
                         ) : (
                             packs.map((pack, packIdx) => (
-                                <div key={packIdx} className="mb-4">
+                                <div key={packIdx} className="mb-2">
                                     {renderPack(pack, packIdx)}
                                 </div>
                             ))
                         )}
                     </div>
-                    <div className="modal-footer justify-content-center">
-                        {flippedCount >= totalCards && (
-                            <button type="button" className="btn btn-secondary" onClick={onClose}>
-                                Close
-                            </button>
-                        )}
+                    <div className="modal-footer justify-content-between">
+                        <div></div>
+                        <div className="d-flex align-items-center gap-2">
+                            {!(flippedCount >= totalCards) && (
+                                <button
+                                    type="button"
+                                    className="btn btn-success btn-sm"
+                                    onClick={handleFlipAll}
+                                >
+                                    Turn all
+                                </button>
+                            )}
+                            {flippedCount >= totalCards && (
+                                <button type="button" className="btn btn-secondary" onClick={onClose}>
+                                    Close
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,12 +226,14 @@ const style = document.createElement("style");
 style.innerHTML = `
 .flip-card {
     perspective: 1000px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .flip-card-inner {
-    width: 220px;
-    height: 340px;
-    border-radius: 14px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
     transition: transform 0.6s;
     transform-style: preserve-3d;
     position: relative;
@@ -167,7 +247,7 @@ style.innerHTML = `
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 14px;
+    border-radius: 10px;
 }
 .flip-card-back {
     transform: rotateY(180deg);

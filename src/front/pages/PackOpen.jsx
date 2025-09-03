@@ -13,6 +13,7 @@ const PackOpen = () => {
     const [imgWidth, setImgWidth] = useState(220);
     const [cardsToShow, setCardsToShow] = useState([]);
     const [showOpening, setShowOpening] = useState(false);
+    const [buttonsDisabled, setButtonsDisabled] = useState(false); // Nuevo estado
 
     useLayoutEffect(() => {
         if (buttonsRef.current) {
@@ -44,9 +45,13 @@ const PackOpen = () => {
 
     // Open packs and show cards
     const handleOpenPack = async (quantity) => {
+        if (buttonsDisabled) return; // Bloquea si ya está deshabilitado
+        setButtonsDisabled(true); // Bloquea al instante
+
         const accessToken = localStorage.getItem("access_token");
         if (totalPacks < quantity) {
             toast.error("You don't have enough packs!");
+            setButtonsDisabled(false); // Desbloquea si no hay suficientes packs
             return;
         }
         let cardsOpened = [];
@@ -71,12 +76,15 @@ const PackOpen = () => {
             setShowOpening(true);
         } catch (err) {
             toast.error(err.message);
+            setButtonsDisabled(false); // Desbloquea si hay error
         }
     };
 
+    // Cuando se cierra el popup, desbloquea los botones
     const handleCloseOpening = () => {
         setShowOpening(false);
         setCardsToShow([]);
+        setButtonsDisabled(false); // Desbloquea aquí
     };
 
     return (
@@ -117,17 +125,17 @@ const PackOpen = () => {
                         objectFit: "contain",
                         marginBottom: "1.5rem",
                         transition: "width 0.2s",
-                        borderRadius:"24px"
+                        borderRadius: "24px"
                     }}
                 />
                 <div className="d-flex justify-content-center gap-3" ref={buttonsRef}>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(1)}>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(1)} disabled={buttonsDisabled}>
                         Open 1
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(5)}>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(5)} disabled={buttonsDisabled}>
                         Open 5
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(10)}>
+                    <button className="btn btn-primary" onClick={() => handleOpenPack(10)} disabled={buttonsDisabled}>
                         Open 10
                     </button>
                 </div>

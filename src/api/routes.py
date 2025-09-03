@@ -883,3 +883,24 @@ def get_my_ranking():
         "position": idx + 1 if idx is not None else None,
         "points": deck_points
     }), 200
+
+@api.route('/users/<int:user_id>/collection', methods=['GET'])
+def get_user_collection(user_id):
+    rows = (
+        UserCard.query
+        .filter_by(user_id=user_id)
+        .join(Card, UserCard.card_id == Card.id)
+        .all()
+    )
+    items = []
+    for uc in rows:
+        c = uc.card
+        items.append({
+            "card_id": c.id,
+            "name": c.name,
+            "image_url": c.image_url,
+            "game_rarity": c.game_rarity,
+            "points": c.points,
+            "quantity": uc.quantity
+        })
+    return jsonify({"collection": items}), 200
