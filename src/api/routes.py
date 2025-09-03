@@ -860,3 +860,26 @@ def get_user_deck(user_id):
 
     cards_list = [card.serialize() for card in deck_cards]
     return jsonify({"cards": cards_list}), 200
+
+@api.route('/profile/ranking', methods=['GET'])
+@jwt_required()
+def get_my_ranking():
+    user_id = current_user_id_from_jwt()
+    users = User.query.all()
+    # Ordena por puntos de deck descendente
+    def get_deck_points(u):
+        deck = Deck.query.filter_by(user_id=u.id).first()
+        if deck:
+            return sum([card.points for card in [dc.card for dc in deck.cards]])
+        return 0
+
+    sorted_users = sorted(users, key=get_deck_points, reverse=True)
+    idx = next((i for i, u in enumerate(sorted_users) if u.id == user_id), None)
+    deck = Deck.query.filter_by(user_id=user_id).first()
+    deck_points = 0
+    if deck:
+        deck_points = sum([card.points for card in [dc.card for dc in deck.cards]])
+    return jsonify({
+        "position": idx + 1 if idx is not None else None,
+        "points": deck_points
+    }), 200

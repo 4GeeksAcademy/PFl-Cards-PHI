@@ -13,9 +13,12 @@ const Card = ({
     onRemoveFromDeck,
     isAlreadyInDeck = false, // true if this card is already in deck
     hideAddToDeck = false, // <-- nueva prop
+    deckIsFull = false,
     style
 }) => {
     if (!card) return null;
+
+    const disableAdd = isAlreadyInDeck || deckIsFull;
 
     return (
         <div
@@ -44,8 +47,7 @@ const Card = ({
                     background: "#fff",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden"
+                    justifyContent: "center"
                 }}
             >
                 <img
@@ -54,7 +56,7 @@ const Card = ({
                     style={{
                         width: "100%",
                         height: "100%",
-                        objectFit: "cover", // Cambia contain por cover
+                        objectFit: "cover",
                         borderRadius: "10px"
                     }}
                 />
@@ -106,7 +108,7 @@ const Card = ({
                             style={{
                                 width: "32px",
                                 height: "32px",
-                                background: isAlreadyInDeck ? "#bbb" : "#28a745",
+                                background: disableAdd ? "#bbb" : "#28a745",
                                 color: "#fff",
                                 borderRadius: "6px",
                                 border: "none",
@@ -115,13 +117,19 @@ const Card = ({
                                 justifyContent: "center",
                                 fontSize: "1.5rem",
                                 fontWeight: "bold",
-                                cursor: isAlreadyInDeck ? "not-allowed" : "pointer",
-                                opacity: isAlreadyInDeck ? 0.6 : 1
+                                cursor: disableAdd ? "not-allowed" : "pointer",
+                                opacity: disableAdd ? 0.6 : 1
                             }}
-                            disabled={isAlreadyInDeck}
-                            title={isAlreadyInDeck ? "Already in deck" : "Add to deck"}
+                            disabled={disableAdd}
+                            title={
+                                deckIsFull
+                                    ? "Deck lleno"
+                                    : isAlreadyInDeck
+                                        ? "Ya está en el deck"
+                                        : "Añadir al deck"
+                            }
                             onClick={() => {
-                                if (!isAlreadyInDeck && onAddToDeck) {
+                                if (!disableAdd && onAddToDeck) {
                                     onAddToDeck(card.id);
                                 }
                             }}

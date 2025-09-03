@@ -124,7 +124,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                                             onAddToDeck={() => handleAddToDeck(card, idx)}
                                             isAlreadyInDeck={isCardInDeck(card, idx)}
                                             hideAddToDeck={!owned}
-                                            deckIsFull={deckIsFull} 
+                                            deckIsFull={deckIsFull}
                                             style={
                                                 (filter === "missing" || (filter === "all_with_missing" && !owned))
                                                     ? { filter: "grayscale(1)", opacity: 0.6 }
