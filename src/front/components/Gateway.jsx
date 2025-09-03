@@ -11,10 +11,14 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
 
+    // Por si queremos cambiar los precios, aunque es un poco lio cambiarlos en el dashboard de stripe
+    // y luego modificar el env con los id de los diferentes precios, ademas de que pide tarjetas para realizar los pagos, aunque sean simulados
+    // si se quisiera probar con tarjetas se pone a la tarjeta el numero:
+    // 4242 4242 4242 4242, con fecha de cad. futura (ej. 12/34), CVC cualquiera (123), nombre y dirección cualquiera.
     const PRICE_MAP_DISPLAY = {
-        1: "1 €",
-        5: "4 €",
-        10: "7 €"
+        1: "0 €",
+        5: "0 €",
+        10: "0 €"
     };
 
     const handleBuy = async () => {
