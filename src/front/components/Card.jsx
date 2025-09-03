@@ -12,6 +12,12 @@ function getRarityInitial(rarity) {
     return "C";
 }
 
+function getRarityLabel(rarity) {
+    if (rarity === "legendary") return "Legendary";
+    if (rarity === "rare") return "Rare";
+    return "Common";
+}
+
 const Card = ({
     card,
     inDeck = false,
@@ -23,14 +29,12 @@ const Card = ({
     style = {}
 }) => {
     if (!card) return null;
-
-    // Solo escritorio
     const cardW = style.width || 220;
     const cardH = style.height || 340;
     const imgW = 180;
     const imgH = 270;
-    const fontSize = "1.3rem";
-    const buttonSize = "32px";
+    const fontSize = "1rem"; 
+    const buttonSize = "28px"; 
     const padding = style.padding || "16px";
     const margin = style.margin || "16px auto";
 
@@ -94,7 +98,7 @@ const Card = ({
             >
                 <span style={{ color: "#333", fontSize }}>{card.points}</span>
                 <span style={{ flex: 1, textAlign: "center", color: "#444", fontSize }}>
-                    {card.game_rarity}
+                    {getRarityLabel(card.game_rarity)}
                 </span>
                 {inDeck ? (
                     <button

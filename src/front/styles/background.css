@@ -1,0 +1,14 @@
+body {
+  background-color: #b4b2b2 !important; /* Gris clarito, con !important para forzar el color */
+  min-height: 100vh;
+  background-image: none !important;
+}
+
+/* El fondo empiece tras el navbar
+.navbar + main,
+.navbar + .container,
+.navbar + .row {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+} */

@@ -150,43 +150,53 @@ const Deck = () => {
                 </div>
             </div>
             <div className="row">
-                {slots.map((card, idx) => (
-                    <div
-                        key={idx}
-                        className={
-                            isMobile
-                                ? "col-12 mb-4"
-                                : "col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
-                        }
-                        style={{ display: "flex", justifyContent: "center" }}
-                    >
-                        {card ? (
-                            <Card
-                                card={card}
-                                inDeck={true}
-                                onRemoveFromDeck={() => handleRemoveFromDeck(card.id)}
-                            />
-                        ) : (
-                            <div
-                                style={{
-                                    width: "220px",
-                                    height: "340px",
-                                    borderRadius: "14px",
-                                    background: "#f2f2f2",
-                                    boxShadow: "0 4px 16px #bbb",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color: "#aaa",
-                                    fontSize: "2rem",
-                                    fontWeight: "bold"
-                                }}
-                            >
-                                Empty
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {slots
+                    .slice()
+                    .sort((a, b) => {
+                        // Si hay slots vacíos, los dejamos al final
+                        if (!a && !b) return 0;
+                        if (!a) return 1;
+                        if (!b) return -1;
+                        const rarityOrder = { legendary: 0, rare: 1, common: 2 };
+                        return rarityOrder[a.game_rarity] - rarityOrder[b.game_rarity];
+                    })
+                    .map((card, idx) => (
+                        <div
+                            key={idx}
+                            className={
+                                isMobile
+                                    ? "col-12 mb-4"
+                                    : "col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                            }
+                            style={{ display: "flex", justifyContent: "center" }}
+                        >
+                            {card ? (
+                                <Card
+                                    card={card}
+                                    inDeck={true}
+                                    onRemoveFromDeck={() => handleRemoveFromDeck(card.id)}
+                                />
+                            ) : (
+                                <div
+                                    style={{
+                                        width: "220px",
+                                        height: "340px",
+                                        borderRadius: "14px",
+                                        background: "#f2f2f2",
+                                        boxShadow: "0 4px 16px #bbb",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        color: "#aaa",
+                                        fontSize: "2rem",
+                                        fontWeight: "bold"
+                                    }}
+                                >
+                                    Empty
+                                </div>
+                            )}
+                        </div>
+                    ))}
             </div>
         </div>
     );

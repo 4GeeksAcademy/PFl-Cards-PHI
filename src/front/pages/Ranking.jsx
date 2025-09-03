@@ -70,7 +70,7 @@ const Ranking = () => {
     const top3 = [users[1], users[0], users[2]].filter(Boolean);
 
     return (
-        <div className="bg-light min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="min-vh-100 d-flex align-items-center justify-content-center">
             <div className="container" style={{ maxWidth: "900px" }}>
                 {/* Mi posición */}
                 <div className="row justify-content-center mb-4">

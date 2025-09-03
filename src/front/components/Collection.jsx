@@ -45,6 +45,8 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
     const ownedCards = cards.filter(card => userCollection[card.id] > 0);
     const uniqueOwned = ownedCards.length;
     const totalUnique = cards.length;
+    // Cartas totales (incluyendo repetidas)
+    const totalOwned = ownedCards.reduce((acc, card) => acc + (userCollection[card.id] || 0), 0);
 
     let filteredCards = ownedCards;
     if (filter === "rarity") {
@@ -71,17 +73,37 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
         );
     }
 
-    // Calcula si el deck está completo
     const deckIsFull = deck.length >= MAX_DECK_SIZE;
 
     return (
-        <div className="container mt-4">
-            <h2 className="mb-4">
-                Your Collection &nbsp;
-                <span style={{ fontSize: "1rem", color: "#1976d2" }}>
-                    ({uniqueOwned} / {totalUnique})
-                </span>
+        <div className="container mt-4" style={{ marginTop: "10px", marginBottom: "20px" }}>
+            <h2 className="mb-2">
+                Your Collection
             </h2>
+            <div
+                className="mb-4"
+                style={{
+                    fontSize: "1.1rem",
+                    color: "#1976d2",
+                    fontWeight: "bold",
+                    textAlign: "center"
+                }}
+            >
+                <div className="d-flex flex-wrap justify-content-center gap-4">
+                    <div className="d-flex flex-column align-items-center" style={{ background: "#6acfeeff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
+                        <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
+                        <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                            {totalOwned}
+                        </span>
+                    </div>
+                    <div className="d-flex flex-column align-items-center" style={{ background: "#99eea8ff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
+                        <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
+                        <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                            {uniqueOwned} / {totalUnique}
+                        </span>
+                    </div>
+                </div>
+            </div>
             <Order
                 filter={filter}
                 setFilter={setFilter}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Deck from "../components/Deck";
 import Collection from "../components/Collection";
-import { toast } from "react-toastify";
+import Deck from "../components/Deck";
 
 const tabStyle = (active) => ({
     padding: "10px 24px",
@@ -21,31 +20,34 @@ const CollectionDeck = () => {
     const [deck, setDeck] = useState([]);
     const [successMsg, setSuccessMsg] = useState("");
 
+    // Carga las cartas solo una vez
     useEffect(() => {
         fetch("/src/data/cards_catalog_3sets.json")
             .then((res) => res.json())
             .then((data) => setCards(data.cards));
     }, []);
 
-    // Fetch deck from API
+    // Función para recargar el deck desde la API
+    const fetchDeck = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await resp.json();
+            setDeck(data.cards || []);
+        } catch (err) {
+            setDeck([]);
+        }
+    };
+
+    // Carga el deck al montar y cuando cambias a "collection"
     useEffect(() => {
-        const fetchDeck = async () => {
-            const accessToken = localStorage.getItem("access_token");
-            try {
-                const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await resp.json();
-                setDeck(data.cards || []);
-            } catch (err) {
-                setDeck([]);
-            }
-        };
         fetchDeck();
-    }, []);
+    }, [activeTab]);
 
     const getCardId = (card, idx) => card.id || card.name || idx;
 
@@ -77,8 +79,13 @@ const CollectionDeck = () => {
         }
     };
 
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        // No hace falta llamar a fetchDeck aquí, el useEffect lo hace automáticamente
+    };
+
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "40px" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20px" }}>
             {successMsg && (
                 <div className="alert alert-success text-center" style={{ position: "fixed", top: "70px", left: 0, right: 0, zIndex: 9999 }}>
                     {successMsg}
@@ -92,13 +99,13 @@ const CollectionDeck = () => {
                 marginBottom: "24px"
             }}>
                 <button
-                    onClick={() => window.location.reload()} // Recarga la página al pulsar "Collection"
+                    onClick={() => handleTabChange("collection")}
                     style={tabStyle(activeTab === "collection")}
                 >
                     Collection
                 </button>
                 <button
-                    onClick={() => setActiveTab("deck")}
+                    onClick={() => handleTabChange("deck")}
                     style={tabStyle(activeTab === "deck")}
                 >
                     Deck
