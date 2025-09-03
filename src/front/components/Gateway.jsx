@@ -11,6 +11,12 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
 
+    const PRICE_MAP_DISPLAY = {
+        1: "1 €",
+        5: "4 €",
+        10: "7 €"
+    };
+
     const handleBuy = async () => {
         setLoading(true);
         try {
@@ -80,7 +86,7 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
                             <strong>Pack selected:</strong> {packSeleccionado}
                         </p>
                         <p>
-                            <strong>Quantity:</strong> {quantity}
+                            <strong>Price:</strong> {PRICE_MAP_DISPLAY[quantity] || "N/A"}
                         </p>
                         <p>
                             You will be redirected to Stripe Checkout to complete your purchase.
