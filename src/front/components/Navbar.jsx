@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import battlecardsLogo from "/workspaces/PFl-Cards-PHI/docs/Imagenes/battlecardsLogo.png"; 
+import battlecardsLogo from "../assets/img/battlecardsLogo.png"; 
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useContext(AuthContext);

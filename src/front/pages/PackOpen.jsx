@@ -2,9 +2,8 @@ import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
+import packImg from "../assets/img/1pack.png";
 
-
-const packImg = "docs/Imagenes/1pack.png";
 
 const PackOpen = () => {
     const [totalPacks, setTotalPacks] = useState(null);

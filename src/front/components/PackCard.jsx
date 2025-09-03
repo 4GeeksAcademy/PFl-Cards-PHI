@@ -1,7 +1,7 @@
 import React from "react";
-import OnepacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/1pack.png";
-import FivepacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/5pack.png";
-import TenpacK from "/workspaces/PFl-Cards-PHI/docs/Imagenes/10pack.png";
+import OnepacK from "../assets/img/1pack.png";
+import FivepacK from "../assets/img/5pack.png";
+import TenpacK from "../assets/img/10pack.png";
 
 const packImages = {
   "1 Pack": OnepacK,

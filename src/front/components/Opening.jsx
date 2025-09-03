@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
-
-const backImg = "/docs/Imagenes/Dorso.png";
+import backImg from "../assets/img/Dorso.png";
 
 const CARD_WIDTH = 220;
 const CARD_HEIGHT = 340;
