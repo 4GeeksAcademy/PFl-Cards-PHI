@@ -4,6 +4,8 @@ import { apiFetch } from "../utils/apiFetch";
 import Order from "./Order";
 
 
+const MAX_DECK_SIZE = 20;
+
 const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) => {
     const [userCollection, setUserCollection] = useState({});
     const [loading, setLoading] = useState(true);
@@ -69,6 +71,9 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
         );
     }
 
+    // Calcula si el deck está completo
+    const deckIsFull = deck.length >= MAX_DECK_SIZE;
+
     return (
         <div className="container mt-4">
             <h2 className="mb-4">
@@ -93,7 +98,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                 />
-            </div> 
+            </div>
             {loading ? (
                 <p>Loading cards...</p>
             ) : (
@@ -119,6 +124,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                                             onAddToDeck={() => handleAddToDeck(card, idx)}
                                             isAlreadyInDeck={isCardInDeck(card, idx)}
                                             hideAddToDeck={!owned}
+                                            deckIsFull={deckIsFull} 
                                             style={
                                                 (filter === "missing" || (filter === "all_with_missing" && !owned))
                                                     ? { filter: "grayscale(1)", opacity: 0.6 }
