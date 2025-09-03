@@ -297,7 +297,7 @@ const Ranking = () => {
                         )}
                     </div>
                 </div>
-                <h2 className="text-center mb-3">Ranking de Usuarios</h2>
+                <h2 className="text-center mb-3">Ranking</h2>
                 <div className="table-responsive">
                     <table className="table table-striped table-hover text-center align-middle">
                         <thead className="table-dark">
