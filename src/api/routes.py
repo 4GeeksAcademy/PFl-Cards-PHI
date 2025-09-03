@@ -608,7 +608,7 @@ PRICE_MAP = {
     # El success_url y cancel_url son URLs del frontend a las que redirigir tras el pago o cancelación
 
 @api.route('/create-checkout-session', methods=['POST'])
-@jwt_required()  # Token obligatorio: solo usuarios logueados pueden iniciar una compra
+@jwt_required()  # Token obligatorio: solo los usuarios logueados pueden iniciar una compra
 def create_checkout_session():
     # Leo el pack del body (espero 1, 5 o 10)
     data = request.get_json()
@@ -624,11 +624,14 @@ def create_checkout_session():
 
     # Se crea la sesión de pago en Stripe con los parametros necesarios
     try:
+        
+        print("DEBUG price_id:", price_id)
+        
         session = stripe.checkout.Session.create(
             mode="payment",
             line_items=[{"price": price_id, "quantity": 1}],
-            success_url=os.getenv("VITE_BACKEND_URL") + "/checkout/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url=os.getenv("VITE_BACKEND_URL") + "?canceled=true",
+            success_url=os.getenv("FRONTEND_URL") + "/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=os.getenv("FRONTEND_URL") + "?canceled=true",
             metadata={"user_id": str(user_id), "pack_selected": str(pack)},
         )
         # Se devuelve el id para que el frontend haga redirect con stripe.redirectToCheckout
@@ -653,7 +656,6 @@ def checkout_confirm():
         user_id = int(get_jwt_identity())
 
         # Pido a Stripe los datos de la sesión para verificar que el pago está realizado
-        # (Uso mi clave secreta ya configurada en stripe.api_key)
         session = stripe.checkout.Session.retrieve(session_id)
 
         # Se comrprueba que la sesión está pagada (en test debe ser 'paid' tras completar el Checkout)
@@ -661,7 +663,7 @@ def checkout_confirm():
             return jsonify({"msg": "Session not paid yet."}), 402
 
         # Aquí debajo verifico que la sesión de Stripe pertenece al usuario autenticado y leo la cantidad de sobres comprados
-        meta = session.get("metadata")
+        meta = session.get("metadata") or {}
         session_user = meta.get("user_id")
         pack_selected = meta.get("pack_selected")
         if not session_user or not pack_selected:

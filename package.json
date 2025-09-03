@@ -36,7 +36,7 @@
 		"eslint-plugin-react": "^7.33.1",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.3",
-		"vite": "^4.4.8"
+		"vite": "^7.1.4"
 	},
 	"babel": {
 		"presets": [
@@ -54,6 +54,7 @@
 		]
 	},
 	"dependencies": {
+		"@stripe/stripe-js": "^7.9.0",
 		"boostrap": "^2.0.0",
 		"bootstrap": "^5.3.8",
 		"prop-types": "^15.8.1",
