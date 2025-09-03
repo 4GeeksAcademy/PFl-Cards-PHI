@@ -9,9 +9,9 @@ const trophies = [
     "🥉"  // bronce (3º, derecha)
 ];
 const medalBg = [
-    "rgba(192, 192, 192, 0.18)", // plata difuminado (2º, izquierda)
-    "rgba(255, 215, 0, 0.18)",   // oro difuminado (1º, centro)
-    "rgba(205, 127, 50, 0.18)"   // bronce difuminado (3º, derecha)
+    "rgba(185, 185, 185, 0.77)", // plata difuminado (2º, izquierda)
+    "rgba(255, 217, 0, 0.43)",   // oro difuminado (1º, centro)
+    "rgba(205, 128, 50, 0.38)"   // bronce difuminado (3º, derecha)
 ];
 
 const podiumHeights = ["120px", "170px", "90px"]; // 2º, 1º, 3º
