@@ -40,6 +40,9 @@ def signup():
 
         if User.query.filter_by(email=email).first():
             return jsonify({"msg": "User already exists"}), 400
+        
+        if User.query.filter_by(username=username).first():
+            return jsonify({"msg": "Username already exists"}), 400
 
         new_user = User(
             email=email,
@@ -123,9 +126,18 @@ def update_profile():
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        # Actualizamos username
+        # Validar y actualizar username
         if "username" in body:
-            user.username = body["username"]
+            new_username = body["username"].strip()
+
+            if not new_username:
+                return jsonify({"msg": "El nombre de usuario no puede estar vacío"}), 400
+
+            # Verificar si otro usuario ya usa ese username
+            if User.query.filter(User.username == new_username, User.id != user_id).first():
+                return jsonify({"msg": "Username already exists"}), 400
+
+            user.username = new_username
 
         db.session.commit()
 
