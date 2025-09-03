@@ -42,7 +42,7 @@ const Shop = () => {
 
     return (
         <>
-            <div className="container mt-5">
+            <div className="container mt-5" >
                 <div className="row justify-content-center g-4">
                     {packData.map((pack, idx) => (
                         <div key={idx} className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">

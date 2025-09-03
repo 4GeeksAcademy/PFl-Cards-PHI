@@ -67,7 +67,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                         {collectionStats && (
                             <div className="mt-3 p-3 shadow-sm"
                                 style={{
-                                    background: "#d5dee7ff",
+                                    backgroundColor: "rgba(179, 217, 255, 0.7)",
                                     textAlign: "center",
                                     border: "1px solid #e0e0e0",
                                     borderRadius: "18px",
@@ -118,7 +118,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                         )}
                     </div>
                 </div>
-                {/* Columna de deck: ocupa más espacio */}
+                {/* Columna de deck*/}
                 <div className="col-md-9">
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <h3 className="text-center flex-grow-1 mb-0" style={{
@@ -148,7 +148,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                     </div>
                     <div
                         style={{
-                            background: "#d5dee7ff",
+                            backgroundColor: "rgba(179, 217, 255, 0.7)",
                             borderRadius: "18px",
                             minHeight: "220px",
                             marginBottom: "24px",

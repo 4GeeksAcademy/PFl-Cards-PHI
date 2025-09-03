@@ -11,7 +11,7 @@ const packImages = {
 
 export default function PackCard({ title, description, buttonText, onComprar }) {
   return (
-    <div className="card text-center shadow-sm" style={{ width: "22rem", minHeight: "520px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <div className="card text-center shadow-sm" style={{ width: "22rem", minHeight: "520px", display: "flex", flexDirection: "column", justifyContent: "space-between", backgroundColor: "rgba(255, 255, 255, 0.7)" }}>
       <div className="card-body d-flex flex-column align-items-center">
         <img
           className="card-img-top"
