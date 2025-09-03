@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiFetch } from "../utils/apiFetch";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -59,13 +60,13 @@ const Profile = () => {
     if (!resp) return; // 👈 si 401, redirige al login
 
     if (!resp.ok) {
-      setError("Failed to update username");
+      toast.error("Failed to update username");
       return;
     }
 
     const data = await resp.json();
     setUserData((prev) => ({ ...prev, username: data.username }));
-    alert("Username updated successfully");
+    toast.success("Username updated successfully");
   };
 
   if (loading) return <p>Loading profile...</p>;

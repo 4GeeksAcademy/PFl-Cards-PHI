@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
+import { toast } from "react-toastify";
 
 const TOTAL_SLOTS = 20; 
 
@@ -48,12 +49,12 @@ const Deck = () => {
             });
             const data = await resp.json();
             if (!resp.ok) {
-                alert(data.msg || data.error || "Error removing card from deck");
+                toast.error(data.msg || data.error || "Error removing card from deck");
             } else {
                 setDeckCards(data.cards || []);
             }
         } catch (err) {
-            alert("Network error");
+            toast.error("Network error");
         }
     };
 

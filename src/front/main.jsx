@@ -7,6 +7,8 @@ import { router } from "./routes";  // Import the router configuration
 import { StoreProvider } from './hooks/useGlobalReducer';  // Import the StoreProvider for global state management
 import { BackendURL } from './components/BackendURL';
 import { AuthProvider } from './context/AuthContext';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const Main = () => {
@@ -23,6 +25,7 @@ const Main = () => {
                     {/* Set up routing for the application */}
                     <RouterProvider router={router}>
                     </RouterProvider>
+                    <ToastContainer position="top-right" autoClose={3000} />
                 </StoreProvider>
             </AuthProvider>
         </React.StrictMode>

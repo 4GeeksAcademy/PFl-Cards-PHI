@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Signup = () => {
     const { login } = useContext(AuthContext);
@@ -24,12 +25,14 @@ const Signup = () => {
                     password: password
                 })
             });
+            const data = await resp.json();
 
             if (!resp.ok) {
-                throw new Error("Signup error");
+                toast.error(data.msg || "Signup error");
+                return; 
             }
 
-            const data = await resp.json();
+            toast.success("Account created successfully!");
             console.log("Signup response:", data);
             console.log("Access token recibido:", data.access_token);
 
@@ -39,7 +42,7 @@ const Signup = () => {
             navigate("/");
         } catch (err) {
             console.error(err);
-            setError("Unable to create account, please try again");
+            toast.error("Unable to connect to the server. Try again later.");
         }
     };
 
