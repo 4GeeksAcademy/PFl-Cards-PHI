@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
+import { Link } from "react-router-dom";
 
 const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     const [collectionStats, setCollectionStats] = useState(null);
@@ -126,26 +127,27 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             fontWeight: "bold",
                             color: "#333"
                         }}>Deck</h3>
-                        <span
-                            className="badge bg-primary ms-2"
-                            style={{
-                                fontSize: "1.5rem",
-                                padding: "0.4em 1em",
-                                verticalAlign: "middle",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "12px",
-                                boxShadow: "0 2px 8px #fafcffff"
-                            }}
-                        >
-                            {userRanking && (
-                                <span style={{ fontSize: "1.5rem", color: "#fff" }}>
-                                    {userRanking}º
-                                    <span style={{ margin: "0 8px" }}>-</span>
-                                </span>
-                            )}
-                            {userData?.deck_points}
-                        </span>
+                            <Link to="/ranking">
+                            <span
+                                className="badge bg-primary ms-2"
+                                style={{
+                                    fontSize: "1.5rem",
+                                    padding: "0.4em 1em",
+                                    verticalAlign: "middle",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "12px",   
+                                }}
+                            >
+                                {userRanking && (
+                                    <span style={{ fontSize: "1.5rem", color: "#fff" }}>
+                                        {userRanking}º
+                                        <span style={{ margin: "0 8px" }}>-</span>
+                                    </span>
+                                )}
+                                {userData?.deck_points}
+                            </span>
+                        </Link>
                     </div>
                     <div
                         style={{

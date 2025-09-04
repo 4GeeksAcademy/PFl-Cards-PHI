@@ -889,7 +889,7 @@ def recycle_cards():
     rarity = data.get("rarity")
     cards_to_recycle = data.get("cards", [])
 
-    required = {"common": 20, "rare": 10, "legendary": 3}
+    required = {"common": 20, "rare": 10, "legendary": 1}
     if rarity not in required:
         return jsonify({"error": "Rareza no válida"}), 400
 
