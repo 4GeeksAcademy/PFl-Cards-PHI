@@ -54,6 +54,7 @@
 		]
 	},
 	"dependencies": {
+		"@stripe/react-stripe-js": "^4.0.0",
 		"@stripe/stripe-js": "^7.9.0",
 		"boostrap": "^2.0.0",
 		"bootstrap": "^5.3.8",
