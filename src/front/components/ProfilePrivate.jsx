@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import { apiFetch } from "../utils/apiFetch";
 
 const ProfilePrivate = ({
     userData,
@@ -20,7 +21,7 @@ const ProfilePrivate = ({
             try {
                 // Usuario (con JWT)
                 const accessToken = localStorage.getItem("access_token");
-                const respUser = await fetch(
+                const respUser = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/collection`,
                     {
                         headers: {
@@ -39,7 +40,7 @@ const ProfilePrivate = ({
                     stats.legendaryCount = userCards.filter(c => c.game_rarity === "legendary").length;
                 }
                 // Global
-                const respGlobal = await fetch(
+                const respGlobal = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/cards`
                 );
                 if (respGlobal.ok) {
