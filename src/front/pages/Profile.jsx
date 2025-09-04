@@ -65,7 +65,7 @@ const Profile = () => {
   // Cargar posición en el ranking
   useEffect(() => {
     if (id) {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
+      apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
         .then((res) => res.json())
         .then((data) => {
           const sorted = data.users.sort(
