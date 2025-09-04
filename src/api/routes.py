@@ -916,3 +916,59 @@ def get_user_collection(user_id):
             "quantity": uc.quantity
         })
     return jsonify({"collection": items}), 200
+
+
+@api.route('/recycle', methods=['POST'])
+@jwt_required()
+def recycle_cards():
+    """
+    Recicla cartas repetidas y guarda una copia por tipo.
+    Body JSON:
+    {
+        "rarity": "common" | "rare" | "legendary",
+        "cards": [
+            {"card_id": <int>, "quantity": <int>}, ...
+        ]
+    }
+    Si hay suficientes cartas repetidas, las elimina y añade 1 sobre al inventario del usuario.
+    """
+    user_id = get_jwt_identity()
+    if not user_id:
+        return jsonify({"msg": "Unauthorized"}), 401
+
+    if not request.is_json:
+        return jsonify({"error": "Body must be JSON"}), 400
+
+    data = request.get_json()
+    rarity = data.get("rarity")
+    cards_to_recycle = data.get("cards", [])
+
+    required = {"common": 20, "rare": 10, "legendary": 3}
+    if rarity not in required:
+        return jsonify({"error": "Rareza no válida"}), 400
+
+    total_to_recycle = sum(item.get("quantity", 0) for item in cards_to_recycle)
+    if total_to_recycle < required[rarity]:
+        return jsonify({"error": "No tienes suficientes cartas repetidas para reciclar"}), 400
+
+    # Validar que no se elimina la última copia de ninguna carta
+    for item in cards_to_recycle:
+        card_id = item.get("card_id")
+        qty = item.get("quantity", 0)
+        uc = UserCard.query.filter_by(user_id=user_id, card_id=card_id).first()
+        if not uc or uc.quantity - qty < 1:
+            return jsonify({"error": f"No puedes reciclar todas las copias de la carta {card_id}"}), 400
+
+    try:
+        for item in cards_to_recycle:
+            card_id = item.get("card_id")
+            qty = item.get("quantity", 0)
+            uc = UserCard.query.filter_by(user_id=user_id, card_id=card_id).first()
+            if uc and qty > 0:
+                uc.quantity -= qty
+        db.session.add(PackPurchase(user_id=user_id, quantity=1))
+        db.session.commit()
+        return jsonify({"msg": "Reciclaje realizado. Has recibido 1 sobre."}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al reciclar cartas", "details": str(e)}), 500

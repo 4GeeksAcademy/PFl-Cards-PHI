@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Collection from "../components/Collection";
 import Deck from "../components/Deck";
+import Recycling from "../components/Recycling";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
 
@@ -20,6 +21,7 @@ const CollectionDeck = () => {
     const [activeTab, setActiveTab] = useState("collection");
     const [cards, setCards] = useState([]);
     const [deck, setDeck] = useState([]);
+    const [userCollection, setUserCollection] = useState([]);
 
     // Carga las cartas solo una vez
     useEffect(() => {
@@ -45,9 +47,27 @@ const CollectionDeck = () => {
         }
     };
 
-    // Carga el deck al montar y cuando cambias a "collection"
+    // Cargar la colección del usuario al montar y al cambiar de pestaña
+    const fetchUserCollection = async () => {
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/collection`, {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                }
+            });
+            const data = await resp.json();
+            setUserCollection(data["User collection"] || []);
+        } catch (err) {
+            setUserCollection([]);
+        }
+    };
+
+    // Carga el deck y la colección del usuario al montar y cuando cambias de pestaña
     useEffect(() => {
         fetchDeck();
+        fetchUserCollection();
     }, [activeTab]);
 
     const getCardId = (card, idx) => card.id || card.name || idx;
@@ -104,6 +124,12 @@ const CollectionDeck = () => {
                 >
                     Deck
                 </button>
+                <button
+                    onClick={() => handleTabChange("recycling")}
+                    style={tabStyle(activeTab === "recycling")}
+                >
+                    Recycling
+                </button>
             </div>
             <div style={{ width: "100%", textAlign: "center" }}>
                 {activeTab === "collection" && (
@@ -116,6 +142,9 @@ const CollectionDeck = () => {
                 )}
                 {activeTab === "deck" && (
                     <Deck deck={deck} setDeck={setDeck} />
+                )}
+                {activeTab === "recycling" && (
+                    <Recycling userCollection={userCollection} onRecycle={fetchUserCollection} />
                 )}
             </div>
         </div>
