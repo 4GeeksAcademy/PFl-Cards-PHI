@@ -106,20 +106,12 @@ const Deck = () => {
                         position: "relative",
                     }}
                 >
-                    <h3
-                        className="mb-0"
-                        style={{
-                            textAlign: "center",
-                            flexGrow: 1,
-                        }}
-                    >
-                        Your Deck
-                    </h3>
+                    {/* <h3 className="mb-0"> Your Deck </h3> */}
                     <Link
                         to="/ranking"
                         style={{
                             textDecoration: "none",
-                            position: "absolute",
+                            position: "center",
                             right: 0,
                             top: "50%",
                             transform: "translateY(-50%)"
