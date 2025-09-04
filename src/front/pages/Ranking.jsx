@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { apiFetch } from "../utils/apiFetch";
 
 const USERS_PER_PAGE = 50;
 const trophies = [
@@ -23,7 +24,7 @@ const Ranking = () => {
     const [myRanking, setMyRanking] = useState(null);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
             .then(res => res.json())
             .then(data => {
                 const sorted = data.users.sort((a, b) => b.deck_points - a.deck_points);
@@ -39,7 +40,7 @@ const Ranking = () => {
             setMyRanking(null);
             return;
         }
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
