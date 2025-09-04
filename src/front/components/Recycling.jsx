@@ -14,7 +14,7 @@ const rarityColors = {
 const recyclingOptions = [
     { rarity: "common", required: 20, label: "20 common -> 1 pack" },
     { rarity: "rare", required: 10, label: "10 rare -> 1 pack" },
-    { rarity: "legendary", required: 3, label: "3 legendary -> 1 pack" }
+    { rarity: "legendary", required: 1, label: "1 legendary -> 1 pack" }
 ];
 
 function getRandomCards(cards, count) {
