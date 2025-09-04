@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import { apiFetch } from "../utils/apiFetch";
 
 const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     const [collectionStats, setCollectionStats] = useState(null);
@@ -9,7 +10,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
             let stats = {};
             try {
                 // Usuario
-                const respUser = await fetch(
+                const respUser = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/users/${userData?.id}/collection`
                 );
                 if (respUser.ok) {
@@ -22,7 +23,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                     stats.legendaryCount = userCards.filter(c => c.game_rarity === "legendary").length;
                 }
                 // Global
-                const respGlobal = await fetch(
+                const respGlobal = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/cards`
                 );
                 if (respGlobal.ok) {
