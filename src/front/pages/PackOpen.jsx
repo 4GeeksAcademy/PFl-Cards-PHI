@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import Opening from "../components/Opening";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
+import packImg from "../assets/img/1pack.png";
 
-const packImg = "docs/Imagenes/Sobre.png";
 
 const PackOpen = () => {
     const [totalPacks, setTotalPacks] = useState(null);
@@ -12,6 +12,7 @@ const PackOpen = () => {
     const [imgWidth, setImgWidth] = useState(220);
     const [cardsToShow, setCardsToShow] = useState([]);
     const [showOpening, setShowOpening] = useState(false);
+    const [buttonsDisabled, setButtonsDisabled] = useState(false); // Nuevo estado
 
     useLayoutEffect(() => {
         if (buttonsRef.current) {
@@ -43,9 +44,13 @@ const PackOpen = () => {
 
     // Open packs and show cards
     const handleOpenPack = async (quantity) => {
+        if (buttonsDisabled) return; // Bloquea si ya está deshabilitado
+        setButtonsDisabled(true); // Bloquea al instante
+
         const accessToken = localStorage.getItem("access_token");
         if (totalPacks < quantity) {
             toast.error("You don't have enough packs!");
+            setButtonsDisabled(false); // Desbloquea si no hay suficientes packs
             return;
         }
         let cardsOpened = [];
@@ -70,12 +75,15 @@ const PackOpen = () => {
             setShowOpening(true);
         } catch (err) {
             toast.error(err.message);
+            setButtonsDisabled(false); // Desbloquea si hay error
         }
     };
 
+    // Cuando se cierra el popup, desbloquea los botones
     const handleCloseOpening = () => {
         setShowOpening(false);
         setCardsToShow([]);
+        setButtonsDisabled(false); // Desbloquea aquí
     };
 
     return (
@@ -106,7 +114,7 @@ const PackOpen = () => {
                 )}
             </div>
             {/* Pack image and buttons closer to the top */}
-            <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem" }}>
+            <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem", width: "100%" }}>
                 <img
                     src={packImg}
                     alt="Pack"
@@ -116,18 +124,37 @@ const PackOpen = () => {
                         objectFit: "contain",
                         marginBottom: "1.5rem",
                         transition: "width 0.2s",
-                        borderRadius:"24px"
+                        borderRadius: "24px"
                     }}
                 />
-                <div className="d-flex justify-content-center gap-3" ref={buttonsRef}>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(1)}>
+                {/* Línea superior: 3 botones */}
+                <div
+                    className="d-flex justify-content-center gap-3"
+                    ref={buttonsRef}
+                    style={{ width: "320px", maxWidth: "100%" }}
+                >
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(1)} disabled={buttonsDisabled}>
                         Open 1
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(5)}>
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(5)} disabled={buttonsDisabled}>
                         Open 5
                     </button>
-                    <button className="btn btn-primary" onClick={() => handleOpenPack(10)}>
+                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(10)} disabled={buttonsDisabled}>
                         Open 10
+                    </button>
+                </div>
+                {/* Línea inferior: botón "Open All" con el mismo ancho */}
+                <div
+                    className="d-flex justify-content-center"
+                    style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
+                >
+                    <button
+                        className="btn btn-danger flex-grow-1"
+                        style={{ minWidth: "180px", maxWidth: "300px" }}
+                        onClick={() => handleOpenPack(totalPacks)}
+                        disabled={buttonsDisabled || totalPacks < 1}
+                    >
+                        Open All ({totalPacks})
                     </button>
                 </div>
             </div>

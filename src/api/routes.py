@@ -855,3 +855,64 @@ def get_user_profile(user_id):
         "email": user.email,
         "deck_points": deck_points
     }), 200
+
+
+@api.route('/users/<int:user_id>/deck', methods=['GET'])
+def get_user_deck(user_id):
+    deck = Deck.query.filter_by(user_id=user_id).first()
+    if not deck:
+        return jsonify({"cards": []}), 200
+
+    deck_cards = (
+        db.session.query(Card)
+        .join(DeckCard, DeckCard.card_id == Card.id)
+        .filter(DeckCard.deck_id == deck.id)
+        .all()
+    )
+
+    cards_list = [card.serialize() for card in deck_cards]
+    return jsonify({"cards": cards_list}), 200
+
+@api.route('/profile/ranking', methods=['GET'])
+@jwt_required()
+def get_my_ranking():
+    user_id = current_user_id_from_jwt()
+    users = User.query.all()
+    # Ordena por puntos de deck descendente
+    def get_deck_points(u):
+        deck = Deck.query.filter_by(user_id=u.id).first()
+        if deck:
+            return sum([card.points for card in [dc.card for dc in deck.cards]])
+        return 0
+
+    sorted_users = sorted(users, key=get_deck_points, reverse=True)
+    idx = next((i for i, u in enumerate(sorted_users) if u.id == user_id), None)
+    deck = Deck.query.filter_by(user_id=user_id).first()
+    deck_points = 0
+    if deck:
+        deck_points = sum([card.points for card in [dc.card for dc in deck.cards]])
+    return jsonify({
+        "position": idx + 1 if idx is not None else None,
+        "points": deck_points
+    }), 200
+
+@api.route('/users/<int:user_id>/collection', methods=['GET'])
+def get_user_collection(user_id):
+    rows = (
+        UserCard.query
+        .filter_by(user_id=user_id)
+        .join(Card, UserCard.card_id == Card.id)
+        .all()
+    )
+    items = []
+    for uc in rows:
+        c = uc.card
+        items.append({
+            "card_id": c.id,
+            "name": c.name,
+            "image_url": c.image_url,
+            "game_rarity": c.game_rarity,
+            "points": c.points,
+            "quantity": uc.quantity
+        })
+    return jsonify({"collection": items}), 200

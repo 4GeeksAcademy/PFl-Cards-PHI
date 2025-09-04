@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { apiFetch } from "../utils/apiFetch";
 
 const USERS_PER_PAGE = 50;
-const medals = ["🥈", "🥇", "🥉"]; // El oro (1º) va en el centro
+const trophies = [
+    "🥈", // plata (2º, izquierda)
+    "🏆", // copa oro (1º, centro)
+    "🥉"  // bronce (3º, derecha)
+];
 const medalBg = [
-    "rgba(192, 192, 192, 0.18)", // plata difuminado (2º, izquierda)
-    "rgba(255, 215, 0, 0.18)",   // oro difuminado (1º, centro)
-    "rgba(205, 127, 50, 0.18)"   // bronce difuminado (3º, derecha)
+    "rgba(185, 185, 185, 1)", // plata difuminado (2º, izquierda)
+    "rgba(255, 217, 0, 1)",   // oro difuminado (1º, centro)
+    "rgba(205, 128, 50, 1)"   // bronce difuminado (3º, derecha)
 ];
 
 const podiumHeights = ["120px", "170px", "90px"]; // 2º, 1º, 3º
@@ -19,7 +24,7 @@ const Ranking = () => {
     const [myRanking, setMyRanking] = useState(null);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
             .then(res => res.json())
             .then(data => {
                 const sorted = data.users.sort((a, b) => b.deck_points - a.deck_points);
@@ -35,7 +40,7 @@ const Ranking = () => {
             setMyRanking(null);
             return;
         }
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
@@ -66,9 +71,8 @@ const Ranking = () => {
     const top3 = [users[1], users[0], users[2]].filter(Boolean);
 
     return (
-        <div className="bg-light min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="min-vh-100 d-flex align-items-center justify-content-center">
             <div className="container" style={{ maxWidth: "900px" }}>
-                {/* Mi posición */}
                 <div className="row justify-content-center mb-4">
                     <div className="col-auto">
                         {myProfile && myRanking ? (
@@ -99,67 +103,96 @@ const Ranking = () => {
                         )}
                     </div>
                 </div>
-                {/* Podium Top 3 */}
-                <div className="d-flex justify-content-center align-items-end mb-4" style={{ gap: "2rem" }}>
-                    {top3.map((user, idx) => (
-                        <div
-                            key={user.id}
-                            className="text-center d-flex flex-column justify-content-end"
-                            style={{
-                                background: medalBg[idx],
-                                borderRadius: "18px 18px 0 0",
-                                boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-                                width: "180px",
-                                height: podiumHeights[idx],
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-end",
-                                position: "relative"
-                            }}
-                        >
-                            <div style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                marginBottom: "0.5rem"
-                            }}>
+                <div className="d-flex justify-content-center align-items-center mb-4">
+                    <div className=" rounded-4 p-4"
+                        style={{
+                            display: "flex",
+                            gap: "0.7rem",
+                            justifyContent: "center",
+                            alignItems: "flex-end",
+                            width: "100%",
+                            maxWidth: "900px",
+                            flexWrap: "nowrap"
+                        }}
+                    >
+                        {top3.map((user, idx) => (
+                            <div key={user.id}
+                                className="d-flex flex-column align-items-center"
+                                style={{
+                                    width: "calc(33.33% - 0.47rem)",
+                                    minWidth: "90px",
+                                    maxWidth: "220px",
+                                    flex: "1 1 0",
+                                    transition: "width 0.2s",
+                                }}
+                            >
+                                {/* Trofeo/Medalla */}
                                 <span style={{
                                     fontSize: "2.2rem",
                                     marginBottom: "0.2rem"
                                 }}>
-                                    {medals[idx]}
+                                    {trophies[idx]}
                                 </span>
-                                <Link
-                                    to={`/profile/${user.id}`}
-                                    className="text-decoration-underline fw-bold mb-2"
+                                {/* Atril */}
+                                <div
                                     style={{
-                                        color: "#2d6cdf",
-                                        fontSize: "1.3rem"
+                                        background: medalBg[idx],
+                                        borderRadius: "18px 18px 0 0",
+                                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+                                        width: "100%",
+                                        height: podiumHeights[idx],
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "flex-start", 
+                                        position: "relative",
+                                        minHeight: "60px",
+                                        paddingTop: "6px"
                                     }}
                                 >
-                                    {user.username}
-                                </Link>
+                                    <span
+                                        className="fw-bold"
+                                        style={{
+                                            color: "#2d6cdf",
+                                            fontSize: "clamp(0.8rem, 2vw, 1.3rem)",
+                                            wordBreak: "break-word",
+                                            textAlign: "center",
+                                            width: "100%",
+                                            marginBottom: "0.2rem"
+                                        }}
+                                        title={user.username}
+                                    >
+                                        {user.username}
+                                    </span>
+                                    <div style={{ flex: 1 }} />
+                                    <span
+                                        className="badge bg-primary mb-3"
+                                        style={{
+                                            fontSize: "1.1rem",
+                                            padding: "0.3em 0.7em",
+                                            width: "80%",
+                                            textAlign: "center",
+                                            transition: "font-size 0.2s, width 0.2s"
+                                        }}
+                                    >
+                                        {user.deck_points}
+                                    </span>
+                                    <div style={{
+                                        width: "100%",
+                                        height: "18px",
+                                        background: medalBg[idx],
+                                        borderRadius: "0 0 18px 18px",
+                                        position: "absolute",
+                                        bottom: 0,
+                                        left: 0
+                                    }}></div>
+                                </div>
                             </div>
-                            <span
-                                className="badge bg-primary mb-3"
-                                style={{
-                                    fontSize: "2rem",
-                                    padding: "0.4em 1em"
-                                }}
-                            >
-                                {user.deck_points}
-                            </span>
-                            <div style={{
-                                width: "100%",
-                                height: "18px",
-                                background: medalBg[idx],
-                                borderRadius: "0 0 18px 18px"
-                            }}></div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-                <h2 className="text-center mb-3">Ranking de Usuarios</h2>
-                <div className="table-responsive">
+                <h2 className="text-center mb-3">Ranking</h2>
+                <div className="table-responsive" >
                     <table className="table table-striped table-hover text-center align-middle">
                         <thead className="table-dark">
                             <tr>
@@ -171,15 +204,15 @@ const Ranking = () => {
                         <tbody>
                             {usersToShow.map((user, idx) => {
                                 const globalIdx = startIdx + idx;
-                                let medal = null;
-                                if (globalIdx < 3) medal = medals[[1, 0, 2][globalIdx]];
+                                let trophy = null;
+                                if (globalIdx < 3) trophy = trophies[[1, 0, 2][globalIdx]];
                                 return (
                                     <tr key={user.id}>
                                         <td>{globalIdx + 1}º</td>
                                         <td>
-                                            {medal && (
+                                            {trophy && (
                                                 <span style={{ fontSize: "1.3rem", marginRight: "0.3rem", verticalAlign: "middle" }}>
-                                                    {medal}
+                                                    {trophy}
                                                 </span>
                                             )}
                                             <Link

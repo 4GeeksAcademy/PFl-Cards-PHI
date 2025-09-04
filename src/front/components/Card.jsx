@@ -6,44 +6,83 @@ function getCardBgColor(rarity) {
     return "linear-gradient(135deg, #888 60%, #ccc 100%)"; // gray
 }
 
+function getRarityInitial(rarity) {
+    if (rarity === "legendary") return "L";
+    if (rarity === "rare") return "R";
+    return "C";
+}
+
+function getRarityLabel(rarity) {
+    if (rarity === "legendary") return "Legendary";
+    if (rarity === "rare") return "Rare";
+    return "Common";
+}
+
 const Card = ({
     card,
-    inDeck = false, // true if rendering from deck view
+    inDeck = false,
     onAddToDeck,
     onRemoveFromDeck,
-    isAlreadyInDeck = false, // true if this card is already in deck
-    hideAddToDeck = false, // <-- nueva prop
-    style
+    isAlreadyInDeck = false,
+    hideAddToDeck = false,
+    deckIsFull = false,
+    style = {}
 }) => {
     if (!card) return null;
+    const cardW = style.width || 220;
+    const cardH = style.height || 340;
+    const imgW = 180;
+    const imgH = 270;
+    const fontSize = "1rem"; 
+    const buttonSize = "28px"; 
+    const padding = style.padding || "16px";
+    const margin = style.margin || "16px auto";
+
+    const disableAdd = isAlreadyInDeck || deckIsFull;
 
     return (
         <div
             className="card"
             style={{
                 ...style,
-                width: "220px",
+                width: cardW,
+                height: cardH,
                 borderRadius: "14px",
                 boxShadow: "0 4px 16px #bbb",
                 background: getCardBgColor(card.game_rarity),
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                padding: "16px",
-                margin: "16px auto"
+                padding,
+                margin,
+                overflow: "hidden"
             }}
         >
-            <img
-                src={card.image_url}
-                alt={card.name}
+            <div
                 style={{
-                    width: "180px",
-                    height: "270px",
-                    objectFit: "contain",
+                    width: imgW,
+                    height: imgH,
                     borderRadius: "10px",
-                    marginBottom: "12px"
+                    marginBottom: "12px",
+                    overflow: "hidden",
+                    background: "transparent",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
                 }}
-            />
+            >
+                <img
+                    src={card.image_url}
+                    alt={card.name}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        borderRadius: "10px",
+                        background: "transparent"
+                    }}
+                />
+            </div>
             <div
                 style={{
                     width: "100%",
@@ -53,17 +92,20 @@ const Card = ({
                     background: "rgba(255,255,255,0.7)",
                     borderRadius: "6px",
                     padding: "8px 12px",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
+                    fontSize
                 }}
             >
-                <span style={{ color: "#333" }}>{card.points}</span>
-                <span style={{ flex: 1, textAlign: "center", color: "#444" }}>{card.game_rarity}</span>
+                <span style={{ color: "#333", fontSize }}>{card.points}</span>
+                <span style={{ flex: 1, textAlign: "center", color: "#444", fontSize }}>
+                    {getRarityLabel(card.game_rarity)}
+                </span>
                 {inDeck ? (
                     <button
                         className="btn"
                         style={{
-                            width: "32px",
-                            height: "32px",
+                            width: buttonSize,
+                            height: buttonSize,
                             background: "#dc3545",
                             color: "#fff",
                             borderRadius: "6px",
@@ -71,7 +113,7 @@ const Card = ({
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            fontSize: "1.5rem",
+                            fontSize,
                             fontWeight: "bold",
                             cursor: "pointer"
                         }}
@@ -89,24 +131,30 @@ const Card = ({
                         <button
                             className="btn"
                             style={{
-                                width: "32px",
-                                height: "32px",
-                                background: isAlreadyInDeck ? "#bbb" : "#28a745",
+                                width: buttonSize,
+                                height: buttonSize,
+                                background: disableAdd ? "#bbb" : "#28a745",
                                 color: "#fff",
                                 borderRadius: "6px",
                                 border: "none",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "1.5rem",
+                                fontSize,
                                 fontWeight: "bold",
-                                cursor: isAlreadyInDeck ? "not-allowed" : "pointer",
-                                opacity: isAlreadyInDeck ? 0.6 : 1
+                                cursor: disableAdd ? "not-allowed" : "pointer",
+                                opacity: disableAdd ? 0.6 : 1
                             }}
-                            disabled={isAlreadyInDeck}
-                            title={isAlreadyInDeck ? "Already in deck" : "Add to deck"}
+                            disabled={disableAdd}
+                            title={
+                                deckIsFull
+                                    ? "Deck lleno"
+                                    : isAlreadyInDeck
+                                        ? "Ya está en el deck"
+                                        : "Añadir al deck"
+                            }
                             onClick={() => {
-                                if (!isAlreadyInDeck && onAddToDeck) {
+                                if (!disableAdd && onAddToDeck) {
                                     onAddToDeck(card.id);
                                 }
                             }}
