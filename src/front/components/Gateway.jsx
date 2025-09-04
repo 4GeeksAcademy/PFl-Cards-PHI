@@ -2,31 +2,54 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const Gateway = ({ packSeleccionado, quantity, onClose }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const accessToken = localStorage.getItem("access_token");
 
+    // Por si queremos cambiar los precios, aunque es un poco lio cambiarlos en el dashboard de stripe
+    // y luego modificar el env con los id de los diferentes precios, ademas de que pide tarjetas para realizar los pagos, aunque sean simulados
+    // si se quisiera probar con tarjetas se pone a la tarjeta el numero:
+    // 4242 4242 4242 4242, con fecha de cad. futura (ej. 12/34), CVC cualquiera (123), nombre y dirección cualquiera.
+    const PRICE_MAP_DISPLAY = {
+        1: "0 €",
+        5: "0 €",
+        10: "0 €"
+    };
+
     const handleBuy = async () => {
         setLoading(true);
         try {
             console.log("Quantity sent to API:", quantity);
-            const response = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/buy`, {
+            const response = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/create-checkout-session`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ quantity })
+                body: JSON.stringify({ pack: Number(quantity) }) //el backend espera "pack" con valores 1|5|10 para mapear al price_id de Stripe, de ahi el cambio
             });
             const data = await response.json();
-            if (!response.ok) throw new Error("Purchase error");
-            setLoading(false);
-            navigate("/packopen");
+
+            // En el código original solo se comprobaba si response.ok, ahora tambien se verifica que venga data.id, porque Stripe necesita ese ID para redirigir 
+            if (!response.ok || !data?.id) throw new Error(data?.msg || "Failed to create session");
+
+            // Redirección a Stripe Checkout usando el sessionId devuelto por el backend
+            const stripe = await stripePromise;
+            const { error } = await stripe.redirectToCheckout({ sessionId: data.id });
+            if (error) throw error;
+
+            // navigate("/packopen"); //ya no es necesaria la navegación directa a /packopen, ya que ahora la gestiona Stripe
+
+
         } catch (error) {
-            setLoading(false);
+            console.error(error);
             toast.error("There was a problem with the payment.");
+            setLoading(false);
         }
     };
 
@@ -59,7 +82,7 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Payment Gateway Simulation</h5>
+                        <h5 className="modal-title">You will be redirected</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body text-center">
@@ -67,15 +90,15 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
                             <strong>Pack selected:</strong> {packSeleccionado}
                         </p>
                         <p>
-                            <strong>Quantity:</strong> {quantity}
+                            <strong>Price:</strong> {PRICE_MAP_DISPLAY[quantity] || "N/A"}
                         </p>
                         <p>
-                            Please confirm your buy to continue.
+                            You will be redirected to Stripe Checkout to complete your purchase.
                         </p>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-success" disabled={loading} onClick={handleBuy}>
-                            {loading ? "Processing..." : "Confirm Buy"}
+                            {loading ? "Processing..." : "Go to Stripe"}
                         </button>
                     </div>
                 </div>

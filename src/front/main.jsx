@@ -25,7 +25,11 @@ const Main = () => {
                     {/* Set up routing for the application */}
                     <RouterProvider router={router}>
                     </RouterProvider>
-                    <ToastContainer position="top-right" autoClose={3000} />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        style={{ marginTop: "90px" }} 
+                    />
                 </StoreProvider>
             </AuthProvider>
         </React.StrictMode>
