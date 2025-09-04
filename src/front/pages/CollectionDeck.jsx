@@ -73,7 +73,6 @@ const CollectionDeck = () => {
             if (!resp.ok) throw new Error(data.error || "Error adding card");
             setDeck(data.cards || []);
             toast.success("Card added successfully!");
-            setTimeout(() => setSuccessMsg(""), 2000); // Oculta el mensaje tras 2 segundos
         } catch (err) {
             toast.error("Network error");
         }
@@ -85,11 +84,6 @@ const CollectionDeck = () => {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "20px" }}>
-            {/* {successMsg && (
-                <div className="alert alert-success text-center" style={{ position: "fixed", top: "70px", left: 0, right: 0, zIndex: 9999 }}>
-                    {successMsg}
-                </div>
-            )} */}
             <div style={{
                 display: "flex",
                 justifyContent: "center",
