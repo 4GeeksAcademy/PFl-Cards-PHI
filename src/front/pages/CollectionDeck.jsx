@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Collection from "../components/Collection";
 import Deck from "../components/Deck";
 import { toast } from "react-toastify";
+import { apiFetch } from "../utils/apiFetch";
 
 const tabStyle = (active) => ({
     padding: "10px 24px",
@@ -31,7 +32,7 @@ const CollectionDeck = () => {
     const fetchDeck = async () => {
         const accessToken = localStorage.getItem("access_token");
         try {
-            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck`, {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
@@ -61,7 +62,7 @@ const CollectionDeck = () => {
         if (deck.length >= 20 || isCardInDeck(card, idx)) return;
         const accessToken = localStorage.getItem("access_token");
         try {
-            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/deck/add`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,
