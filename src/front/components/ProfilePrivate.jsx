@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import { Link } from "react-router-dom";
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 const ProfilePrivate = ({
     userData,
@@ -103,22 +104,16 @@ const ProfilePrivate = ({
                                     position: "relative"
                                 }}
                             >
-                                {profileImg ? (
-                                    <img
-                                        src={profileImg}
-                                        alt="Profile"
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                            borderRadius: "50%"
-                                        }}
-                                    />
-                                ) : (
-                                    <span role="img" aria-label="profile">
-                                        👤
-                                    </span>
-                                )}
+                                <img
+                                    src={profileImg || defaultAvatar}
+                                    alt="Profile"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%"
+                                    }}
+                                />
                                 <label htmlFor="profile-img-upload" style={{
                                     position: "absolute",
                                     bottom: "-18px",

@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import battlecardsLogo from "../assets/img/battlecardsLogo.png"; 
+import battlecardsLogo from "../assets/img/battlecardsLogo.png";
+import defaultAvatar from "../assets/img/rigo-baby.jpg"; 
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -78,11 +79,22 @@ export default function Navbar() {
             ) : (
               <div className="dropdown me-2">
                 <button
-                  className="btn btn-secondary dropdown-toggle"
+                  className="btn dropdown-toggle p-0 border-0 bg-transparent"
                   type="button"
                   data-bs-toggle="dropdown"
+                  style={{ boxShadow: "none" }}
                 >
-                  My Profile
+                  <img
+                    src={user?.profile_image_url || defaultAvatar}
+                    alt="Profile"
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "2px solid #fff"
+                    }}
+                  />
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
                   <li>

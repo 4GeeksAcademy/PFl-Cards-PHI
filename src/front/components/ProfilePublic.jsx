@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import { Link } from "react-router-dom";
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     const [collectionStats, setCollectionStats] = useState(null);
@@ -73,22 +74,16 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                     position: "relative"
                                 }}
                             >
-                                {userData?.profileImg ? (
-                                    <img
-                                        src={userData.profileImg}
-                                        alt="Profile"
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                            borderRadius: "50%"
-                                        }}
-                                    />
-                                ) : (
-                                    <span role="img" aria-label="profile">
-                                        👤
-                                    </span>
-                                )}
+                                <img
+                                    src={userData?.profileImg || defaultAvatar}
+                                    alt="Profile"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%"
+                                    }}
+                                />
                             </div>
                             <span style={{
                                 fontSize: "1.7rem",
