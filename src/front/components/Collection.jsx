@@ -77,9 +77,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
 
     return (
         <div className="container mt-4" style={{ marginTop: "10px", marginBottom: "20px" }}>
-            <h2 className="mb-2">
-                Your Collection
-            </h2>
+            {/* <h2 className="mb-2">Your Collection</h2> */}
             <div
                 className="mb-4"
                 style={{
