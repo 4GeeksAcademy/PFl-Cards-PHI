@@ -236,7 +236,7 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
                                 style={{ minWidth: "120px" }}
                                 onClick={reRandomize}
                             >
-                                Random
+                                Randomize
                             </button>
                             <button
                                 className="btn btn-success"
