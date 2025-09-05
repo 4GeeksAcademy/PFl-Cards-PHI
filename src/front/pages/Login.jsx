@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
@@ -7,36 +7,28 @@ const Login = () => {
     const { login } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
-        setError("");
-
         try {
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             });
-
             const data = await resp.json();
-            console.log("Login response:", data);
-
             if (!resp.ok) {
                 toast.error(data.msg || data.error || "Unable to login. Please try again.");
-                throw new Error(data.msg || data.error || "Login error");
+                return;
             }
-
             toast.success("Login successful!");
-            login(data.access_token); // Use context
-            navigate("/"); // Redirect to home
-        } catch (err) {
-            console.error(err);
-            // toast.error("Server connection error.");
+            login(data.access_token);
+            navigate("/");
+        } catch {
+            toast.error("Server connection error.");
         }
-    };
+    }, [email, password, login, navigate]);
 
     return (
         <div className="container mt-5">
@@ -66,7 +58,6 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        {error && <p className="text-danger">{error}</p>}
                         <button type="submit" className="btn btn-primary w-100">Login</button>
                     </form>
                 </div>

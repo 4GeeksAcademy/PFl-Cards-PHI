@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
@@ -8,43 +8,33 @@ const Signup = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
-        setError("");
-
         try {
             const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password
-                })
+                body: JSON.stringify({ username, email, password })
             });
             const data = await resp.json();
-
             if (!resp.ok) {
                 toast.error(data.msg || "Signup error");
-                return; 
+                return;
             }
-
             toast.success("Account created successfully!");
-            console.log("Signup response:", data);
-            console.log("Access token recibido:", data.access_token);
-
-            // localStorage.setItem("accessToken", data.access_token); // <-- Guarda el token
-
             login(data.access_token);
             navigate("/");
         } catch (err) {
             console.error(err);
             toast.error("Unable to connect to the server. Try again later.");
         }
-    };
+    }, [username, email, password, login, navigate]);
+
+    const handleUsername = useCallback(e => setUsername(e.target.value), []);
+    const handleEmail = useCallback(e => setEmail(e.target.value), []);
+    const handlePassword = useCallback(e => setPassword(e.target.value), []);
 
     return (
         <div className="container mt-5">
@@ -59,7 +49,7 @@ const Signup = () => {
                                 className="form-control"
                                 id="username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={handleUsername}
                                 required
                             />
                         </div>
@@ -70,7 +60,7 @@ const Signup = () => {
                                 className="form-control"
                                 id="email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={handleEmail}
                                 required
                             />
                         </div>
@@ -81,14 +71,12 @@ const Signup = () => {
                                 className="form-control"
                                 id="password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handlePassword}
                                 required
                             />
                         </div>
-                        {error && <p className="text-danger">{error}</p>}
                         <button type="submit" className="btn btn-primary w-100">Sign Up</button>
                     </form>
-
                 </div>
             </div>
         </div>
