@@ -1,5 +1,4 @@
 import PackCardHome from "./PackCardHome";
-
 import { useNavigate } from "react-router-dom";
 
 const packData = [
@@ -24,47 +23,57 @@ export default function PackCarousel() {
     const navigate = useNavigate();
 
     return (
-        <div
-            id="packCarousel"
-            className="carousel slide"
-            data-bs-ride="carousel"
-            style={{ maxWidth: "350px", margin: "0 auto" }}
-        >
-            <div className="carousel-inner">
-                {packData.map((pack, idx) => (
-                    <div
-                        key={idx}
-                        className={`carousel-item ${idx === 0 ? "active" : ""}`}
-                    >
-                        <PackCardHome
-                            title={pack.title}
-                            description={pack.description}
-                            buttonText="Comprar"
-                            onComprar={() => navigate("/shop")} 
-                        />
-                    </div>
-                ))}
+        <div className="card shadow-sm">
+            <div className="card-header bg-dark text-white fw-bold">
+                🎴 New pack offer!
             </div>
 
-            {/* Controles de navegación */}
-            <button
-                className="carousel-control-prev"
-                type="button"
-                data-bs-target="#packCarousel"
-                data-bs-slide="prev"
-            >
-                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-                className="carousel-control-next"
-                type="button"
-                data-bs-target="#packCarousel"
-                data-bs-slide="next"
-            >
-                <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="visually-hidden">Next</span>
-            </button>
+            <div className="card-body d-flex justify-content-center">
+                <div
+                    id="packCarousel"
+                    className="carousel slide"
+                    data-bs-ride="carousel"
+                    style={{ width: "100%", maxWidth: "350px" }}
+                >
+                    <div className="carousel-inner">
+                        {packData.map((pack, idx) => (
+                            <div
+                                key={idx}
+                                className={`carousel-item ${idx === 0 ? "active" : ""}`}
+                            >
+                                <PackCardHome
+                                    title={pack.title}
+                                    description={pack.description}
+                                    buttonText="Comprar"
+                                    onComprar={() => navigate("/shop")}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Controles de navegación */}
+                    <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#packCarousel"
+                        data-bs-slide="prev"
+                    >
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#packCarousel"
+                        data-bs-slide="next"
+                    >
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+            
         </div>
     );
 }
