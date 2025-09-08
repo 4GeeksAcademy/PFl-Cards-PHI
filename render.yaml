@@ -7,7 +7,7 @@ services:
       name: sample-service-name
       env: python # valid values: https://render.com/docs/yaml-spec#environment
       buildCommand: "./render_build.sh"
-      startCommand: "gunicorn wsgi --chdir ./src/"
+      startCommand: "gunicorn -w 4 -k gthread -t 120 -b 0.0.0.0:${PORT} src.app:app"
       plan: free # optional; defaults to starter
       numInstances: 1
       envVars:
@@ -19,8 +19,6 @@ services:
             value: 0
           - key: FLASK_APP_KEY # Imported from Heroku app
             value: "any key works"
-          - key: PYTHON_VERSION
-            value: 3.10.6
           - key: DATABASE_URL # Render PostgreSQL database
             fromDatabase:
                 name: postgresql-trapezoidal-42170
