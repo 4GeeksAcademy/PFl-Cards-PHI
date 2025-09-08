@@ -108,7 +108,12 @@ const Ranking = () => {
                                 </span>
                             </div>
                         ) : (
-                            <div className="alert alert-secondary text-center mb-0">
+                            <div className="alert alert-secondary text-center mb-0" 
+                            style={{ 
+                                color: "rgba(80, 80, 80, 1) !important", 
+                                fontWeight: "bold",
+                                WebkitTextFillColor:"rgba(80, 80, 80, 1)",
+                                textShadow: "none"}}>
                                 Login/Signup to see your ranking position
                             </div>
                         )}
