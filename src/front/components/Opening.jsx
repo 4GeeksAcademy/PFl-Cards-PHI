@@ -7,19 +7,16 @@ const CARD_HEIGHT = 340;
 const GAP_PX = 55;
 const POPUP_SIDE_MARGIN = 32;
 
-const MAX_CARDS_PER_ROW = 3;
-const popupMaxWidth = (CARD_WIDTH * MAX_CARDS_PER_ROW) + (GAP_PX * (MAX_CARDS_PER_ROW - 1)) + (POPUP_SIDE_MARGIN * 2);
+const popupMaxWidth = (CARD_WIDTH * 3) + (GAP_PX * 2) + (POPUP_SIDE_MARGIN * 2);
 
 const Opening = ({ packs = [], onClose }) => {
-    const [cardsPerRow, setCardsPerRow] = useState(MAX_CARDS_PER_ROW);
+    const [cardsPerRow, setCardsPerRow] = useState(3);
     const [cardSize, setCardSize] = useState({ width: CARD_WIDTH, height: CARD_HEIGHT });
     const [flipped, setFlipped] = useState({});
 
     useEffect(() => {
         const calculateLayout = () => {
-            // Usa el ancho de la ventana, limitado por el ancho máximo del modal
             const containerWidth = Math.min(window.innerWidth, popupMaxWidth);
-
             if (containerWidth - POPUP_SIDE_MARGIN * 2 >= (CARD_WIDTH * 3 + GAP_PX * 2)) {
                 setCardsPerRow(3);
                 setCardSize({ width: CARD_WIDTH, height: CARD_HEIGHT });
@@ -51,16 +48,16 @@ const Opening = ({ packs = [], onClose }) => {
         }));
     };
 
+    // Renderiza las cartas en filas responsivas
     const renderPack = (pack, packIdx) => {
-        if (!Array.isArray(pack)) pack = [pack];
-        const cards = [...pack];
-        const rows = [];
+        const cards = Array.isArray(pack) ? pack : [pack];
+        const filas = [];
         for (let i = 0; i < cards.length; i += cardsPerRow) {
-            rows.push(cards.slice(i, i + cardsPerRow));
+            filas.push(cards.slice(i, i + cardsPerRow));
         }
         return (
             <div>
-                {rows.map((row, rowIdx) => (
+                {filas.map((row, rowIdx) => (
                     <div
                         key={rowIdx}
                         className="d-flex justify-content-center mb-4"
@@ -74,12 +71,13 @@ const Opening = ({ packs = [], onClose }) => {
                         }}
                     >
                         {row.map((card, idx) => {
-                            const globalIdx = rowIdx * cardsPerRow + idx;
+                            const realIdx = rowIdx * cardsPerRow + idx;
+                            const cardKey = `${packIdx}-${realIdx}-${card.id ?? ''}`;
                             return (
                                 <div
-                                    key={card.id || globalIdx}
+                                    key={cardKey}
                                     className="flip-card"
-                                    onClick={() => handleFlip(packIdx, globalIdx)}
+                                    onClick={() => handleFlip(packIdx, realIdx)}
                                     style={{
                                         width: cardSize.width,
                                         height: cardSize.height,
@@ -88,7 +86,7 @@ const Opening = ({ packs = [], onClose }) => {
                                         justifyContent: "center"
                                     }}
                                 >
-                                    <div className={`flip-card-inner${flipped[`${packIdx}-${globalIdx}`] ? " flipped" : ""}`}>
+                                    <div className={`flip-card-inner${flipped[`${packIdx}-${realIdx}`] ? " flipped" : ""}`}>
                                         <div className="flip-card-front" style={{
                                             width: "100%",
                                             height: "100%",
@@ -149,7 +147,7 @@ const Opening = ({ packs = [], onClose }) => {
     const handleFlipAll = () => {
         let newFlipped = {};
         packs.forEach((pack, packIdx) => {
-            pack.forEach((_, cardIdx) => {
+            (Array.isArray(pack) ? pack : [pack]).forEach((_, cardIdx) => {
                 newFlipped[`${packIdx}-${cardIdx}`] = true;
             });
         });
@@ -220,14 +218,10 @@ const Opening = ({ packs = [], onClose }) => {
     );
 };
 
-// Estilos para el efecto de girar carta
 const style = document.createElement("style");
 style.innerHTML = `
 .flip-card {
     perspective: 1000px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .flip-card-inner {
     width: 100%;

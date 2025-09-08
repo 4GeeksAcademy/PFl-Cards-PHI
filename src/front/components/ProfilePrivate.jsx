@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import { Link } from "react-router-dom";
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 const ProfilePrivate = ({
     userData,
@@ -15,12 +16,12 @@ const ProfilePrivate = ({
     handleUpdate
 }) => {
     const [collectionStats, setCollectionStats] = useState(null);
+    const [profileImg, setProfileImg] = useState(null); // url local de la imagen
 
     useEffect(() => {
         const fetchStats = async () => {
             let stats = {};
             try {
-                // Usuario (con JWT)
                 const accessToken = localStorage.getItem("access_token");
                 const respUser = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/collection`,
@@ -56,9 +57,20 @@ const ProfilePrivate = ({
                 setCollectionStats(null);
             }
         };
-
         fetchStats();
     }, []);
+
+    // Handler para subir imagen de perfil
+    const handleProfileImg = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                setProfileImg(ev.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div className="container mt-4">
@@ -89,11 +101,41 @@ const ProfilePrivate = ({
                                     fontSize: "2.5rem",
                                     color: "#888",
                                     overflow: "hidden",
+                                    position: "relative"
                                 }}
                             >
-                                <span role="img" aria-label="profile">
-                                    👤
-                                </span>
+                                <img
+                                    src={profileImg || defaultAvatar}
+                                    alt="Profile"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%"
+                                    }}
+                                />
+                                <label htmlFor="profile-img-upload" style={{
+                                    position: "absolute",
+                                    bottom: "-18px",
+                                    left: "50%",
+                                    transform: "translateX(-50%)",
+                                    background: "#1976d2",
+                                    color: "#fff",
+                                    borderRadius: "16px",
+                                    padding: "2px 12px",
+                                    fontSize: "0.95rem",
+                                    cursor: "pointer",
+                                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
+                                }}>
+                                    Edit photo
+                                    <input
+                                        id="profile-img-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: "none" }}
+                                        onChange={handleProfileImg}
+                                    />
+                                </label>
                             </div>
                             <div className="d-flex align-items-center justify-content-center mb-2">
                                 {editingUsername ? (

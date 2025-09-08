@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect, useCallback, useMemo } from "react";
 import Opening from "../components/Opening";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
@@ -8,93 +8,76 @@ import packImg from "../assets/img/1pack.png";
 const PackOpen = () => {
     const [totalPacks, setTotalPacks] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [openingLoader, setOpeningLoader] = useState(false);
     const buttonsRef = useRef(null);
     const [imgWidth, setImgWidth] = useState(220);
     const [cardsToShow, setCardsToShow] = useState([]);
     const [showOpening, setShowOpening] = useState(false);
-    const [buttonsDisabled, setButtonsDisabled] = useState(false); // Nuevo estado
 
     useLayoutEffect(() => {
         if (buttonsRef.current) {
             setImgWidth(buttonsRef.current.offsetWidth);
         }
-    }, [buttonsRef.current]);
+    }, []); // Solo al montar
 
     // Fetch available packs on load
     useEffect(() => {
         const accessToken = localStorage.getItem("access_token");
-        const fetchTotalPacks = async () => {
-            try {
-                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                    },
-                });
+        apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/packs`, {
+            headers: { "Authorization": `Bearer ${accessToken}` },
+        })
+            .then(async resp => {
                 if (!resp.ok) throw new Error("Error fetching total packs");
                 const data = await resp.json();
                 setTotalPacks(data.packs_available);
-            } catch (err) {
-                setTotalPacks(0);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTotalPacks();
+            })
+            .catch(() => setTotalPacks(0))
+            .finally(() => setLoading(false));
     }, []);
 
     // Open packs and show cards
-    const handleOpenPack = async (quantity) => {
-        if (buttonsDisabled) return; // Bloquea si ya está deshabilitado
-        setButtonsDisabled(true); // Bloquea al instante
-
+    const handleOpenPack = useCallback(async (quantity) => {
+        if (openingLoader || loading || totalPacks < quantity || quantity < 1) return;
+        setOpeningLoader(true);
         const accessToken = localStorage.getItem("access_token");
-        if (totalPacks < quantity) {
-            toast.error("You don't have enough packs!");
-            setButtonsDisabled(false); // Desbloquea si no hay suficientes packs
-            return;
-        }
-        let cardsOpened = [];
         try {
-            for (let i = 0; i < quantity; i++) {
-                const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${accessToken}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                const data = await resp.json();
-                if (!resp.ok) throw new Error(data.msg || "Error opening the pack");
-                cardsOpened.push(data.cards);
-                // Actualiza el total de sobres disponibles después de cada apertura
-                if (typeof data.packs_remaining === "number") {
-                    setTotalPacks(data.packs_remaining);
-                }
-            }
-            setCardsToShow(cardsOpened);
+            const resp = await apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/open-pack`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ quantity })
+            });
+            const data = await resp.json();
+            if (!resp.ok) throw new Error(data.msg || "Error opening the pack");
+            setCardsToShow(data.packs);
             setShowOpening(true);
+            if (typeof data.packs_remaining === "number") {
+                setTotalPacks(data.packs_remaining);
+            }
         } catch (err) {
             toast.error(err.message);
-            setButtonsDisabled(false); // Desbloquea si hay error
+        } finally {
+            setOpeningLoader(false);
         }
-    };
+    }, [openingLoader, loading, totalPacks]);
 
     // Cuando se cierra el popup, desbloquea los botones
-    const handleCloseOpening = () => {
+    const handleCloseOpening = useCallback(() => {
         setShowOpening(false);
         setCardsToShow([]);
-        setButtonsDisabled(false); // Desbloquea aquí
-    };
+        setOpeningLoader(false);
+    }, []);
 
     return (
         <div className="container">
-            {/* Packs info at the top */}
             <div style={{ marginTop: "2rem", marginBottom: "2rem", textAlign: "center" }}>
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
                     <span style={{ fontSize: "1.5rem" }}>
-                        You have{" "}
+                        You have{' '}
                         <span
                             style={{
                                 background: "#b2f7c1",
@@ -108,12 +91,11 @@ const PackOpen = () => {
                             }}
                         >
                             {totalPacks}
-                        </span>{" "}
-                        pack{totalPacks === 1 ? "" : "s"} available.
+                        </span>{' '}
+                        pack{totalPacks === 1 ? '' : 's'} available.
                     </span>
                 )}
             </div>
-            {/* Pack image and buttons closer to the top */}
             <div className="d-flex flex-column align-items-center" style={{ marginBottom: "2rem", width: "100%" }}>
                 <img
                     src={packImg}
@@ -127,23 +109,22 @@ const PackOpen = () => {
                         borderRadius: "24px"
                     }}
                 />
-                {/* Línea superior: 3 botones */}
                 <div
                     className="d-flex justify-content-center gap-3"
                     ref={buttonsRef}
                     style={{ width: "320px", maxWidth: "100%" }}
                 >
-                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(1)} disabled={buttonsDisabled}>
-                        Open 1
-                    </button>
-                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(5)} disabled={buttonsDisabled}>
-                        Open 5
-                    </button>
-                    <button className="btn btn-primary flex-grow-1" onClick={() => handleOpenPack(10)} disabled={buttonsDisabled}>
-                        Open 10
-                    </button>
+                    {[1, 5, 10].map(qty => (
+                        <button
+                            key={qty}
+                            className="btn btn-primary flex-grow-1"
+                            onClick={() => handleOpenPack(qty)}
+                            disabled={openingLoader || loading || totalPacks < qty}
+                        >
+                            {openingLoader ? "Opening..." : `Open ${qty}`}
+                        </button>
+                    ))}
                 </div>
-                {/* Línea inferior: botón "Open All" con el mismo ancho */}
                 <div
                     className="d-flex justify-content-center"
                     style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
@@ -152,9 +133,9 @@ const PackOpen = () => {
                         className="btn btn-danger flex-grow-1"
                         style={{ minWidth: "180px", maxWidth: "300px" }}
                         onClick={() => handleOpenPack(totalPacks)}
-                        disabled={buttonsDisabled || totalPacks < 1}
+                        disabled={openingLoader || loading || totalPacks < 1}
                     >
-                        Open All ({totalPacks})
+                        {openingLoader ? "Opening..." : `Open All (${totalPacks})`}
                     </button>
                 </div>
             </div>

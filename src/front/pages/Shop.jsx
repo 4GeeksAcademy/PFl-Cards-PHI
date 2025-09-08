@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Gateway from "../components/Gateway";
 import PackCard from "../components/PackCard";
 import { useNavigate } from "react-router-dom";
@@ -23,26 +23,20 @@ const packData = [
 ];
 
 const Shop = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [packSeleccionado, setPackSelected] = useState("");
-    const [quantity, setQuantity] = useState(0);
+    const [modalPack, setModalPack] = useState(null); // {title, description, quantity} o null
     const navigate = useNavigate();
 
-    const handleBuy = (pack, qty) => {
-        setPackSelected(pack);
-        setQuantity(qty);
-        setShowModal(true);
-    };
+    const handleBuy = useCallback((pack) => {
+        setModalPack(pack);
+    }, []);
 
-    const handleClose = () => {
-        setShowModal(false);
-        setPackSelected("");
-        setQuantity(0);
-    };
+    const handleClose = useCallback(() => {
+        setModalPack(null);
+    }, []);
 
     return (
         <>
-            <div className="container mt-5" >
+            <div className="container mt-5">
                 <div className="row justify-content-center g-4">
                     {packData.map((pack, idx) => (
                         <div key={idx} className="col-12 col-sm-8 col-md-4 d-flex justify-content-center">
@@ -50,17 +44,17 @@ const Shop = () => {
                                 title={pack.title}
                                 description={pack.description}
                                 buttonText={`Buy ${pack.quantity}`}
-                                onComprar={() => handleBuy(pack.title, pack.quantity)}
+                                onComprar={() => handleBuy(pack)}
                             />
                         </div>
                     ))}
                 </div>
             </div>
 
-            {showModal && (
+            {modalPack && (
                 <Gateway
-                    packSeleccionado={packSeleccionado}
-                    quantity={quantity}
+                    packSeleccionado={modalPack.title}
+                    quantity={modalPack.quantity}
                     onClose={handleClose}
                 />
             )}

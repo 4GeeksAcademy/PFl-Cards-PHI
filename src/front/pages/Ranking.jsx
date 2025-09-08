@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
 
 const USERS_PER_PAGE = 50;
@@ -27,8 +26,10 @@ const Ranking = () => {
         apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`)
             .then(res => res.json())
             .then(data => {
-                const sorted = data.users.sort((a, b) => b.deck_points - a.deck_points);
-                setUsers(sorted);
+                if (Array.isArray(data.users)) {
+                    const sorted = [...data.users].sort((a, b) => b.deck_points - a.deck_points);
+                    setUsers(sorted);
+                }
             })
             .catch(err => console.error(err));
     }, []);
@@ -48,7 +49,7 @@ const Ranking = () => {
         })
             .then(res => res.ok ? res.json() : null)
             .then(data => {
-                if (data) {
+                if (data && data.id) {
                     setMyProfile(data);
                     const idx = users.findIndex(u => u.id === data.id);
                     setMyRanking(idx !== -1 ? idx + 1 : null);
@@ -63,12 +64,15 @@ const Ranking = () => {
             });
     }, [users]);
 
-    const totalPages = Math.ceil(users.length / USERS_PER_PAGE);
-    const startIdx = (currentPage - 1) * USERS_PER_PAGE;
-    const usersToShow = users.slice(startIdx, startIdx + USERS_PER_PAGE);
-
+    const totalPages = useMemo(() => Math.ceil(users.length / USERS_PER_PAGE), [users]);
+    const startIdx = useMemo(() => (currentPage - 1) * USERS_PER_PAGE, [currentPage]);
+    const usersToShow = useMemo(() => users.slice(startIdx, startIdx + USERS_PER_PAGE), [users, startIdx]);
     // Top 3 para el podium (orden: 2º, 1º, 3º)
-    const top3 = [users[1], users[0], users[2]].filter(Boolean);
+    const top3 = useMemo(() => [users[1], users[0], users[2]].filter(Boolean), [users]);
+
+    // Callbacks para paginación
+    const handlePrevPage = useCallback(() => setCurrentPage(p => Math.max(1, p - 1)), []);
+    const handleNextPage = useCallback(() => setCurrentPage(p => Math.min(totalPages, p + 1)), [totalPages]);
 
     return (
         <div className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -116,82 +120,84 @@ const Ranking = () => {
                         }}
                     >
                         {top3.map((user, idx) => (
-                            <div key={user.id}
-                                className="d-flex flex-column align-items-center"
-                                style={{
-                                    width: "calc(33.33% - 0.47rem)",
-                                    minWidth: "90px",
-                                    maxWidth: "220px",
-                                    flex: "1 1 0",
-                                    transition: "width 0.2s",
-                                }}
-                            >
-                                {/* Trofeo/Medalla */}
-                                <span style={{
-                                    fontSize: "2.2rem",
-                                    marginBottom: "0.2rem"
-                                }}>
-                                    {trophies[idx]}
-                                </span>
-                                {/* Atril */}
-                                <div
+                            user ? (
+                                <div key={user.id}
+                                    className="d-flex flex-column align-items-center"
                                     style={{
-                                        background: medalBg[idx],
-                                        borderRadius: "18px 18px 0 0",
-                                        boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
-                                        width: "100%",
-                                        height: podiumHeights[idx],
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        justifyContent: "flex-start", 
-                                        position: "relative",
-                                        minHeight: "60px",
-                                        paddingTop: "6px"
+                                        width: "calc(33.33% - 0.47rem)",
+                                        minWidth: "90px",
+                                        maxWidth: "220px",
+                                        flex: "1 1 0",
+                                        transition: "width 0.2s",
                                     }}
                                 >
-                                    <span
-                                        className="fw-bold"
+                                    {/* Trofeo/Medalla */}
+                                    <span style={{
+                                        fontSize: "2.2rem",
+                                        marginBottom: "0.2rem"
+                                    }}>
+                                        {trophies[idx]}
+                                    </span>
+                                    {/* Atril */}
+                                    <div
                                         style={{
-                                            color: "#2d6cdf",
-                                            fontSize: "clamp(0.8rem, 2vw, 1.3rem)",
-                                            wordBreak: "break-word",
-                                            textAlign: "center",
+                                            background: medalBg[idx],
+                                            borderRadius: "18px 18px 0 0",
+                                            boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
                                             width: "100%",
-                                            marginBottom: "0.2rem"
-                                        }}
-                                        title={user.username}
-                                    >
-                                        {user.username}
-                                    </span>
-                                    <div style={{ flex: 1 }} />
-                                    <span
-                                        className="badge bg-primary mb-3"
-                                        style={{
-                                            fontSize: "1.1rem",
-                                            padding: "0.3em 0.7em",
-                                            width: "80%",
-                                            textAlign: "center",
-                                            transition: "font-size 0.2s, width 0.2s"
+                                            height: podiumHeights[idx],
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center",
+                                            justifyContent: "flex-start",
+                                            position: "relative",
+                                            minHeight: "60px",
+                                            paddingTop: "6px"
                                         }}
                                     >
-                                        {user.deck_points}
-                                    </span>
-                                    <div style={{
-                                        width: "100%",
-                                        height: "18px",
-                                        background: medalBg[idx],
-                                        borderRadius: "0 0 18px 18px",
-                                        position: "absolute",
-                                        bottom: 0,
-                                        left: 0
-                                    }}></div>
+                                        <span
+                                            className="fw-bold"
+                                            style={{
+                                                color: "#2d6cdf",
+                                                fontSize: "clamp(0.8rem, 2vw, 1.3rem)",
+                                                wordBreak: "break-word",
+                                                textAlign: "center",
+                                                width: "100%",
+                                                marginBottom: "0.2rem"
+                                            }}
+                                            title={user.username}
+                                        >
+                                            {user.username}
+                                        </span>
+                                        <div style={{ flex: 1 }} />
+                                        <span
+                                            className="badge bg-primary mb-3"
+                                            style={{
+                                                fontSize: "1.1rem",
+                                                padding: "0.3em 0.7em",
+                                                width: "80%",
+                                                textAlign: "center",
+                                                transition: "font-size 0.2s, width 0.2s"
+                                            }}
+                                        >
+                                            {user.deck_points}
+                                        </span>
+                                        <div style={{
+                                            width: "100%",
+                                            height: "18px",
+                                            background: medalBg[idx],
+                                            borderRadius: "0 0 18px 18px",
+                                            position: "absolute",
+                                            bottom: 0,
+                                            left: 0
+                                        }}></div>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : null
                         ))}
                     </div>
                 </div>
-                <h2 className="text-center mb-3">Ranking</h2>
+                {/* <h2 className="text-center mb-3">Ranking</h2> */}
                 <div className="table-responsive" >
                     <table className="table table-striped table-hover text-center align-middle">
                         <thead className="table-dark">
@@ -241,7 +247,7 @@ const Ranking = () => {
                 <div className="d-flex justify-content-center align-items-center gap-3 mt-3">
                     <button
                         className="btn btn-outline-primary"
-                        onClick={() => setCurrentPage(currentPage - 1)}
+                        onClick={handlePrevPage}
                         disabled={currentPage === 1}
                     >
                         ← Previous
@@ -251,7 +257,7 @@ const Ranking = () => {
                     </span>
                     <button
                         className="btn btn-outline-primary"
-                        onClick={() => setCurrentPage(currentPage + 1)}
+                        onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                     >
                         Next →

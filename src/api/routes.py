@@ -358,6 +358,7 @@ def get_packs():
         return jsonify({"msg": "Error fetching packs", "details": str(e)}), 500
 
 
+
 # POST /open-pack -> abrir un sobre (consume 1 y añade cartas a la colección)
 @api.route('/open-pack', methods=['POST'])
 @jwt_required()
@@ -376,35 +377,50 @@ def open_pack():
     if not user_id:
         return jsonify({"msg": "Unauthorized"}), 401
 
+    # Lee la cantidad de sobres a abrir (por defecto 1)
+    quantity = 1
+    if request.is_json:
+        quantity = int(request.json.get("quantity", 1))
+
     available = packs_available(user_id)
-    if available <= 0:
-        return jsonify({"msg": "You don't have any pack to open"}), 400
+    if available < quantity:
+        return jsonify({"msg": "You don't have enough packs to open"}), 400
 
     try:
-        card_ids = draw_cards_for_pack(n=PACK_SIZE)
-        db.session.add(PackOpen(user_id=user_id))
-        add_to_collection(user_id, card_ids)
+        all_opened = []
+        for _ in range(quantity):
+            card_ids = draw_cards_for_pack(n=PACK_SIZE)
+            db.session.add(PackOpen(user_id=user_id))
+            add_to_collection(user_id, card_ids)
+
+            # Trae todas las cartas distintas que aparecen en card_ids
+            fetched = db.session.scalars(
+                select(Card).where(Card.id.in_(set(card_ids)))
+            ).all()
+            card_map = {c.id: c for c in fetched}
+            opened = []
+            for cid in card_ids:
+                c = card_map[cid]
+                opened.append({
+                    "id": c.id,
+                    "name": c.name,
+                    "image_url": c.image_url,
+                    "game_rarity": c.game_rarity,
+                    "points": c.points
+                })
+            all_opened.append(opened)
+
         db.session.commit()
-
-        cards = db.session.scalars(
-            select(Card).where(Card.id.in_(card_ids))).all()
-        opened = [{
-            "id": c.id,
-            "name": c.name,
-            "image_url": c.image_url,
-            "game_rarity": c.game_rarity,
-            "points": c.points
-        } for c in cards]
-
         return jsonify({
-            "message": "Pack opened",
-            "cards": opened,
-            "packs_remaining": packs_available(user_id)
+            "message": f"{quantity} pack(s) opened",
+            "packs_remaining": packs_available(user_id),
+            "packs": all_opened
         }), 201
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"msg": "Error opening the pack", "details": str(e)}), 500
+        return jsonify({"msg": "Error opening the pack(s)", "details": str(e)}), 500
+
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -876,7 +892,7 @@ def recycle_cards():
             {"card_id": <int>, "quantity": <int>}, ...
         ]
     }
-    Si hay suficientes cartas repetidas, las elimina y añade 1 sobre al inventario del usuario.
+    Si hay suficientes cartas repetidas, las elimina y añade sobres al inventario del usuario.
     """
     user_id = get_jwt_identity()
     if not user_id:
@@ -894,7 +910,8 @@ def recycle_cards():
         return jsonify({"error": "Rareza no válida"}), 400
 
     total_to_recycle = sum(item.get("quantity", 0) for item in cards_to_recycle)
-    if total_to_recycle < required[rarity]:
+    sobres = total_to_recycle // required[rarity]  #  Calcula cuántos sobres corresponden
+    if sobres < 1:
         return jsonify({"error": "No tienes suficientes cartas repetidas para reciclar"}), 400
 
     # Validar que no se elimina la última copia de ninguna carta
@@ -912,9 +929,9 @@ def recycle_cards():
             uc = UserCard.query.filter_by(user_id=user_id, card_id=card_id).first()
             if uc and qty > 0:
                 uc.quantity -= qty
-        db.session.add(PackPurchase(user_id=user_id, quantity=1))
+        db.session.add(PackPurchase(user_id=user_id, quantity=sobres))  
         db.session.commit()
-        return jsonify({"msg": "Reciclaje realizado. Has recibido 1 sobre."}), 200
+        return jsonify({"msg": f"Reciclaje realizado. Has recibido {sobres} sobre(s)."}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error al reciclar cartas", "details": str(e)}), 500

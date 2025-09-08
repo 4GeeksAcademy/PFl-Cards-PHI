@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import { Link } from "react-router-dom";
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     const [collectionStats, setCollectionStats] = useState(null);
@@ -57,6 +58,33 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             alignItems: "center",
                             marginBottom: "12px"
                         }}>
+                            <div
+                                style={{
+                                    width: "120px",
+                                    height: "120px",
+                                    borderRadius: "50%",
+                                    background: "#e0e0e0",
+                                    marginBottom: "16px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontSize: "2.5rem",
+                                    color: "#888",
+                                    overflow: "hidden",
+                                    position: "relative"
+                                }}
+                            >
+                                <img
+                                    src={userData?.profileImg || defaultAvatar}
+                                    alt="Profile"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%"
+                                    }}
+                                />
+                            </div>
                             <span style={{
                                 fontSize: "1.7rem",
                                 fontWeight: "bold",
@@ -127,7 +155,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             fontWeight: "bold",
                             color: "#333"
                         }}>Deck</h3>
-                            <Link to="/ranking">
+                        <Link to="/ranking">
                             <span
                                 className="badge bg-primary ms-2"
                                 style={{
@@ -136,7 +164,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                     verticalAlign: "middle",
                                     display: "flex",
                                     alignItems: "center",
-                                    gap: "12px",   
+                                    gap: "12px",
                                 }}
                             >
                                 {userRanking && (
