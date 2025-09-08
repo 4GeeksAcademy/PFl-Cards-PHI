@@ -3,7 +3,6 @@ import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import Order from "./Order";
 
-
 const MAX_DECK_SIZE = 20;
 
 const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) => {
