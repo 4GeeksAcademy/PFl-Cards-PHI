@@ -3,6 +3,7 @@ import Card from "./Card";
 import { apiFetch } from "../utils/apiFetch";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../assets/img/rigo-baby.jpg";
+import { toast } from "react-toastify";
 
 const ProfilePrivate = ({
     userData,
@@ -12,8 +13,7 @@ const ProfilePrivate = ({
     setEditingUsername,
     newUsername,
     setNewUsername,
-    navigate,
-    handleUpdate
+    navigate
 }) => {
     const [collectionStats, setCollectionStats] = useState(null);
     const [profileImg, setProfileImg] = useState(null); // url local de la imagen
@@ -72,6 +72,36 @@ const ProfilePrivate = ({
         }
     };
 
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        const accessToken = localStorage.getItem("access_token");
+        try {
+            const resp = await apiFetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username: newUsername })
+                }
+            );
+            const data = await resp.json();
+            if (resp.ok) {
+                setEditingUsername(false);
+                if (typeof userData === "object") {
+                    userData.username = data.username;
+                }
+                toast.success("Name updated successfully");
+            } else {
+                toast.error(data.msg || "Error updating name");
+            }
+        } catch (err) {
+            toast.error("Network error updating name");
+        }
+    };
+
     return (
         <div className="container mt-4">
             <div className="row">
@@ -85,7 +115,12 @@ const ProfilePrivate = ({
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
-                                marginBottom: "12px"
+                                marginBottom: "12px",
+                                backgroundColor: "rgba(20, 20, 20, 0.8)",
+                                textAlign: "center",
+                                border: "1px solid #e0e0e0",
+                                borderRadius: "18px"
+
                             }}
                         >
                             <div
@@ -185,14 +220,16 @@ const ProfilePrivate = ({
                         {collectionStats && (
                             <div className="mt-3 p-3 shadow-sm"
                                 style={{
-                                    backgroundColor: "rgba(179, 217, 255, 0.7)",
-                                    textAlign: "left",
+                                    backgroundColor: "rgba(20, 20, 20, 0.8)",
+                                    textAlign: "center",
                                     border: "1px solid #e0e0e0",
                                     borderRadius: "18px",
                                 }}>
-                                <div className="row g-2">
+
+
+                                <div className="row g-2 justify-content-center">
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#6acfeeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#317ceeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.totalCount}
@@ -200,7 +237,7 @@ const ProfilePrivate = ({
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#99eea8ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#32a547ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.uniqueCount} / {collectionStats.totalUnique}
@@ -208,7 +245,7 @@ const ProfilePrivate = ({
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#bdbdbd", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#807b7bff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Common</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.commonCount} / {collectionStats.totalCommon}
@@ -216,7 +253,7 @@ const ProfilePrivate = ({
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#c0aae9ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#8134caff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Rare</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.rareCount} / {collectionStats.totalRare}
@@ -224,7 +261,7 @@ const ProfilePrivate = ({
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#ffe082", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#a0a300ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Legendary</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.legendaryCount} / {collectionStats.totalLegendary}
@@ -237,39 +274,56 @@ const ProfilePrivate = ({
                     </div>
                 </div>
                 {/* Columna de deck*/}
-                <div className="col-md-9">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h3 className="text-center flex-grow-1 mb-0" style={{
-                            fontWeight: "bold",
-                            color: "#333"
-                        }}>Deck</h3>
-                        <Link to="/ranking">
-                            <span
-                                className="badge bg-primary ms-2"
+                <div className="col-md-9 ">
+                    <div className="d-flex mb-3 flex-wrap flex-md-nowrap align-items-center "
+                        style={{
+                            minHeight: "56px",
+                            gap: "16px",
+                            justifyContent: "center"
+                        }}
+                    >
+                        {/* Deck centrado */}
+                        <div className="d-flex-grow-1 align-items-center justify-content-center">
+                            <h1 className=""
+                                style={{
+                                    color: "#1976d2",
+                                    fontWeight: "bold",
+                                    display: "flex",
+
+                                    verticalAlign: "middle"
+                                }}
+                            >
+                                Deck
+                            </h1>
+                        </div>
+                        {/* Puntuación y posición */}
+                        <div>
+                            <span className="badge bg-primary"
                                 style={{
                                     fontSize: "1.5rem",
                                     padding: "0.4em 1em",
                                     verticalAlign: "middle",
                                     display: "flex",
-                                    alignItems: "center",
                                     gap: "12px",
-                                    cursor: "pointer"
+                                    minWidth: "120px"
                                 }}
                             >
-                                {userRanking && (
-                                    <span style={{ fontSize: "1.5rem", color: "#fff" }}>
-                                        {userRanking}º
-                                        <span style={{ margin: "0 8px" }}>-</span>
-                                    </span>
-                                )}
-                                {userData?.deck_points}
+                                <Link to="/ranking" style={{ textDecoration: "none", color: "#fff" }}>
+                                    {userRanking && (
+                                        <span style={{ fontSize: "1.5rem" }}>
+                                            {userRanking}º <span style={{ margin: "0 8px" }}>-</span>
+                                        </span>
+                                    )}
+                                    {userData?.deck_points}
+                                </Link>
                             </span>
-                        </Link>
+                        </div>
                     </div>
                     <div
                         style={{
-                            backgroundColor: "rgba(179, 217, 255, 0.7)",
+                            backgroundColor: "rgba(20, 20, 20, 0.8)",
                             borderRadius: "18px",
+                            border: "1px solid #e0e0e0",
                             minHeight: "220px",
                             marginBottom: "20px",
                             width: "100%",

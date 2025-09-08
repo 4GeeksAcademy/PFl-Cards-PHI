@@ -57,13 +57,22 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
         return (
             <div className="modal show d-block" tabIndex="-1" role="dialog" style={{ background: "rgba(0,0,0,0.5)" }}>
                 <div className="modal-dialog" role="document">
-                    <div className="modal-content">
+                    <div
+                        className="modal-content"
+                        style={{
+                            color: "#111 !important",
+                            WebkitTextFillColor: "#111",
+                            textShadow: "none"
+                        }}
+                    >
                         <div className="modal-header">
-                            <h5 className="modal-title">You need an account!</h5>
+                            <h5 className="modal-title" style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>You need an account!</h5>
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         </div>
                         <div className="modal-body">
-                            <p>To buy packs you must be registered or logged in.</p>
+                            <p style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>
+                                To buy packs you must be registered or logged in.
+                            </p>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
@@ -82,17 +91,17 @@ const Gateway = ({ packSeleccionado, quantity, onClose }) => {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">You will be redirected</h5>
+                        <h5 className="modal-title" style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>You will be redirected</h5>
                         <button type="button" className="btn-close" onClick={onClose}></button>
                     </div>
                     <div className="modal-body text-center">
-                        <p>
+                        <p style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>
                             <strong>Pack selected:</strong> {packSeleccionado}
                         </p>
-                        <p>
+                        <p style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>
                             <strong>Price:</strong> {PRICE_MAP_DISPLAY[quantity] || "N/A"}
                         </p>
-                        <p>
+                        <p style={{ color: "#111 !important", WebkitTextFillColor: "#111", textShadow: "none" }}>
                             You will be redirected to Stripe Checkout to complete your purchase.
                         </p>
                     </div>

@@ -1,9 +1,68 @@
 body {
-  background-color: #b4b2b2 !important; /* Gris clarito */
+  background-color: #b4b2b2 !important;
   min-height: 100vh;
-  background-image: url("/src/front/assets/img/battlecardsLogo.png");
+  background-image: url("/src/front/assets/img/background_7.png"); /* Ruta fondo web */
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-  background-size: 400px 400px; /* Ajusta el tamaño del logo según prefieras */
+  background-size: cover;
+}
+
+/* Fondo para el navbar */
+.navbar {
+  background-image: url("/src/front/assets/img/navbar_footer_1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Fondo para el footer */
+.footer {
+  background-image: url("/src/front/assets/img/navbar_footer_1.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Aplica a todo el texto de la web */
+body,
+html,
+* {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: rgb(0, 0, 0) 0px 0px 1px;
+  font-family: "arial", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+/* estilos para desplegable perfil*/
+.dropdown-menu.bg-gray {
+  background-color: #4b4b4b !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* estilos para desplegables navbar */
+.dropdown-menu.bg-gray .dropdown-item:hover,
+.dropdown-menu.bg-gray .dropdown-item:focus {
+  background-color: #bdbdbd !important;
+  color: #222 !important;
+}
+
+/* estilos para las alertas de toast */
+.toastify,
+.Toastify__toast {
+  color: #111 !important;
+}
+/* estilos para la X de cierre de las alertas de toast */
+.Toastify__close-button,
+.Toastify__close-button > svg {
+  color: #111 !important;
+  fill: #111 !important;
+  filter: none !important;
+}
+
+/* fondos y textos de formularios */
+.form-control {
+  background-color: #fff !important;
+  color: #111 !important;
+  border: 1px solid #ccc;
+  box-shadow: none;
 }

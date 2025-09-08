@@ -164,7 +164,17 @@ const Opening = ({ packs = [], onClose }) => {
                     width: "100%"
                 }}
             >
-                <div className="modal-content" style={{ padding: modalPadding }}>
+                <div className="modal-content"
+                    style={{
+                        padding: modalPadding,
+                        backgroundImage: "url('/src/front/assets/img/background_6.png')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        maxHeight: "90vh",
+                        overflowY: "auto",
+                    }}
+                >
                     <div className="modal-header d-flex align-items-center justify-content-between">
                         <h5 className="modal-title text-center m-0 flex-grow-1">Congratulations!</h5>
                         <div className="d-flex align-items-center gap-2">
@@ -178,7 +188,12 @@ const Opening = ({ packs = [], onClose }) => {
                                 </button>
                             )}
                             {flippedCount >= totalCards && (
-                                <button type="button" className="btn-close ms-2" onClick={onClose}></button>
+                                <button
+                                    type="button"
+                                    className="btn-close ms-2"
+                                    onClick={onClose}
+                                    style={{filter: "invert(1)"}}
+                                ></button>
                             )}
                         </div>
                     </div>

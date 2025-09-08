@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import battlecardsLogo from "../assets/img/battlecardsLogo.png";
-import defaultAvatar from "../assets/img/rigo-baby.jpg"; 
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
@@ -96,7 +96,7 @@ export default function Navbar() {
                     }}
                   />
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end">
+                <ul className="dropdown-menu dropdown-menu-end bg-gray">
                   <li>
                     <Link className="dropdown-item" to="/Profile">
                       Profile

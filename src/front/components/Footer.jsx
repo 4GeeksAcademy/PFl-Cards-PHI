@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function Footer() {
 	return (
-		<footer className="bg-dark text-light mt-5 py-4">
+		<footer className="footer text-light mt-5 py-4">
 			<div className="container">
 				<div className="row">
 					{/* Logo / Nombre */}
@@ -15,12 +16,11 @@ export default function Footer() {
 
 					{/* Links rápidos */}
 					<div className="col-md-4 mb-3">
-						<h6 className="fw-bold">Links</h6>
+						<h6 className="fw-bold">Developer links</h6>
 						<ul className="list-unstyled">
-							<li><Link to="/" className="text-light text-decoration-none">Home</Link></li>
-							<li><Link to="/shop" className="text-light text-decoration-none">Shop</Link></li>
-							<li><Link to="/ranking" className="text-light text-decoration-none">Ranking</Link></li>
-							<li><Link to="/contact" className="text-light text-decoration-none">Contact</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none">Linkeding Pedro</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none">Linkeding Ignacio</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none">Linkeding Hector</Link></li>
 						</ul>
 					</div>
 
@@ -28,8 +28,8 @@ export default function Footer() {
 					<div className="col-md-4 mb-3">
 						<h6 className="fw-bold">Legal</h6>
 						<ul className="list-unstyled">
-							<li><Link to="/terms" className="text-light text-decoration-none">Terms & Conditions</Link></li>
-							<li><Link to="/privacy" className="text-light text-decoration-none">Privacy Policy</Link></li>
+							<li className="text-light text-decoration-none">Terms & Conditions</li>
+							<li className="text-light text-decoration-none">Privacy Policy</li>
 						</ul>
 					</div>
 				</div>

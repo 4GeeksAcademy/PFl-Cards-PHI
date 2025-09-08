@@ -225,7 +225,10 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
                             alignItems: "center",
                             position: "relative",
                             maxHeight: "90vh",
-                            overflowY: "auto"
+                            overflowY: "auto",
+                            backgroundImage: "url('/src/front/assets/img/background_7.png')",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center"
                         }}
                         onClick={e => e.stopPropagation()}
                     >

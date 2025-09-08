@@ -106,7 +106,6 @@ const Deck = () => {
                         position: "relative",
                     }}
                 >
-                    {/* <h3 className="mb-0"> Your Deck </h3> */}
                     <Link
                         to="/ranking"
                         style={{
@@ -127,7 +126,6 @@ const Deck = () => {
                                 alignItems: "center",
                                 gap: "12px",
                                 cursor: "pointer",
-                                boxShadow: "0 2px 8px #bbb"
                             }}
                             title="Ver ranking"
                         >
@@ -174,8 +172,7 @@ const Deck = () => {
                                         width: "220px",
                                         height: "340px",
                                         borderRadius: "14px",
-                                        background: "#f2f2f2",
-                                        boxShadow: "0 4px 16px #bbb",
+                                        background: "#414141ff",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",

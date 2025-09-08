@@ -33,7 +33,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                 const userCardsMap = {};
                 if (userData["User collection"]) {
                     userData["User collection"].forEach(card => {
-                        userCardsMap[card.card_id] = card.quantity;
+                        userCardsMap[card.id || card.card_id] = card.quantity;
                     });
                 }
                 setUserCollection(userCardsMap);
@@ -77,7 +77,6 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
 
     return (
         <div className="container mt-4" style={{ marginTop: "10px", marginBottom: "20px" }}>
-            {/* <h2 className="mb-2">Your Collection</h2> */}
             <div
                 className="mb-4"
                 style={{
@@ -88,13 +87,13 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                 }}
             >
                 <div className="d-flex flex-wrap justify-content-center gap-4">
-                    <div className="d-flex flex-column align-items-center" style={{ background: "#6acfeeff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
+                    <div className="d-flex flex-column align-items-center" style={{ background: "#4594ddff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
                         <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
                         <span style={{ color: "#333", fontSize: "1.2rem" }}>
                             {totalOwned}
                         </span>
                     </div>
-                    <div className="d-flex flex-column align-items-center" style={{ background: "#99eea8ff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
+                    <div className="d-flex flex-column align-items-center" style={{ background: "#3ea351ff", borderRadius: "8px", padding: "6px 18px", marginBottom: "8px", minWidth: "140px" }}>
                         <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
                         <span style={{ color: "#333", fontSize: "1.2rem" }}>
                             {uniqueOwned} / {totalUnique}
@@ -157,11 +156,11 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                                                     position: "absolute",
                                                     top: "12px",
                                                     right: "16px",
-                                                    background: "#eee",
+                                                    background: "#ff3e3eff", // verde
                                                     borderRadius: "8px",
                                                     padding: "4px 10px",
                                                     fontWeight: "bold",
-                                                    color: "#333"
+                                                    color: "#fff"
                                                 }}
                                             >
                                                 x{userCollection[card.id]}
