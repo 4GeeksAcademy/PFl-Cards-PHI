@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import ScrollToTopButton from "../components/ScrollToTop";
 
 export const Layout = () => {
   return (
@@ -18,6 +19,7 @@ export const Layout = () => {
         {/* Footer siempre abajo */}
         <Footer />
       </div>
+      <ScrollToTopButton />
     </ScrollToTop>
   );
 };
