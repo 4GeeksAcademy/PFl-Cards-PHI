@@ -39,12 +39,12 @@ export const Home = () => {
         <div className="container-fluid px-4 my-5" style={{ maxWidth: "1600px", margin: "0 auto" }}>
             <div className="row">
                 {/* Columna izquierda */}
-                <div className="col-lg-8 mb-5 px-5">
-                    <h1 className="mb-4 text-center">Welcome to BattleCards!</h1>
+                <div className="col-lg-8 mb-5 px-5" >
+                    <h1 className="mb-4 text-center" style={{ textShadow: "0px 0px 4px rgba(0, 0, 0, 1)"}}>Welcome to BattleCards!</h1>
 
                     {/* Placeholder grande */}
                     <div className="d-flex align-items-center justify-content-center mb-4"
-                         style={{ height: "280px", borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}
+                         style={{ height: "280px", borderRadius: "10px", background: "rgba(20, 20, 20, 0.8)", border: "1px solid #9b9b9bff"}}
                     >
                         <div className="mb-5 px-3" style={{textAlign: "justify" }}>
                             <h3 className="text-center">Pedro</h3>
@@ -63,7 +63,7 @@ export const Home = () => {
 
                     <div
                         className="d-flex align-items-center justify-content-center mb-4"
-                        style={{ height: "280px", borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}>
+                        style={{ height: "280px", borderRadius: "10px", background: "rgba(20, 20, 20, 0.8)", border: "1px solid #9b9b9bff" }}>
                         <News />
                     </div>
                 </div>
