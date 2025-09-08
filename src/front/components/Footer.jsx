@@ -18,9 +18,9 @@ export default function Footer() {
 					<div className="col-md-4 mb-3">
 						<h6 className="fw-bold">Developer links</h6>
 						<ul className="list-unstyled">
-							<li><Link to="/" className="text-light text-decoration-none">Linkeding Pedro</Link></li>
-							<li><Link to="/" className="text-light text-decoration-none">Linkeding Ignacio</Link></li>
-							<li><Link to="/" className="text-light text-decoration-none">Linkeding Hector</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none"> LinkedIn Pedro</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none"> LinkedIn Ignacio</Link></li>
+							<li><Link to="/" className="text-light text-decoration-none"> LinkedIn Hector</Link></li>
 						</ul>
 					</div>
 
