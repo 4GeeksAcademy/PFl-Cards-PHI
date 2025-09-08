@@ -80,8 +80,8 @@ const PackOpen = () => {
                         You have{' '}
                         <span
                             style={{
-                                background: "#b2f7c1",
-                                color: "#155724",
+                                background: "#10af33ff",
+                                color: "#068d26ff",
                                 borderRadius: "50%",
                                 padding: "0.2em 0.6em",
                                 fontWeight: "bold",

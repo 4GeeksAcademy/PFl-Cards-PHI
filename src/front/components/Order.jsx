@@ -18,14 +18,24 @@ const Order = ({ filter, setFilter, orderAsc, setOrderAsc }) => {
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
 
+    // Estilos para los botones azules
+    const blueBtnStyle = isActive => ({
+        fontWeight: isActive ? "bold" : "normal",
+        borderWidth: isActive ? "2px" : "1px",
+        background: isActive ? "#1976d2" : "#2196f3",
+        color: "#fff",
+        border: "none",
+        borderRadius: "6px",
+        boxShadow: "0 2px 6px rgba(25, 118, 210, 0.15)"
+    });
+
     if (isMobile) {
         return (
             <div className="mb-3" style={{ textAlign: "center" }}>
                 <div style={{ position: "relative", display: "inline-block" }}>
                     <button
-                        className="btn btn-outline-primary"
+                        style={blueBtnStyle(false)}
                         onClick={() => setShowDropdown(!showDropdown)}
-                        style={{ minWidth: "120px" }}
                     >
                         Filter
                     </button>
@@ -39,21 +49,14 @@ const Order = ({ filter, setFilter, orderAsc, setOrderAsc }) => {
                                 background: "#fff",
                                 border: "1px solid #ccc",
                                 borderRadius: "8px",
-                                boxShadow: "0 2px 8px #bbb",
                                 minWidth: "120px"
                             }}
                         >
                             {options.map(opt => (
                                 <button
                                     key={opt.value}
-                                    className={`btn btn-outline-primary w-100${filter === opt.value ? " active" : ""}`}
-                                    style={{
-                                        fontWeight: filter === opt.value ? "bold" : "normal",
-                                        borderWidth: filter === opt.value ? "2px" : "1px",
-                                        background: filter === opt.value ? "#e3f2fd" : "white",
-                                        color: filter === opt.value ? "#1976d2" : "#333",
-                                        borderRadius: 0
-                                    }}
+                                    style={blueBtnStyle(filter === opt.value)}
+                                    className={filter === opt.value ? "active" : ""}
                                     onClick={() => {
                                         setShowDropdown(false);
                                         if (opt.double) {
@@ -97,13 +100,8 @@ const Order = ({ filter, setFilter, orderAsc, setOrderAsc }) => {
             {options.map(opt => (
                 <button
                     key={opt.value}
-                    className={`btn btn-outline-primary${filter === opt.value ? " active" : ""}`}
-                    style={{
-                        fontWeight: filter === opt.value ? "bold" : "normal",
-                        borderWidth: filter === opt.value ? "2px" : "1px",
-                        background: filter === opt.value ? "#e3f2fd" : "white",
-                        color: filter === opt.value ? "#1976d2" : "#333"
-                    }}
+                    style={blueBtnStyle(filter === opt.value)}
+                    className={filter === opt.value ? "active" : ""}
                     onClick={() => {
                         if (opt.double) {
                             if (filter === opt.value) {

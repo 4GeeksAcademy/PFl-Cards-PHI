@@ -16,8 +16,8 @@ export const Home = () => {
 
             if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file");
 
-			const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hello`)//(backendUrl + "/api/hello")
-			const data = await response.json()
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hello`)//(backendUrl + "/api/hello")
+            const data = await response.json()
 
             if (response.ok) dispatch({ type: "set_hello", payload: data.message });
 
@@ -40,39 +40,45 @@ export const Home = () => {
             <div className="row">
                 {/* Columna izquierda */}
                 <div className="col-lg-8 mb-5 px-5">
-                    <h1 className="mb-4">Welcome to (nombre del juego)!</h1>
+                    <h1 className="mb-4 text-center">Welcome to BattleCards!</h1>
 
                     {/* Placeholder grande */}
-                    <div
-                        className="bg-secondary text-white d-flex align-items-center justify-content-center mb-4"
-                        style={{ height: "280px", borderRadius: "10px" }}
+                    <div className="d-flex align-items-center justify-content-center mb-4"
+                         style={{ height: "280px", borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}
                     >
-                        <span>{'{ Placeholder }'}</span>
+                        <div className="mb-5 px-3" style={{textAlign: "justify" }}>
+                            <h3 className="text-center">Pedro</h3>
+                            <p>Este es un proyecto de ejemplo para mostrar las capacidades de Full Stack con Python y React.</p>
+                        </div>
+                        <div className="mb-5 px-3" style={{textAlign: "justify" }}>
+                            <h3 className="text-center">Ignacio</h3>
+                            <p>Este es un proyecto de ejemplo para mostrar las capacidades de Full Stack con Python y React.</p>
+                        </div>
+                        <div className="mb-5 px-3" style={{textAlign: "justify" }}>
+                            <h3 className="text-center">Hector</h3>
+                            <p>Este es un proyecto de ejemplo para mostrar las capacidades de Full Stack con Python y React.</p>
+                        </div>
                     </div>
 
-                    {/* Texto descriptivo */}
-                    <p className="mb-5">
-                        ¡Ya está aquí Secret Lair para celebrar todo lo que nos gusta de Magic (además de algunas colaboraciones épicas)!
-                        Encontrarás cartas con ilustraciones alucinantes, nuevos artistas y estilos que jamás te imaginaste.
-                        ¡Pero debes decidirte rápido!
-                        Cada drop solo está disponible durante un tiempo limitado. ¡Si te lo pierdes, desaparece!
-                    </p>
-                    <News />
+
+                    <div
+                        className="d-flex align-items-center justify-content-center mb-4"
+                        style={{ height: "280px", borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}>
+                        <News />
+                    </div>
                 </div>
 
                 {/* Columna derecha */}
                 <div className="col-lg-4 mt-lg-4 px-5">
                     <h3 className="mb-4">Latest news</h3>
 
-                    {/* Noticia 1 */}
-                    <div className="mb-4">
-                        <h6>New pack offer!</h6>
+                    {/* Shop */}
+                    <div className="mb-4" style={{ borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}>
                         <PackCarousel />
                     </div>
 
                     {/* Ranking */}
-                    <div className="mb-4">
-                        <h6>Top 5 Ranking!</h6>
+                    <div className="mb-4" style={{ borderRadius: "10px", backgroundColor: "rgba(36, 36, 36, 0.8)", border: "1px solid rgba(99, 99, 99, 1)" }}>
                         <RankingPreview />
                     </div>
                 </div>

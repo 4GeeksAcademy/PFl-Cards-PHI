@@ -1,41 +1,46 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
 	return (
-		<footer className="bg-dark text-light mt-5 py-4">
+		<footer className="footer text-light" style={{ padding: "10px 0" }}>
 			<div className="container">
-				<div className="row">
+				<div className="row align-items-center" style={{ minHeight: "50px" }}>
 					{/* Logo / Nombre */}
-					<div className="col-md-4 mb-3">
-						<h5 className="fw-bold">BATTLECARDS</h5>
-						<p className="small">
+					<div className="col-md-4 mb-2">
+						<h5 className="fw-bold mb-1">BATTLECARDS</h5>
+						<p className="small mb-1">
 							A fun card game app. Collect, compete and climb the ranking!
 						</p>
 					</div>
 
 					{/* Links rápidos */}
-					<div className="col-md-4 mb-3">
-						<h6 className="fw-bold">Links</h6>
-						<ul className="list-unstyled">
-							<li><Link to="/" className="text-light text-decoration-none">Home</Link></li>
-							<li><Link to="/shop" className="text-light text-decoration-none">Shop</Link></li>
-							<li><Link to="/ranking" className="text-light text-decoration-none">Ranking</Link></li>
-							<li><Link to="/contact" className="text-light text-decoration-none">Contact</Link></li>
+					<div className="col-md-4 mb-2">
+						<h6 className="fw-bold mb-1">Developer LinkedIn:</h6>
+						<ul className="list-unstyled d-flex mb-1">
+							<li className="me-3">
+								<Link to="/" className="text-light text-decoration-none">Pedro</Link>
+							</li>
+							<li className="me-3">
+								<Link to="/" className="text-light text-decoration-none">Ignacio</Link>
+							</li>
+							<li>
+								<Link to="/" className="text-light text-decoration-none">Hector</Link>
+							</li>
 						</ul>
 					</div>
 
-					{/* Legal / Redes */}
-					<div className="col-md-4 mb-3">
-						<h6 className="fw-bold">Legal</h6>
-						<ul className="list-unstyled">
-							<li><Link to="/terms" className="text-light text-decoration-none">Terms & Conditions</Link></li>
-							<li><Link to="/privacy" className="text-light text-decoration-none">Privacy Policy</Link></li>
+					<div className="col-md-4 mb-2">
+						<h6 className="fw-bold mb-1">Legal</h6>
+						<ul className="list-unstyled mb-1">
+							<li className="text-light text-decoration-none">Terms & Conditions</li>
+							<li className="text-light text-decoration-none">Privacy Policy</li>
 						</ul>
 					</div>
 				</div>
 
-				<hr className="border-light" />
-				<div className="text-center small">
+				<hr className="border-light" style={{ margin: "8px 0" }} />
+				<div className="text-center small" style={{ marginBottom: "2px" }}>
 					© {new Date().getFullYear()} BATTLECARDS. All rights reserved.
 				</div>
 			</div>

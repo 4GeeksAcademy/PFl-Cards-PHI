@@ -70,15 +70,15 @@ export default function CheckoutSuccess() {
           )}
 
           {/* Mensaje */}
-          <h5 className="card-title mb-2">
+          <h5 className="card-title mb-2" style={{ minHeight: 28, color: "rgba(0,0,0,.85)!important", WebkitTextFillColor: "rgba(0,0,0,.85)", textShadow: "none" }}>
             {isSuccess ? "Payment confirmed" : isError ? "We couldn’t finish your purchase" : "Processing payment"}
           </h5>
           <p className="card-text text-muted mb-4" style={{ minHeight: 24 }}>{msg}</p>
 
           {/* Botones */}
           <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="/shop" className="btn btn-outline-secondary btn-sm px-3">Go to Shop</a>
-            <a href="/packopen" className="btn btn-success btn-sm px-3">{isSuccess ? "Open Packs" : "Try Again"}</a>
+            <a href="/shop" className="btn btn-outline-secondary btn-primary px-3">Go to Shop</a>
+            <a href="/packopen" className="btn btn-success px-3">{isSuccess ? "Open Packs" : "Try Again"}</a>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import battlecardsLogo from "../assets/img/battlecardsLogo.png";
-import defaultAvatar from "../assets/img/rigo-baby.jpg"; 
+import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
@@ -18,11 +18,12 @@ export default function Navbar() {
       <nav
         className="navbar navbar-expand-lg navbar-dark bg-dark shadow"
         style={{
-          position: "sticky", // Cambia fixed por sticky
+          position: "sticky",
           top: 0,
           left: 0,
           width: "100%",
           zIndex: 1000,
+
         }}
       >
         <div className="container-fluid">
@@ -72,7 +73,10 @@ export default function Navbar() {
                 <Link className="btn btn-outline-light me-2" to="/signup">
                   Sign Up
                 </Link>
-                <Link className="btn btn-warning" to="/login">
+                <Link
+                  className="btn btn-warning login-black"
+                  to="/login"
+                >
                   Login
                 </Link>
               </>
@@ -96,7 +100,7 @@ export default function Navbar() {
                     }}
                   />
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end">
+                <ul className="dropdown-menu dropdown-menu-end bg-gray">
                   <li>
                     <Link className="dropdown-item" to="/Profile">
                       Profile

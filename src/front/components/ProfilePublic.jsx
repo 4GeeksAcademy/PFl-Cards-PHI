@@ -56,6 +56,10 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
+                            backgroundColor: "rgba(20, 20, 20, 0.8)",
+                            border: "1px solid #e0e0e0",
+                            borderRadius: "18px",
+                            padding: "16px",
                             marginBottom: "12px"
                         }}>
                             <div
@@ -93,18 +97,22 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                             }}>
                                 {userData?.username}
                             </span>
+
                         </div>
+
                         {collectionStats && (
+
                             <div className="mt-3 p-3 shadow-sm"
                                 style={{
-                                    backgroundColor: "rgba(179, 217, 255, 0.7)",
+                                    backgroundColor: "rgba(20, 20, 20, 0.8)",
                                     textAlign: "center",
                                     border: "1px solid #e0e0e0",
                                     borderRadius: "18px",
                                 }}>
+
                                 <div className="row g-2 justify-content-center">
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#6acfeeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#317ceeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.totalCount}
@@ -112,7 +120,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#99eea8ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#32a547ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.uniqueCount} / {collectionStats.totalUnique}
@@ -120,7 +128,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#bdbdbd", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#807b7bff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Common</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.commonCount} / {collectionStats.totalCommon}
@@ -128,7 +136,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#c0aae9ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#8134caff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Rare</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.rareCount} / {collectionStats.totalRare}
@@ -136,7 +144,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
-                                        <div className="d-flex flex-column align-items-center" style={{ background: "#ffe082", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
+                                        <div className="d-flex flex-column align-items-center" style={{ background: "#a0a300ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
                                             <span style={{ color: "#333", fontWeight: "bold" }}>Legendary</span>
                                             <span style={{ color: "#333", fontSize: "1.2rem" }}>
                                                 {collectionStats.legendaryCount} / {collectionStats.totalLegendary}
@@ -150,40 +158,58 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                 </div>
                 {/* Columna de deck*/}
                 <div className="col-md-9">
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                        <h3 className="text-center flex-grow-1 mb-0" style={{
-                            fontWeight: "bold",
-                            color: "#333"
-                        }}>Deck</h3>
-                        <Link to="/ranking">
-                            <span
-                                className="badge bg-primary ms-2"
+                    <div className="d-flex mb-3 flex-wrap flex-md-nowrap align-items-center "
+                        style={{
+                            minHeight: "56px",
+                            gap: "16px",
+                            justifyContent: "center"
+                        }}
+                    >
+                        {/* Deck centrado */}
+                        <div className="d-flex-grow-1 align-items-center justify-content-center">
+                            <h1 className=""
+                                style={{
+                                    color: "#1976d2",
+                                    fontWeight: "bold",
+                                    display: "flex",
+
+                                    verticalAlign: "middle"
+                                }}
+                            >
+                                Deck
+                            </h1>
+                        </div>
+                        {/* Puntuación y posición */}
+                        <div>
+                            <span className="badge bg-primary"
                                 style={{
                                     fontSize: "1.5rem",
                                     padding: "0.4em 1em",
                                     verticalAlign: "middle",
                                     display: "flex",
-                                    alignItems: "center",
                                     gap: "12px",
+                                    minWidth: "120px"
                                 }}
                             >
-                                {userRanking && (
-                                    <span style={{ fontSize: "1.5rem", color: "#fff" }}>
-                                        {userRanking}º
-                                        <span style={{ margin: "0 8px" }}>-</span>
-                                    </span>
-                                )}
-                                {userData?.deck_points}
+                                <Link to="/ranking" style={{ textDecoration: "none", color: "#fff" }}>
+                                    {userRanking && (
+                                        <span style={{ fontSize: "1.5rem" }}>
+                                            {userRanking}º <span style={{ margin: "0 8px" }}>-</span>
+                                        </span>
+                                    )}
+                                    {userData?.deck_points}
+                                </Link>
                             </span>
-                        </Link>
+                        </div>
                     </div>
                     <div
                         style={{
-                            backgroundColor: "rgba(179, 217, 255, 0.7)",
+                            backgroundColor: "rgba(20, 20, 20, 0.8)",
                             borderRadius: "18px",
                             minHeight: "220px",
                             marginBottom: "24px",
                             width: "100%",
+                            border: "1px solid #e0e0e0",
                             overflowX: "auto",
                             paddingLeft: "5px"
                         }}
@@ -201,7 +227,7 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                                 }}
                             >
                                 {deckCards
-                                    .slice() // copia para no mutar el prop
+                                    .slice()
                                     .sort((a, b) => {
                                         const rarityOrder = { legendary: 0, rare: 1, common: 2 };
                                         return rarityOrder[a.game_rarity] - rarityOrder[b.game_rarity];

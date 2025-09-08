@@ -81,14 +81,21 @@ const Ranking = () => {
                     <div className="col-auto">
                         {myProfile && myRanking ? (
                             <div className="alert alert-info text-center fw-bold mb-0">
-                                {myRanking}º{" "}
+                                {/* Usuario y posicion*/}
                                 <Link
                                     to={`/profile`}
-                                    className="text-decoration-underline fw-bold"
-                                    style={{ color: "#2d6cdf" }}
+                                    className="text-decoration-none fw-bold"
+                                    style={{
+                                        color: "rgba(80, 80, 80, 1) !important",
+                                        fontWeight: "bold",
+                                        WebkitTextFillColor: "rgba(80, 80, 80, 1)",
+                                        textShadow: "none"
+                                    }}
                                 >
+                                    {myRanking}º{" "}
                                     {myProfile.username}
                                 </Link>
+                                {/* Puntuación con color por defecto */}
                                 <span
                                     className="badge bg-primary ms-2"
                                     style={{
@@ -101,7 +108,12 @@ const Ranking = () => {
                                 </span>
                             </div>
                         ) : (
-                            <div className="alert alert-secondary text-center mb-0">
+                            <div className="alert alert-secondary text-center mb-0" 
+                            style={{ 
+                                color: "rgba(80, 80, 80, 1) !important", 
+                                fontWeight: "bold",
+                                WebkitTextFillColor:"rgba(80, 80, 80, 1)",
+                                textShadow: "none"}}>
                                 Login/Signup to see your ranking position
                             </div>
                         )}
@@ -158,7 +170,10 @@ const Ranking = () => {
                                         <span
                                             className="fw-bold"
                                             style={{
-                                                color: "#2d6cdf",
+                                                color: "#111 !important",
+                                                fontWeight: "bold",
+                                                WebkitTextFillColor: "#111",
+                                                textShadow: "none",
                                                 fontSize: "clamp(0.8rem, 2vw, 1.3rem)",
                                                 wordBreak: "break-word",
                                                 textAlign: "center",
@@ -197,13 +212,12 @@ const Ranking = () => {
                         ))}
                     </div>
                 </div>
-                {/* <h2 className="text-center mb-3">Ranking</h2> */}
                 <div className="table-responsive" >
                     <table className="table table-striped table-hover text-center align-middle">
                         <thead className="table-dark">
                             <tr>
-                                <th>Position</th>
-                                <th>User</th>
+                                <th style={{ color: "#111" }}>Position</th>
+                                <th style={{ color: "#111" }}>User</th>
                                 <th>Deck Points</th>
                             </tr>
                         </thead>
@@ -213,8 +227,8 @@ const Ranking = () => {
                                 let trophy = null;
                                 if (globalIdx < 3) trophy = trophies[[1, 0, 2][globalIdx]];
                                 return (
-                                    <tr key={user.id}>
-                                        <td>{globalIdx + 1}º</td>
+                                    <tr className={`table-dark ${user.id}`} key={user.id}>
+                                        <td style={{ color: "#111", fontWeight: "bold" }}>{globalIdx + 1}º</td>
                                         <td>
                                             {trophy && (
                                                 <span style={{ fontSize: "1.3rem", marginRight: "0.3rem", verticalAlign: "middle" }}>
@@ -224,7 +238,7 @@ const Ranking = () => {
                                             <Link
                                                 to={`/profile/${user.id}`}
                                                 className="text-decoration-underline"
-                                                style={{ color: "#2d6cdf" }}
+                                                style={{ color: "#111", fontWeight: "bold" }}
                                             >
                                                 {user.username}
                                             </Link>

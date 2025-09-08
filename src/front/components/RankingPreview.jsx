@@ -19,17 +19,28 @@ export default function RankingPreview() {
     return (
         <div
             className="card shadow-sm"
-            style={{ cursor: "pointer" }}
+            style={{
+                cursor: "pointer",
+                background: "#222",
+                color: "#fff",
+                border: "none"
+            }}
             onClick={() => navigate("/ranking")}
         >
-            <div className="card-header bg-dark text-white fw-bold">
+            <div className="card-header bg-dark text-white fw-bold" style={{ background: "#222", border: "none" }}>
                 🏆 Top 5 Ranking
             </div>
-            <ul className="list-group list-group-flush">
+            <ul className="list-group list-group-flush" style={{ background: "#222" }}>
                 {topUsers.map((user, idx) => (
                     <li
                         key={user.id}
                         className="list-group-item d-flex justify-content-between align-items-center"
+                        style={{
+                            background: "#333333ff",
+                            color: "#fff",
+                            border: "none",
+                            borderBottom: idx < topUsers.length - 1 ? "1px solid #444" : "none"
+                        }}
                     >
                         <span>
                             {idx + 1}º {user.username}
@@ -40,12 +51,12 @@ export default function RankingPreview() {
                     </li>
                 ))}
                 {topUsers.length === 0 && (
-                    <li className="list-group-item text-center text-muted">
+                    <li className="list-group-item text-center text-muted" style={{ background: "#222", color: "#fff", border: "none" }}>
                         Loading ranking...
                     </li>
                 )}
             </ul>
-            <div className="card-footer text-center text-decoration-underline text-primary">
+            <div className="card-footer text-center text-decoration-underline text-primary" style={{ background: "#222", border: "none" }}>
                 View full ranking →
             </div>
         </div>
