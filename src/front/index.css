@@ -10,20 +10,18 @@ body {
 
 /* Fondo para el navbar */
 .navbar {
-  background-image: url("/src/front/assets/img/navbar_footer_1.png");
+  background-image: url("/src/front/assets/img/navbar.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.7;
 }
 
 /* Fondo para el footer */
 .footer {
-  background-image: url("/src/front/assets/img/navbar_footer_1.png");
+  background-image: url("/src/front/assets/img/footer.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.7;
 }
 
 /* Aplica a todo el texto de la web */
@@ -67,4 +65,8 @@ html,
   color: #111 !important;
   border: 1px solid #ccc;
   box-shadow: none;
+}
+
+.login-black {
+  color: #111 !important;
 }

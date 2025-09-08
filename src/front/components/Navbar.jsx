@@ -18,12 +18,12 @@ export default function Navbar() {
       <nav
         className="navbar navbar-expand-lg navbar-dark bg-dark shadow"
         style={{
-          position: "sticky", 
+          position: "sticky",
           top: 0,
           left: 0,
           width: "100%",
           zIndex: 1000,
-          
+
         }}
       >
         <div className="container-fluid">
@@ -73,7 +73,10 @@ export default function Navbar() {
                 <Link className="btn btn-outline-light me-2" to="/signup">
                   Sign Up
                 </Link>
-                <Link className="btn btn-warning" to="/login">
+                <Link
+                  className="btn btn-warning login-black"
+                  to="/login"
+                >
                   Login
                 </Link>
               </>
