@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import News from "../components/News";
+import PackCarousel from "../components/PackCarousel.jsx";
+import RankingPreview from "../components/RankingPreview.jsx";
 
 
 export const Home = () => {
@@ -65,23 +67,13 @@ export const Home = () => {
                     {/* Noticia 1 */}
                     <div className="mb-4">
                         <h6>New pack offer!</h6>
-                        <div
-                            className="bg-light border d-flex align-items-center justify-content-center mb-2"
-                            style={{ height: "240px", borderRadius: "8px" }}
-                        >
-                            <span>Imagen pack</span>
-                        </div>
+                        <PackCarousel />
                     </div>
 
                     {/* Ranking */}
                     <div className="mb-4">
                         <h6>Top 5 Ranking!</h6>
-                        <div
-                            className="bg-light border d-flex align-items-center justify-content-center mb-2"
-                            style={{ height: "240px", borderRadius: "8px" }}
-                        >
-                            <span>Imagen ranking</span>
-                        </div>
+                        <RankingPreview />
                     </div>
                 </div>
             </div>
