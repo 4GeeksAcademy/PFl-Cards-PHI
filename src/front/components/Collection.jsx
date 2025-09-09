@@ -41,11 +41,11 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
             .finally(() => setLoading(false));
     }, []);
 
-    const ownedCards = cards.filter(card => userCollection[card.id] > 0);
+    const ownedCards = cards.filter(card => userCollection[card.id || card.card_id] > 0);
     const uniqueOwned = ownedCards.length;
     const totalUnique = cards.length;
     // Cartas totales (incluyendo repetidas)
-    const totalOwned = ownedCards.reduce((acc, card) => acc + (userCollection[card.id] || 0), 0);
+    const totalOwned = ownedCards.reduce((acc, card) => acc + (userCollection[card.id || card.card_id] || 0), 0);
 
     let filteredCards = ownedCards;
     if (filter === "rarity") {
@@ -60,7 +60,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
             orderAsc ? b.points - a.points : a.points - b.points
         );
     } else if (filter === "missing") {
-        filteredCards = cards.filter(card => !userCollection[card.id]);
+        filteredCards = cards.filter(card => !userCollection[card.id || card.card_id]);
     } else if (filter === "all_with_missing") {
         filteredCards = [...cards];
     }
@@ -125,10 +125,10 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                         <p>No cards to display.</p>
                     ) : (
                         filteredCards.map((card, idx) => {
-                            const owned = userCollection[card.id] > 0;
+                            const owned = userCollection[card.id || card.card_id] > 0;
                             return (
                                 <div
-                                    key={card.id || idx}
+                                    key={card.id || card.card_id || idx}
                                     className={
                                         isMobile
                                             ? "col-12 mb-4"
@@ -162,7 +162,7 @@ const Collection = ({ cards = [], deck = [], handleAddToDeck, isCardInDeck }) =>
                                                     color: "#fff"
                                                 }}
                                             >
-                                                x{userCollection[card.id]}
+                                                x{userCollection[card.id || card.card_id]}
                                             </span>
                                         )}
                                     </div>
