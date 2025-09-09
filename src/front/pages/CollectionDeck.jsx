@@ -25,9 +25,15 @@ const CollectionDeck = () => {
 
     // Carga las cartas solo una vez
     useEffect(() => {
-        fetch("/src/data/cards_catalog_3sets.json")
-            .then((res) => res.json())
-            .then((data) => setCards(data.cards));
+    const accessToken = localStorage.getItem("access_token");
+    apiFetch(`${import.meta.env.VITE_BACKEND_URL}/api/cards`, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json"
+        }
+    })
+        .then((res) => res.json())
+        .then((data) => setCards(data.cards || []));
     }, []);
 
     // Función para recargar el deck desde la API
