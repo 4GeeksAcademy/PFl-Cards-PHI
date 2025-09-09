@@ -167,10 +167,7 @@ const Opening = ({ packs = [], onClose }) => {
                 <div className="modal-content"
                     style={{
                         padding: modalPadding,
-                        backgroundImage: "url('/src/front/assets/img/background_6.png')",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
+                        background: "rgba(49, 49, 49, 0.97)",
                         maxHeight: "90vh",
                         overflowY: "auto",
                     }}

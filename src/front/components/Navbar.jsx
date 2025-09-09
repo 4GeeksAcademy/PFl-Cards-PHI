@@ -48,7 +48,7 @@ export default function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-lg-start text-end">
               <li className="nav-item">
                 <NavLink
                   className="nav-link"
@@ -68,67 +68,70 @@ export default function Navbar() {
                 </NavLink>
               </li>
             </ul>
-            {!isAuthenticated ? (
-              <>
-                <Link className="btn btn-outline-light me-2" to="/signup">
-                  Sign Up
-                </Link>
-                <Link
-                  className="btn btn-warning login-black"
-                  to="/login"
-                >
-                  Login
-                </Link>
-              </>
-            ) : (
-              <div className="dropdown me-2">
-                <button
-                  className="btn dropdown-toggle p-0 border-0 bg-transparent"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  style={{ boxShadow: "none" }}
-                >
-                  <img
-                    src={user?.profile_image_url || defaultAvatar}
-                    alt="Profile"
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      border: "2px solid #fff"
-                    }}
-                  />
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end bg-gray">
-                  <li>
-                    <Link className="dropdown-item" to="/Profile">
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/PackOpen">
-                      My Packs
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/CollectionDeck">
-                      Collection and Deck
-                    </Link>
-                  </li>
-                  <div className="bg-danger-subtle p-2">
+            <div className="d-lg-flex justify-content-lg-end text-end w-100">
+              {!isAuthenticated ? (
+                <>
+                  <Link className="btn btn-outline-light me-2" to="/signup">
+                    Sign Up
+                  </Link>
+                  <Link
+                    className="btn btn-warning login-black"
+                    to="/login"
+                  >
+                    Login
+                  </Link>
+                </>
+              ) : (
+                <div className="dropdown float-end me-2">
+                  <button
+                    className="btn dropdown-toggle p-0 border-0 bg-transparent"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    style={{ boxShadow: "none" }}
+                  >
+                    <img
+                      src={user?.profile_image_url || defaultAvatar}
+                      alt="Profile"
+                      style={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        border: "2px solid #fff"
+                      }}
+                    />
+                  </button>
+                  <ul className="dropdown-menu dropdown-menu-end bg-gray">
                     <li>
-                      <button
-                        className="dropdown-item text-danger"
-                        onClick={handleLogout}
-                      >
-                        Log out
-                      </button>
+                      <Link className="dropdown-item" to="/Profile">
+                        Profile
+                      </Link>
                     </li>
-                  </div>
-                </ul>
-              </div>
-            )}
+                    <li>
+                      <Link className="dropdown-item" to="/PackOpen">
+                        My Packs
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/CollectionDeck">
+                        Collection and Deck
+                      </Link>
+                    </li>
+                    <div className="bg-danger-subtle p-2">
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={handleLogout}
+                        >
+                          Log out
+                        </button>
+                      </li>
+                    </div>
+                  </ul>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       </nav>

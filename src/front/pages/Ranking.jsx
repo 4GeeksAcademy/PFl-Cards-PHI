@@ -75,7 +75,7 @@ const Ranking = () => {
     const handleNextPage = useCallback(() => setCurrentPage(p => Math.min(totalPages, p + 1)), [totalPages]);
 
     return (
-        <div className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div className="min-vh-100 d-flex align-items-center justify-content-center mb-5">
             <div className="container" style={{ maxWidth: "900px" }}>
                 <div className="row justify-content-center mb-4">
                     <div className="col-auto">

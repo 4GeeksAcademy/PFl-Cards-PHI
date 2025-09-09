@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
 	return (
-		<footer className="footer text-light bg-dark shadow" style={{ padding: "10px 0" }}>
+		<footer className="footer text-light bg-dark shadow" style={{ padding: "8px 0" }}>
 			<div className="container">
 				<div className="row align-items-center" style={{ minHeight: "50px" }}>
 					{/* Logo / Nombre */}
@@ -19,13 +19,13 @@ export default function Footer() {
 						<h6 className="fw-bold mb-1">Developer LinkedIn:</h6>
 						<ul className="list-unstyled d-flex mb-1">
 							<li className="me-3">
-								<Link to="/" className="text-light text-decoration-none">Pedro</Link>
+								<Link to="https://www.linkedin.com/in/pedroserranoc/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Pedro Serrano</Link>
 							</li>
 							<li className="me-3">
-								<Link to="/" className="text-light text-decoration-none">Ignacio</Link>
+								<Link to="https://www.linkedin.com/in/ignacio-barrio-aranda-ab54b2133/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline"> Ignacio Barrio</Link>
 							</li>
 							<li>
-								<Link to="/" className="text-light text-decoration-none">Hector</Link>
+								<Link to="https://www.linkedin.com/in/héctor-fernández-cabrerizo-b72567222/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Héctor Fernández</Link>
 							</li>
 						</ul>
 					</div>
@@ -39,7 +39,7 @@ export default function Footer() {
 					</div>
 				</div>
 
-				<hr className="border-light" style={{ margin: "8px 0" }} />
+				<hr className="border-light" style={{ margin: "6px 0" }} />
 				<div className="text-center small" style={{ marginBottom: "2px" }}>
 					© {new Date().getFullYear()} BATTLECARDS. All rights reserved.
 				</div>

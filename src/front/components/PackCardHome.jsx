@@ -11,15 +11,16 @@ const packImages = {
 
 export default function PackCard({ title, description, buttonText, onComprar }) {
   return (
-    <div className="card text-center shadow-sm" style={{ width: "350px", minHeight: "180px", display: "flex", flexDirection: "column", justifyContent: "space-between", backgroundColor: "rgba(88, 86, 86, 0.59)"}}>
+    <div className="card text-center shadow-sm" style={{ width: "350px", minHeight: "180px", display: "flex", flexDirection: "column", justifyContent: "space-between", backgroundColor: "rgba(88, 86, 86, 0.59)" }}>
       <div className="card-body d-flex flex-column align-items-center">
         <img
           className="card-img-top"
           src={packImages[title]}
           alt={title}
           style={{
-            width: "220px",
-            height: "220px",
+            width: "100%",          
+            maxWidth: "250px",      
+            height: "auto",         
             objectFit: "contain",
             marginBottom: "20px"
           }}
@@ -27,9 +28,6 @@ export default function PackCard({ title, description, buttonText, onComprar }) 
         <h5 className="card-title" style={{ fontSize: "2rem" }}>{title}</h5>
         <p className="card-text" style={{ fontSize: "1.2rem" }}>{description}</p>
       </div>
-      {/* <div className="card-footer bg-transparent border-0">
-        <button className="btn btn-primary btn-lg" onClick={onComprar}>{buttonText}</button>
-      </div> */}
     </div>
   );
 }

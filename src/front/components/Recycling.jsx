@@ -100,7 +100,7 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
 
     return (
         <div>
-            <div className="d-flex flex-column gap-4 align-items-center">
+            <div className="d-flex flex-column gap-4 align-items-center mb-5">
                 {recyclingOptions.map(option => (
                     <div
                         key={option.rarity}
@@ -225,9 +225,7 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
                             position: "relative",
                             maxHeight: "90vh",
                             overflowY: "auto",
-                            backgroundImage: "url('/src/front/assets/img/background_7.png')",
-                            backgroundSize: "cover",
-                            backgroundPosition: "center"
+                            background: "rgba(37, 37, 37, 0.97)"
                         }}
                         onClick={e => e.stopPropagation()}
                     >
@@ -308,18 +306,19 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
                             </button>
                         </div>
                         <button
-                            className="btn btn-link"
+                            className="btn btn-close ms-2 btn-link"
                             style={{
                                 position: "absolute",
                                 top: "12px",
                                 right: "18px",
                                 fontSize: "1.5rem",
                                 color: "#888",
-                                zIndex: 2
+                                zIndex: 2,
+                                filter: "invert(1)"
                             }}
                             onClick={() => setPopup(null)}
                         >
-                            ×
+                            
                         </button>
                         {/* Estilos responsivos para el grid y para la X */}
                         <style>
