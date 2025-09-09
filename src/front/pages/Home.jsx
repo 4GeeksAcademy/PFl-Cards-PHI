@@ -47,6 +47,15 @@ export const Home = () => {
                          style={{ height: "280px", borderRadius: "10px", background: "rgba(20, 20, 20, 0.8)", border: "1px solid #9b9b9bff"}}
                     >
                         <div className="mb-5 px-3" style={{textAlign: "justify" }}>
+                            <h3 className="text-center">Titulo</h3>
+                            <p>Este es un proyecto de ejemplo para mostrar las capacidades de Full Stack con Python y React.</p>
+                        </div>
+                    </div>
+
+                    <div className="d-flex align-items-center justify-content-center mb-4"
+                         style={{ height: "280px", borderRadius: "10px", background: "rgba(20, 20, 20, 0.8)", border: "1px solid #9b9b9bff"}}
+                    >
+                        <div className="mb-5 px-3" style={{textAlign: "justify" }}>
                             <h3 className="text-center">Pedro</h3>
                             <p>Este es un proyecto de ejemplo para mostrar las capacidades de Full Stack con Python y React.</p>
                         </div>

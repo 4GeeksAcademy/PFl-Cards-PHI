@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
 	return (
-		<footer className="footer text-light bg-dark shadow" style={{ padding: "10px 0" }}>
+		<footer className="footer text-light bg-dark shadow" style={{ padding: "8px 0" }}>
 			<div className="container">
 				<div className="row align-items-center" style={{ minHeight: "50px" }}>
 					{/* Logo / Nombre */}
@@ -39,7 +39,7 @@ export default function Footer() {
 					</div>
 				</div>
 
-				<hr className="border-light" style={{ margin: "8px 0" }} />
+				<hr className="border-light" style={{ margin: "6px 0" }} />
 				<div className="text-center small" style={{ marginBottom: "2px" }}>
 					© {new Date().getFullYear()} BATTLECARDS. All rights reserved.
 				</div>
