@@ -100,7 +100,7 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
 
     return (
         <div>
-            <div className="d-flex flex-column gap-4 align-items-center">
+            <div className="d-flex flex-column gap-4 align-items-center mb-5">
                 {recyclingOptions.map(option => (
                     <div
                         key={option.rarity}
