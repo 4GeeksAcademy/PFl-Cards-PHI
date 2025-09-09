@@ -100,7 +100,6 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
 
     return (
         <div>
-            {/* <h3 className="mb-3">Recycle duplicate cards</h3> */}
             <div className="d-flex flex-column gap-4 align-items-center">
                 {recyclingOptions.map(option => (
                     <div
@@ -109,9 +108,9 @@ const Recycling = ({ userCollection = [], onRecycle }) => {
                             width: `${boxWidth}px`,
                             minWidth: `${boxWidth}px`,
                             maxWidth: `${boxWidth}px`,
-                            background: "rgba(180, 238, 248, 0.7)",
+                            backgroundColor: "rgba(20, 20, 20, 0.8)",
+                            border: "1px solid #9b9b9bff",
                             borderRadius: "16px",
-                            boxShadow: "0 2px 8px rgba(70,33,33,0.1)",
                             padding: "18px 24px",
                             display: "flex",
                             flexDirection: "column",

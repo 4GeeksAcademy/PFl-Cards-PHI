@@ -21,22 +21,24 @@ export default function RankingPreview() {
             className="card shadow-sm"
             style={{
                 cursor: "pointer",
-                background: "#222",
+                backgroundColor: "rgba(20, 20, 20, 0.8)",
+                border: "1px solid #9b9b9bff",
                 color: "#fff",
                 border: "none"
             }}
             onClick={() => navigate("/ranking")}
         >
-            <div className="card-header bg-dark text-white fw-bold" style={{ background: "#222", border: "none" }}>
+            <div className="card-header bg-dark text-white fw-bold" style={{ background: "rgba(40, 40, 40, 0.8)", border: "none" }}>
                 🏆 Top 5 Ranking
             </div>
-            <ul className="list-group list-group-flush" style={{ background: "#222" }}>
+            <ul className="list-group list-group-flush" style={{ background: "rgba(40, 40, 40, 0.8)" }}>
                 {topUsers.map((user, idx) => (
                     <li
                         key={user.id}
                         className="list-group-item d-flex justify-content-between align-items-center"
                         style={{
-                            background: "#333333ff",
+                            background: "rgba(20, 20, 20, 0.8)",
+                            border: "1px solid #9b9b9bff",
                             color: "#fff",
                             border: "none",
                             borderBottom: idx < topUsers.length - 1 ? "1px solid #444" : "none"

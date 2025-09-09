@@ -117,8 +117,8 @@ const ProfilePrivate = ({
                                 alignItems: "center",
                                 marginBottom: "12px",
                                 backgroundColor: "rgba(20, 20, 20, 0.8)",
+                                border: "1px solid #9b9b9bff",
                                 textAlign: "center",
-                                border: "1px solid #e0e0e0",
                                 borderRadius: "18px"
 
                             }}
@@ -160,7 +160,6 @@ const ProfilePrivate = ({
                                     padding: "2px 12px",
                                     fontSize: "0.95rem",
                                     cursor: "pointer",
-                                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
                                 }}>
                                     Edit photo
                                     <input
@@ -221,8 +220,8 @@ const ProfilePrivate = ({
                             <div className="mt-3 p-3 shadow-sm"
                                 style={{
                                     backgroundColor: "rgba(20, 20, 20, 0.8)",
+                                    border: "1px solid #9b9b9bff",
                                     textAlign: "center",
-                                    border: "1px solid #e0e0e0",
                                     borderRadius: "18px",
                                 }}>
 
@@ -230,40 +229,40 @@ const ProfilePrivate = ({
                                 <div className="row g-2 justify-content-center">
                                     <div className="col-6 col-md-12">
                                         <div className="d-flex flex-column align-items-center" style={{ background: "#317ceeff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
-                                            <span style={{ color: "#333", fontWeight: "bold" }}>Total cards</span>
-                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>Total cards</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>
                                                 {collectionStats.totalCount}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
                                         <div className="d-flex flex-column align-items-center" style={{ background: "#32a547ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
-                                            <span style={{ color: "#333", fontWeight: "bold" }}>Unique cards</span>
-                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>Unique cards</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>
                                                 {collectionStats.uniqueCount} / {collectionStats.totalUnique}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
                                         <div className="d-flex flex-column align-items-center" style={{ background: "#807b7bff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
-                                            <span style={{ color: "#333", fontWeight: "bold" }}>Common</span>
-                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>Common</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>
                                                 {collectionStats.commonCount} / {collectionStats.totalCommon}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
                                         <div className="d-flex flex-column align-items-center" style={{ background: "#8134caff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
-                                            <span style={{ color: "#333", fontWeight: "bold" }}>Rare</span>
-                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>Rare</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>
                                                 {collectionStats.rareCount} / {collectionStats.totalRare}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="col-6 col-md-12">
                                         <div className="d-flex flex-column align-items-center" style={{ background: "#a0a300ff", borderRadius: "8px", padding: "6px 10px", marginBottom: "8px" }}>
-                                            <span style={{ color: "#333", fontWeight: "bold" }}>Legendary</span>
-                                            <span style={{ color: "#333", fontSize: "1.2rem" }}>
+                                            <span style={{ color: "#333", fontWeight: "bold", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>Legendary</span>
+                                            <span style={{ color: "#333", fontSize: "1.2rem", textShadow: "0px 0px 4px rgba(0, 0, 0, 1)" }}>
                                                 {collectionStats.legendaryCount} / {collectionStats.totalLegendary}
                                             </span>
                                         </div>
@@ -289,7 +288,7 @@ const ProfilePrivate = ({
                                     color: "#1976d2",
                                     fontWeight: "bold",
                                     display: "flex",
-
+                                    textShadow: "0px 0px 4px rgba(0, 0, 0, 1)",
                                     verticalAlign: "middle"
                                 }}
                             >
@@ -322,8 +321,8 @@ const ProfilePrivate = ({
                     <div
                         style={{
                             backgroundColor: "rgba(20, 20, 20, 0.8)",
+                            border: "1px solid #9b9b9bff",
                             borderRadius: "18px",
-                            border: "1px solid #e0e0e0",
                             minHeight: "220px",
                             marginBottom: "20px",
                             width: "100%",

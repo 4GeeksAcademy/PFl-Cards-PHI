@@ -23,12 +23,16 @@ export default function PackCarousel() {
     const navigate = useNavigate();
 
     return (
-        <div className="card shadow-sm border-0" style={{ background: "rgba(2, 2, 2, 0.8)", color: "#fff" }}>
-            <div className="card-header bg-dark text-white fw-bold" style={{ background: "rgba(37, 37, 37, 0.8)" }}>
+        <div className="card shadow-sm border-0" 
+            style={{ 
+                backgroundColor: "rgba(20, 20, 20, 0.8)",
+                border: "1px solid #9b9b9bff"
+                }}>
+            <div className="card-header bg-dark text-white fw-bold" style={{ background: "rgba(40, 40, 40, 0.8)" }}>
                 🎴 New pack offer!
             </div>
 
-            <div className="card-body d-flex justify-content-center" style={{ background: "rgba(37, 37, 37, 0.6)" }}>
+            <div className="card-body d-flex justify-content-center" style={{ background: "rgba(20, 20, 20, 0.6)" }}>
                 <div
                     id="packCarousel"
                     className="carousel slide"
@@ -83,7 +87,7 @@ export default function PackCarousel() {
 
             <div
                 className="card-footer text-center text-decoration-underline text-primary"
-                style={{ background: "#222", color: "#fff", cursor: "pointer", border: "none" }}
+                style={{ background: "rgba(40, 40, 40, 0.8)", color: "#fff", cursor: "pointer", border: "none" }}
                 onClick={() => navigate("/shop")}
             >
                 View all packs →
