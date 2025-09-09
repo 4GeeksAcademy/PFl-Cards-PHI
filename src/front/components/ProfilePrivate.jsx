@@ -15,14 +15,15 @@ const ProfilePrivate = ({
     setNewUsername,
     navigate
 }) => {
+    
     const [collectionStats, setCollectionStats] = useState(null);
     const [profileImg, setProfileImg] = useState(null); // url local de la imagen
-
     useEffect(() => {
         const fetchStats = async () => {
             let stats = {};
             try {
                 const accessToken = localStorage.getItem("access_token");
+                // Colección del usuario
                 const respUser = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/collection`,
                     {
@@ -32,21 +33,23 @@ const ProfilePrivate = ({
                         }
                     }
                 );
+                let userCards = [];
                 if (respUser.ok) {
                     const data = await respUser.json();
-                    const userCards = data["User collection"] || [];
-                    stats.totalCount = userCards.reduce((acc, c) => acc + (c.quantity || 1), 0);
+                    userCards = data["User collection"] || [];
                     stats.uniqueCount = userCards.length;
+                    stats.totalCount = userCards.reduce((acc, c) => acc + (c.quantity || 1), 0);
                     stats.commonCount = userCards.filter(c => c.game_rarity === "common").length;
                     stats.rareCount = userCards.filter(c => c.game_rarity === "rare").length;
                     stats.legendaryCount = userCards.filter(c => c.game_rarity === "legendary").length;
                 }
-                // Global
+                // Catálogo global
                 const respGlobal = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/cards`
                 );
                 if (respGlobal.ok) {
-                    const cards = await respGlobal.json();
+                    const cardsData = await respGlobal.json();
+                    const cards = cardsData.cards || [];
                     stats.totalUnique = cards.length;
                     stats.totalCommon = cards.filter(c => c.game_rarity === "common").length;
                     stats.totalRare = cards.filter(c => c.game_rarity === "rare").length;
@@ -59,7 +62,6 @@ const ProfilePrivate = ({
         };
         fetchStats();
     }, []);
-
     // Handler para subir imagen de perfil
     const handleProfileImg = (e) => {
         const file = e.target.files[0];
@@ -71,7 +73,6 @@ const ProfilePrivate = ({
             reader.readAsDataURL(file);
         }
     };
-
     const handleUpdate = async (e) => {
         e.preventDefault();
         const accessToken = localStorage.getItem("access_token");

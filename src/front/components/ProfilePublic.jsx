@@ -6,12 +6,24 @@ import defaultAvatar from "../assets/img/rigo-baby.jpg";
 
 const ProfilePublic = ({ userData, deckCards, userRanking }) => {
     const [collectionStats, setCollectionStats] = useState(null);
-
     useEffect(() => {
         const fetchStats = async () => {
             let stats = {};
             try {
-                // Usuario
+                // Catálogo global
+                const respGlobal = await apiFetch(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/cards`
+                );
+                let cards = [];
+                if (respGlobal.ok) {
+                    const cardsData = await respGlobal.json();
+                    cards = cardsData.cards || [];
+                    stats.totalUnique = cards.length;
+                    stats.totalCommon = cards.filter(c => c.game_rarity === "common").length;
+                    stats.totalRare = cards.filter(c => c.game_rarity === "rare").length;
+                    stats.totalLegendary = cards.filter(c => c.game_rarity === "legendary").length;
+                }
+                // Colección del usuario
                 const respUser = await apiFetch(
                     `${import.meta.env.VITE_BACKEND_URL}/api/users/${userData?.id}/collection`
                 );
@@ -24,23 +36,11 @@ const ProfilePublic = ({ userData, deckCards, userRanking }) => {
                     stats.rareCount = userCards.filter(c => c.game_rarity === "rare").length;
                     stats.legendaryCount = userCards.filter(c => c.game_rarity === "legendary").length;
                 }
-                // Global
-                const respGlobal = await apiFetch(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/cards`
-                );
-                if (respGlobal.ok) {
-                    const cards = await respGlobal.json();
-                    stats.totalUnique = cards.length;
-                    stats.totalCommon = cards.filter(c => c.game_rarity === "common").length;
-                    stats.totalRare = cards.filter(c => c.game_rarity === "rare").length;
-                    stats.totalLegendary = cards.filter(c => c.game_rarity === "legendary").length;
-                }
                 setCollectionStats(stats);
             } catch (e) {
                 setCollectionStats(null);
             }
         };
-
         if (userData?.id) {
             fetchStats();
         }
