@@ -664,7 +664,7 @@ def checkout_confirm():
 @api.route('/cards', methods=['GET'])
 def get_cards():
     cards = db.session.scalars(select(Card)).all()
-    return jsonify([card.serialize() for card in cards]), 200
+    return jsonify({"cards": [card.serialize() for card in cards]})
 
 
 @api.route('/users', methods=['GET'])
