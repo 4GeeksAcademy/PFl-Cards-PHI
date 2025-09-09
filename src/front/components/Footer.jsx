@@ -19,13 +19,13 @@ export default function Footer() {
 						<h6 className="fw-bold mb-1">Developer LinkedIn:</h6>
 						<ul className="list-unstyled d-flex mb-1">
 							<li className="me-3">
-								<Link to="https://www.linkedin.com/in/pedroserranoc/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-none">Pedro</Link>
+								<Link to="https://www.linkedin.com/in/pedroserranoc/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Pedro Serrano</Link>
 							</li>
 							<li className="me-3">
-								<Link to="https://www.linkedin.com/in/ignacio-barrio-aranda-ab54b2133/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-none">Ignacio</Link>
+								<Link to="https://www.linkedin.com/in/ignacio-barrio-aranda-ab54b2133/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline"> Ignacio Barrio</Link>
 							</li>
 							<li>
-								<Link to="https://www.linkedin.com/in/héctor-fernández-cabrerizo-b72567222/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-none">Héctor</Link>
+								<Link to="https://www.linkedin.com/in/héctor-fernández-cabrerizo-b72567222/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Héctor Fernández</Link>
 							</li>
 						</ul>
 					</div>
