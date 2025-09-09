@@ -10,7 +10,7 @@ body {
 
 /* Fondo para el navbar */
 .navbar {
-  background-image: url("/src/front/assets/img/navbar.png");
+  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -18,7 +18,7 @@ body {
 
 /* Fondo para el footer */
 .footer {
-  background-image: url("/src/front/assets/img/footer.png");
+  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

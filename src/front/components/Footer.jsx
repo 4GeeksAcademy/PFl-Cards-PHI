@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
 	return (
-		<footer className="footer text-light" style={{ padding: "10px 0" }}>
+		<footer className="footer text-light bg-dark shadow" style={{ padding: "10px 0" }}>
 			<div className="container">
 				<div className="row align-items-center" style={{ minHeight: "50px" }}>
 					{/* Logo / Nombre */}

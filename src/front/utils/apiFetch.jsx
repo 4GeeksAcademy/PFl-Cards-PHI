@@ -16,7 +16,7 @@ export const apiFetch = async (url, options = {}) => {
   if (resp && (resp.status === 401 || resp.status === 422)) {
     if (!hasShownSessionExpired) {
       hasShownSessionExpired = true; // evitar duplicados
-      toast.error(" Tu sesión ha expirado. Por favor, inicia sesión de nuevo.");
+      toast.error(" Sesion expired, please log in");
       localStorage.removeItem("access_token");
       window.location.href = "/login"; // fuerza recarga y navbar se actualiza
     }
