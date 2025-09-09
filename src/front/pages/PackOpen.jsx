@@ -3,6 +3,7 @@ import Opening from "../components/Opening";
 import { toast } from "react-toastify";
 import { apiFetch } from "../utils/apiFetch";
 import packImg from "../assets/img/1pack.png";
+import { useNavigate } from "react-router-dom";
 
 
 const PackOpen = () => {
@@ -13,6 +14,7 @@ const PackOpen = () => {
     const [imgWidth, setImgWidth] = useState(220);
     const [cardsToShow, setCardsToShow] = useState([]);
     const [showOpening, setShowOpening] = useState(false);
+    const navigate = useNavigate()
 
     useLayoutEffect(() => {
         if (buttonsRef.current) {
@@ -136,6 +138,18 @@ const PackOpen = () => {
                         disabled={openingLoader || loading || totalPacks < 1}
                     >
                         {openingLoader ? "Opening..." : `Open All (${totalPacks})`}
+                    </button>
+                </div>
+                <div
+                    className="d-flex justify-content-center"
+                    style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
+                >
+                    <button
+                        className="btn btn-success flex-grow-1"
+                        style={{ minWidth: "180px", maxWidth: "300px" }}
+                        onClick={() => navigate("/CollectionDeck")}
+                    >
+                        Go to Collection
                     </button>
                 </div>
             </div>
