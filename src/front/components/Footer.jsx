@@ -25,7 +25,7 @@ export default function Footer() {
 								<Link to="https://www.linkedin.com/in/ignacio-barrio-aranda-ab54b2133/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline"> Ignacio Barrio</Link>
 							</li>
 							<li>
-								<Link to="https://www.linkedin.com/in/héctor-fernández-cabrerizo-b72567222/" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Héctor Fernández</Link>
+								<Link to="www.linkedin.com/in/héctor-fernández-cabrerizo" target="_blank" rel="noopener noreferrer" className="text-light text-decoration-underline">Héctor Fernández</Link>
 							</li>
 						</ul>
 					</div>
