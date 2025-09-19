@@ -70,3 +70,93 @@ html,
 .login-black {
   color: #111 !important;
 }
+
+/* ====== BASE ====== */
+.btn-custom {
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* ====== PRIMARIO (acciones principales: confirmar, comprar, continuar...) ====== */
+.btn-primary-custom {
+  background: linear-gradient(135deg, #1976d2, #2196f3);
+  color: white;
+}
+.btn-primary-custom:hover {
+  background: linear-gradient(135deg, #1565c0, #1e88e5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.btn-primary-custom:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ====== SECUNDARIO (acciones neutrales) ====== */
+.btn-secondary-custom {
+  background: #e0e0e0;
+  color: #333;
+}
+.btn-secondary-custom:hover {
+  background: #d5d5d5;
+  transform: translateY(-2px);
+}
+.btn-secondary-custom:active {
+  background: #c2c2c2;
+}
+
+/* ====== CONFIRMAR (verde, positivo) ====== */
+.btn-success-custom {
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: white;
+}
+.btn-success-custom:hover {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+  transform: scale(1.05);
+}
+.btn-success-custom:active {
+  transform: scale(0.98);
+}
+
+/* ====== CANCELAR / IMPORTANTE (rojo) ====== */
+.btn-danger-custom {
+  background: linear-gradient(135deg, #d32f2f, #e53935);
+  color: white;
+}
+.btn-danger-custom:hover {
+  background: linear-gradient(135deg, #b71c1c, #c62828);
+  transform: translateY(-2px);
+}
+.btn-danger-custom:active {
+  transform: translateY(1px);
+}
+
+/* ====== AVISO / WARNING (amarillo) ====== */
+.btn-warning-custom {
+  background: linear-gradient(135deg, #fbc02d, #fdd835);
+  color: #333;
+}
+.btn-warning-custom:hover {
+  background: linear-gradient(135deg, #f9a825, #fbc02d);
+  transform: scale(1.05);
+}
+.btn-warning-custom:active {
+  transform: scale(0.95);
+}
+
+/* ====== INFO (azul suave, para datos secundarios o links importantes) ====== */
+.btn-info-custom {
+  background: linear-gradient(135deg, #0288d1, #03a9f4);
+  color: white;
+}
+.btn-info-custom:hover {
+  background: linear-gradient(135deg, #0277bd, #0288d1);
+  transform: translateY(-2px);
+}
+.btn-info-custom:active {
+  transform: translateY(1px);
+}
