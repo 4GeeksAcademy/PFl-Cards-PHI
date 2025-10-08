@@ -119,7 +119,7 @@ const PackOpen = () => {
                     {[1, 5, 10].map(qty => (
                         <button
                             key={qty}
-                            className="btn btn-primary flex-grow-1"
+                            className="btn btn-primary-custom flex-grow-1"
                             onClick={() => handleOpenPack(qty)}
                             disabled={openingLoader || loading || totalPacks < qty}
                         >
@@ -132,7 +132,7 @@ const PackOpen = () => {
                     style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
                 >
                     <button
-                        className="btn btn-danger flex-grow-1"
+                        className="btn btn-danger-custom flex-grow-1"
                         style={{ minWidth: "180px", maxWidth: "300px" }}
                         onClick={() => handleOpenPack(totalPacks)}
                         disabled={openingLoader || loading || totalPacks < 1}
@@ -145,7 +145,7 @@ const PackOpen = () => {
                     style={{ width: "320px", maxWidth: "100%", marginTop: "12px" }}
                 >
                     <button
-                        className="btn btn-success flex-grow-1"
+                        className="btn btn-success-custom flex-grow-1"
                         style={{ minWidth: "180px", maxWidth: "300px" }}
                         onClick={() => navigate("/CollectionDeck")}
                     >

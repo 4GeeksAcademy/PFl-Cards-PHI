@@ -28,7 +28,7 @@ export default function PackCard({ title, description, buttonText, onComprar }) 
         <p className="card-text" style={{ fontSize: "1.2rem" }}>{description}</p>
       </div>
       <div className="card-footer bg-transparent border-0">
-        <button className="btn btn-primary btn-lg" onClick={onComprar}>{buttonText}</button>
+        <button className="btn btn-info-custom btn-lg" onClick={onComprar}>{buttonText}</button>
       </div>
     </div>
   );
